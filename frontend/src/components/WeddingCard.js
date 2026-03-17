@@ -16,10 +16,12 @@ export default function WeddingCard({
     invited: 0,
     attended: 0,
   });
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchGuestStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wedding.id, wedding._id]);
 
   const fetchGuestStats = async () => {

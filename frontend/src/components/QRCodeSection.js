@@ -3,6 +3,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import "../styles/QRCodeSection.css";
 
 const QRCodeSection = ({ brideName, groomName, weddingId }) => {
+  // eslint-disable-next-line no-unused-vars
   const [upiId, setUpiId] = useState("");
   const [amount, setAmount] = useState("");
   const [showSettings, setShowSettings] = useState(false);

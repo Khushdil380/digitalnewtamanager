@@ -26,6 +26,7 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
 
   useEffect(() => {
     fetchGuests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weddingId]);
 
   const fetchGuests = async () => {

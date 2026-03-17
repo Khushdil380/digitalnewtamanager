@@ -6,11 +6,12 @@ const ThankYouPage = () => {
   const [searchParams] = useSearchParams();
   const bride = searchParams.get("bride") || "Bride";
   const groom = searchParams.get("groom") || "Groom";
+  // eslint-disable-next-line no-unused-vars
   const weddingId = searchParams.get("weddingId") || "";
   const [displayedText, setDisplayedText] = useState("");
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
-  const messages = [
+  const messages = React.useMemo(() => [
     `Welcome to the wedding of`,
     `💕 ${bride} & ${groom} 💕`,
     ``,
@@ -21,7 +22,7 @@ const ThankYouPage = () => {
     `the world to us.`,
     ``,
     `Wishing you a beautiful day!`,
-  ];
+  ], [bride, groom]);
 
   // Typewriter animation for text
   useEffect(() => {

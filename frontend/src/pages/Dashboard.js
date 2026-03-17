@@ -25,6 +25,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
     if (user?.id) {
       fetchWeddings();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
   const fetchWeddings = async () => {

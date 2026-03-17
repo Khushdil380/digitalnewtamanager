@@ -28,10 +28,12 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
 
   useEffect(() => {
     fetchGuests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weddingId]);
 
   useEffect(() => {
     applyFiltersAndSort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guests, searchQuery, sortBy, groupBy]);
 
   const fetchGuests = async () => {

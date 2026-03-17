@@ -10,6 +10,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [wedding, setWedding] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [contributions, setContributions] = useState([]);
   const [userId, setUserId] = useState(null);
   const [showGuestList, setShowGuestList] = useState(false);
@@ -33,6 +34,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   useEffect(() => {
     fetchWeddingData();
     fetchContributions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weddingId]);
 
   const fetchWeddingData = async () => {
