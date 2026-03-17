@@ -1,0 +1,276 @@
+/* Compact QR Section - Right Column */
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0;
+  width: 100%;
+}
+
+.qr-header-simple {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.qr-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.qr-settings-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-settings-btn:hover {
+  opacity: 0.8;
+}
+
+/* QR Code Display */
+.qr-code-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.qr-code-display canvas {
+  max-width: 400px;
+  height: auto;
+}
+
+.qr-custom-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.65rem;
+  background-color: var(--primary);
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Amount Input and Generate Button */
+.qr-amount-row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.qr-amount-input {
+  flex: 1;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.qr-amount-input::placeholder {
+  color: #999;
+}
+
+.qr-amount-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 3px rgba(var(--primary-rgb), 0.3);
+}
+
+.qr-generate-btn {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.qr-generate-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.qr-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Settings Modal Overlay */
+.qr-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--primary-rgb), 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.qr-settings-box {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  max-width: 350px;
+  width: 90%;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.qr-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--primary);
+  color: white;
+}
+
+.qr-settings-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.qr-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-close-btn:hover {
+  opacity: 0.8;
+}
+
+.qr-settings-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.qr-settings-body label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.qr-settings-body input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.qr-settings-body input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 4px rgba(var(--primary-rgb), 0.3);
+}
+
+.qr-save-btn {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.qr-save-btn:hover {
+  opacity: 0.9;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .qr-section {
+    gap: 0.6rem;
+    padding: 0;
+  }
+
+  .qr-amount-row {
+    gap: 0.4rem;
+  }
+
+  .qr-amount-input {
+    min-width: 70px;
+    width: 70px;
+  }
+
+  .qr-generate-btn {
+    font-size: 0.8rem;
+  }
+
+  .qr-code-display canvas {
+    max-width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-code-display canvas {
+    max-width: 120px;
+  }
+
+  .qr-settings-box {
+    width: 95%;
+    max-width: none;
+  }
+}

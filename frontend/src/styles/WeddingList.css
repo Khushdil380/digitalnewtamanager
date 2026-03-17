@@ -1,0 +1,47 @@
+.wedding-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.wedding-list-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #888;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.wedding-list-empty h3 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.wedding-list-empty p {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+@media (max-width: 480px) {
+  .wedding-list-empty {
+    padding: 1.5rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 2rem;
+  }
+
+  .wedding-list-empty h3 {
+    font-size: 1rem;
+  }
+
+  .wedding-list-empty p {
+    font-size: 0.85rem;
+  }
+}

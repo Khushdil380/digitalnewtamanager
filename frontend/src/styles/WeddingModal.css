@@ -1,0 +1,78 @@
+.wedding-modal {
+  padding: 0.75rem;
+  max-width: 500px;
+}
+
+.wedding-modal h2 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.wedding-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.wedding-input-wrapper {
+  position: relative;
+}
+
+.wedding-icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 1.5rem;
+  font-size: 1.3rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wedding-input-wrapper .input-field {
+  margin-bottom: 0;
+}
+
+.wedding-input-wrapper .input-control {
+  padding-left: 2.5rem;
+}
+
+.wedding-error-msg {
+  background: #fee;
+  color: #c00;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.wedding-success-msg {
+  background: #efe;
+  color: #060;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.wedding-button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.wedding-button-group button {
+  flex: 1;
+  max-width: 250px;
+}
+
+@media (max-width: 480px) {
+  .wedding-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .wedding-modal {
+    padding: 1rem;
+  }
+}

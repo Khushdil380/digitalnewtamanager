@@ -1,0 +1,129 @@
+.wedding-event-page {
+  min-height: 100vh;
+  background: rgba(196, 30, 58, 0.02);
+  padding: 1rem;
+}
+
+.event-header {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.event-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.form-container,
+.qr-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #666;
+  font-size: 1.1rem;
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .event-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wedding-event-page {
+    padding: 0.75rem;
+  }
+
+  .event-header {
+    margin-bottom: 1rem;
+  }
+
+  .back-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .event-content {
+    gap: 1rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .event-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wedding-event-page {
+    padding: 0.8rem;
+  }
+
+  .back-btn {
+    position: static;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .event-content {
+    margin-top: 1rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .summary-item {
+    padding: 0.8rem;
+  }
+
+  .summary-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wedding-event-page {
+    padding: 0.5rem;
+  }
+
+  .event-content {
+    gap: 1rem;
+  }
+
+  .contributions-summary {
+    padding: 1rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-item {
+    padding: 0.7rem;
+  }
+
+  .summary-value {
+    font-size: 1.3rem;
+  }
+}

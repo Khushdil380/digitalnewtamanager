@@ -1,0 +1,85 @@
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .qr-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .qr-header h3 {
+    font-size: 0.9rem;
+  }
+
+  .qr-display {
+    padding: 0.8rem;
+  }
+
+  .qr-code-wrapper canvas {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .qr-button-group {
+    flex-direction: column;
+  }
+
+  .generate-qr-btn,
+  .revert-qr-btn {
+    min-width: auto;
+  }
+
+  .qr-settings-modal {
+    width: 95%;
+    max-width: 350px;
+  }
+
+  .modal-body {
+    padding: 1.2rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-container {
+    padding: 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .qr-header {
+    gap: 0.4rem;
+  }
+
+  .qr-header h3 {
+    font-size: 0.8rem;
+  }
+
+  .qr-display {
+    padding: 0.6rem;
+  }
+
+  .qr-code-wrapper canvas {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  .amount-input {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .currency {
+    right: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .generate-qr-btn,
+  .revert-qr-btn {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .settings-icon-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+}

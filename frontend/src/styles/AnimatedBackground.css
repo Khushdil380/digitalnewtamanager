@@ -1,0 +1,340 @@
+@keyframes float1 {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(-30px) translateX(20px) scale(1.1);
+    opacity: 0.15;
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translateY(25px) translateX(-15px) scale(0.9);
+    opacity: 0.18;
+  }
+}
+
+@keyframes float3 {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.2);
+    opacity: 0.12;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translateY(-20px) scale(1.15);
+  }
+}
+
+@keyframes float-dove {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.14;
+  }
+  25% {
+    transform: translateY(-30px) translateX(30px);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translateY(-60px) translateX(0px);
+    opacity: 0.14;
+  }
+  75% {
+    transform: translateY(-30px) translateX(-30px);
+    opacity: 0.16;
+  }
+}
+
+@keyframes bounce-gift {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.12;
+  }
+  25% {
+    transform: translateY(-15px) rotate(5deg);
+    opacity: 0.14;
+  }
+  50% {
+    transform: translateY(-30px) rotate(10deg);
+    opacity: 0.16;
+  }
+  75% {
+    transform: translateY(-15px) rotate(5deg);
+    opacity: 0.14;
+  }
+}
+
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.background-shape {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shape-circle {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(196, 30, 58, 0.3),
+    rgba(231, 84, 128, 0.1)
+  );
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 5%;
+  animation: float1 8s ease-in-out infinite;
+}
+
+.shape-2 {
+  width: 250px;
+  height: 250px;
+  top: 60%;
+  right: 8%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(155, 44, 122, 0.3),
+    rgba(231, 84, 128, 0.1)
+  );
+  animation: float2 10s ease-in-out infinite;
+}
+
+.shape-3 {
+  width: 200px;
+  height: 200px;
+  bottom: 10%;
+  left: 15%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(231, 84, 128, 0.3),
+    rgba(196, 30, 58, 0.1)
+  );
+  animation: float3 12s ease-in-out infinite;
+}
+
+.shape-flower {
+  font-size: 80px;
+  opacity: 0.15;
+}
+
+.shape-4 {
+  top: 15%;
+  right: 10%;
+  animation: float1 9s ease-in-out infinite;
+}
+
+.shape-5 {
+  bottom: 20%;
+  right: 5%;
+  font-size: 70px;
+  animation: float2 11s ease-in-out infinite;
+}
+
+.shape-heart {
+  font-size: 60px;
+  opacity: 0.12;
+  color: var(--primary);
+}
+
+.shape-6 {
+  top: 25%;
+  left: 8%;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.shape-7 {
+  bottom: 35%;
+  right: 15%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.shape-ring {
+  font-size: 50px;
+  opacity: 0.13;
+}
+
+.shape-8 {
+  top: 50%;
+  left: 5%;
+  animation: rotate 20s linear infinite;
+}
+
+.shape-couple {
+  font-size: 120px;
+  opacity: 0.08;
+}
+
+.shape-9 {
+  top: 35%;
+  right: 3%;
+  animation: float1 13s ease-in-out infinite;
+}
+
+.shape-10 {
+  bottom: 25%;
+  left: 12%;
+  animation: float2 14s ease-in-out infinite;
+}
+
+.shape-sparkle {
+  font-size: 60px;
+  opacity: 0.08;
+}
+
+.shape-11 {
+  top: 40%;
+  right: 20%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+.shape-dove {
+  font-size: 70px;
+  opacity: 0.14;
+}
+
+.shape-12 {
+  top: 20%;
+  left: 25%;
+  animation: float-dove 16s ease-in-out infinite;
+}
+
+.shape-gift {
+  font-size: 65px;
+  opacity: 0.12;
+}
+
+.shape-13 {
+  bottom: 40%;
+  right: 25%;
+  animation: bounce-gift 5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .shape-1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .shape-2 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .shape-3 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .shape-flower {
+    font-size: 50px;
+  }
+
+  .shape-5 {
+    font-size: 45px;
+  }
+
+  .shape-heart {
+    font-size: 40px;
+  }
+
+  .shape-ring {
+    font-size: 35px;
+  }
+
+  .shape-couple {
+    font-size: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shape-1 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .shape-2 {
+    width: 130px;
+    height: 130px;
+  }
+
+  .shape-3 {
+    width: 110px;
+    height: 110px;
+  }
+
+  .shape-flower {
+    font-size: 35px;
+  }
+
+  .shape-5 {
+    font-size: 30px;
+  }
+
+  .shape-heart {
+    font-size: 28px;
+  }
+
+  .shape-ring {
+    font-size: 25px;
+  }
+
+  .shape-couple {
+    font-size: 60px;
+  }
+}

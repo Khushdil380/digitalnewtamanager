@@ -1,0 +1,82 @@
+.theme-switcher-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 12px;
+}
+
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-btn-red {
+  background: linear-gradient(135deg, #c41e3a, #e75480);
+}
+
+.theme-btn-pink {
+  background: linear-gradient(135deg, #e75480, #f093bb);
+}
+
+.theme-btn-purple {
+  background: linear-gradient(135deg, #9b2c7a, #c25a9e);
+}
+
+.theme-btn.active {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+  transform: scale(1.15);
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .theme-switcher-container {
+    gap: 8px;
+  }
+
+  .theme-btn {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
+
+  .theme-btn.active {
+    transform: scale(1.12);
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .theme-btn.active {
+    transform: scale(1.1);
+  }
+}
+
+/* Compact mode for header */
+.theme-switcher-container.compact {
+  position: static;
+  transform: none;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.theme-switcher-container.compact .theme-btn {
+  width: 28px;
+  height: 28px;
+  border-width: 2px;
+}

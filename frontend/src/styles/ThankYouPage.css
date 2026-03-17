@@ -1,0 +1,376 @@
+.thank-you-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Animated Background */
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.15;
+  font-size: 5rem;
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.shape-heart {
+  top: 10%;
+  left: 5%;
+  animation: float-slow 10s ease-in-out infinite;
+}
+
+.shape-ring {
+  bottom: 10%;
+  right: 5%;
+  animation: float-slow 12s ease-in-out infinite;
+}
+
+.shape-flower {
+  top: 50%;
+  right: 10%;
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(5deg);
+  }
+}
+
+/* Main Content */
+.thank-you-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* Couple Section */
+.couple-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bride-name,
+.groom-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.name-emoji {
+  font-size: 3rem;
+}
+
+.name-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.heart-divider {
+  font-size: 2rem;
+  animation: beat-animation 1.5s ease-in-out infinite;
+}
+
+@keyframes beat-animation {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-slide-right {
+  animation: slide-right 0.8s ease-out;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.8s ease-out;
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Message Section */
+.message-section {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-text {
+  font-size: 1.3rem;
+  color: white;
+  line-height: 2;
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: pre-wrap;
+  word-spacing: 0.1em;
+}
+
+.message-line {
+  min-height: 1.8em;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: #ffeb3b;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Closing Section */
+.closing-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: fade-in-up 1s ease-out 2s both;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.closing-emoji {
+  font-size: 3rem;
+  animation: rotate-animation 3s linear infinite;
+}
+
+@keyframes rotate-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.closing-text {
+  font-size: 1.1rem;
+  color: white;
+  margin: 0;
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.animate-bounce {
+  animation: bounce-animation 2s ease-in-out infinite;
+}
+
+@keyframes bounce-animation {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Footer */
+.thank-you-footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.thank-you-footer p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .thank-you-page {
+    padding: 1rem;
+  }
+
+  .thank-you-content {
+    gap: 1.8rem;
+  }
+
+  .couple-section {
+    gap: 1rem;
+  }
+
+  .bride-name,
+  .groom-name {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .name-emoji {
+    font-size: 2.5rem;
+  }
+
+  .name-text {
+    font-size: 1.2rem;
+  }
+
+  .heart-divider {
+    font-size: 1.5rem;
+  }
+
+  .message-section {
+    padding: 1.5rem;
+    min-height: 160px;
+  }
+
+  .message-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  .shape {
+    font-size: 3rem;
+  }
+
+  .closing-emoji {
+    font-size: 2.5rem;
+  }
+
+  .closing-text {
+    font-size: 1rem;
+  }
+
+  .thank-you-footer {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .thank-you-page {
+    padding: 0.8rem;
+  }
+
+  .thank-you-content {
+    gap: 1.5rem;
+  }
+
+  .couple-section {
+    gap: 0.8rem;
+  }
+
+  .bride-name,
+  .groom-name {
+    padding: 1rem 1.2rem;
+  }
+
+  .name-emoji {
+    font-size: 2rem;
+  }
+
+  .name-text {
+    font-size: 1rem;
+  }
+
+  .message-section {
+    padding: 1.2rem;
+    min-height: 150px;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .heart-divider {
+    font-size: 1.2rem;
+  }
+
+  .shape {
+    font-size: 2rem;
+  }
+
+  .closing-emoji {
+    font-size: 2rem;
+  }
+
+  .closing-text {
+    font-size: 0.9rem;
+  }
+}

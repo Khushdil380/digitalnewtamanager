@@ -1,0 +1,70 @@
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light), rgba(var(--light), 0.7));
+  padding: 0;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.weddings-section {
+  width: 100%;
+  max-width: 100%;
+}
+
+.add-wedding-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 auto 1rem auto;
+  display: block;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.add-wedding-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  opacity: 0.9;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .add-wedding-btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 1rem;
+  }
+
+  .add-wedding-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+}

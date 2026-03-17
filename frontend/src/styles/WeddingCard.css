@@ -1,0 +1,161 @@
+.wedding-card {
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 0.5rem;
+  animation: slideInCard 0.3s ease-out;
+  width: 100%;
+}
+
+@keyframes slideInCard {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wedding-card-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
+}
+
+.wedding-couple {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 220px;
+  flex-shrink: 0;
+}
+
+.couple-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.couple-name {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.connector {
+  color: #888;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 90px;
+}
+
+.detail-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.detail-text {
+  white-space: nowrap;
+}
+
+.wedding-card-buttons {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.wedding-card-buttons button {
+  font-size: 0.7rem;
+  padding: 0.35rem 0.5rem;
+  min-width: 60px;
+}
+
+.wedding-edit-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.wedding-edit-btn:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+}
+
+@media (max-width: 768px) {
+  .wedding-card-row {
+    gap: 1rem;
+  }
+
+  .wedding-couple {
+    min-width: 130px;
+  }
+
+  .detail-item {
+    font-size: 0.75rem;
+    min-width: 80px;
+  }
+
+  .wedding-card-buttons button {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.4rem;
+    min-width: 55px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wedding-card {
+    padding: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .wedding-card-row {
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .wedding-couple {
+    min-width: 100%;
+    margin-bottom: 0.3rem;
+  }
+
+  .detail-item {
+    font-size: 0.7rem;
+    min-width: auto;
+    flex: 1;
+  }
+
+  .wedding-card-buttons {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.3rem;
+  }
+
+  .wedding-card-buttons button {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.35rem;
+    flex: 1;
+  }
+
+  .wedding-edit-btn {
+    font-size: 0.85rem;
+  }
+}
