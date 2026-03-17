@@ -64,6 +64,7 @@ function AppContent() {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
