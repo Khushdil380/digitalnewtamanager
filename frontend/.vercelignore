@@ -1,0 +1,9 @@
+# Ignore files that shouldn't be deployed
+node_modules
+.git
+.gitignore
+myIdea.txt
+README.md
+DATABASE_OPTIMIZATION.md
+DEPLOYMENT.md
+VERCEL_QUICK_DEPLOY.md
