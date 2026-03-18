@@ -45,12 +45,22 @@ export const register = async (req, res) => {
     const hashedPassword = await hashPassword(password);
     const otp = generateOTP();
 
+    // Validate all data before storing
+    const userData = { 
+      fullName: fullName.trim(), 
+      email: normalizedEmail, 
+      phoneNumber: phoneNumber.trim(), 
+      password: hashedPassword 
+    };
+
     // Store OTP in MongoDB (user NOT created yet)
-    await OTP.create({
+    const otpRecord = await OTP.create({
       email: normalizedEmail,
       otp,
-      userData: { fullName, email: normalizedEmail, phoneNumber, password: hashedPassword },
+      userData,
     });
+
+    console.log("OTP created for email:", normalizedEmail, "OTP:", otp);
 
     try {
       await sendOtpEmail(email, otp);
@@ -69,6 +79,9 @@ export const register = async (req, res) => {
     console.error("Registration error:", error);
     res
       .status(500)
+      .json({ message: "Registration failed", error: error.message });
+  }
+};
       .json({ message: "Registration failed", error: error.message });
   }
 };
