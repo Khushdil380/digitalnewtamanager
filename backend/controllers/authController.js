@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import OTP from "../models/OTP.js";
 import {
   generateOTP,
   hashPassword,
@@ -9,8 +10,6 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const otpStore = new Map();
 
 export const register = async (req, res) => {
   try {
@@ -31,8 +30,8 @@ export const register = async (req, res) => {
     }
 
     // Check if OTP is already pending for this email
-    const pendingOtp = otpStore.get(email);
-    if (pendingOtp && Date.now() - pendingOtp.createdAt < 10 * 60 * 1000) {
+    const pendingOtp = await OTP.findOne({ email: email.toLowerCase() });
+    if (pendingOtp) {
       return res.status(400).json({
         message:
           "An OTP is already sent to this email. Please verify it first or wait 10 minutes to request a new one.",
@@ -43,10 +42,11 @@ export const register = async (req, res) => {
     const hashedPassword = await hashPassword(password);
     const otp = generateOTP();
 
-    otpStore.set(email, {
+    // Store OTP in MongoDB
+    await OTP.create({
+      email: email.toLowerCase(),
       otp,
       userData: { fullName, email, phoneNumber, password: hashedPassword },
-      createdAt: Date.now(),
     });
 
     try {
@@ -84,15 +84,10 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Email and OTP are required" });
     }
 
-    const storedOtpData = otpStore.get(email);
+    const storedOtpData = await OTP.findOne({ email: email.toLowerCase() });
 
     if (!storedOtpData) {
       return res.status(400).json({ message: "OTP expired or invalid email" });
-    }
-
-    if (Date.now() - storedOtpData.createdAt > 10 * 60 * 1000) {
-      otpStore.delete(email);
-      return res.status(400).json({ message: "OTP expired" });
     }
 
     if (storedOtpData.otp !== otp) {
@@ -103,7 +98,8 @@ export const verifyOtp = async (req, res) => {
     user.isEmailVerified = true;
     await user.save();
 
-    otpStore.delete(email);
+    // Delete OTP after successful verification
+    await OTP.deleteOne({ email: email.toLowerCase() });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
@@ -121,6 +117,7 @@ export const verifyOtp = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("OTP verification error:", error);
     res
       .status(500)
       .json({ message: "Verification failed", error: error.message });

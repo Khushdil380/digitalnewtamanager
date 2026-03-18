@@ -4,7 +4,9 @@ import InputField from "../InputField";
 import Button from "../Button";
 import "../../styles/ProfileTab.css";
 
-const API_BASE_URL = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE_URL = (
+  process.env.REACT_APP_API_URL || "http://localhost:5000"
+).replace(/\/$/, "");
 
 export default function PasswordTab({ user }) {
   const [currentPassword, setCurrentPassword] = useState("");
