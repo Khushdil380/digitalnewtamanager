@@ -24,29 +24,26 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
-      return res.status(409).json({ message: "Email already registered" });
-    }
+    const normalizedEmail = email.toLowerCase();
 
-    // Check if OTP is already pending for this email
-    const pendingOtp = await OTP.findOne({ email: email.toLowerCase() });
+    // Check if there's a pending OTP for this email
+    const pendingOtp = await OTP.findOne({ email: normalizedEmail });
     if (pendingOtp) {
       return res.status(400).json({
         message:
           "An OTP is already sent to this email. Please verify it first or wait 10 minutes to request a new one.",
-        email,
+        email: normalizedEmail,
       });
     }
 
     const hashedPassword = await hashPassword(password);
     const otp = generateOTP();
 
-    // Store OTP in MongoDB
+    // Store OTP in MongoDB (user NOT created yet)
     await OTP.create({
-      email: email.toLowerCase(),
+      email: normalizedEmail,
       otp,
-      userData: { fullName, email, phoneNumber, password: hashedPassword },
+      userData: { fullName, email: normalizedEmail, phoneNumber, password: hashedPassword },
     });
 
     try {
@@ -54,18 +51,12 @@ export const register = async (req, res) => {
     } catch (emailError) {
       console.error("Email sending error:", emailError);
       // Continue with registration even if email fails
-      // The OTP is still stored and can be used with the demo OTP
     }
 
     const response = {
       message: "OTP sent to email. Verify to complete registration.",
-      email,
+      email: normalizedEmail,
     };
-
-    // Include OTP in development mode for testing
-    if (process.env.NODE_ENV === "development") {
-      response.otp = otp;
-    }
 
     res.status(200).json(response);
   } catch (error) {
@@ -181,29 +172,25 @@ export const forgotPassword = async (req, res) => {
     }
 
     const otp = generateOTP();
-    otpStore.set(`reset-${email}`, {
+    
+    // Delete any existing OTP for this email and create new one
+    await OTP.deleteOne({ email: email.toLowerCase() });
+    await OTP.create({
+      email: email.toLowerCase(),
       otp,
-      createdAt: Date.now(),
+      userData: { email: email.toLowerCase() }, // Just store email for password reset
     });
 
     try {
       await sendOtpEmail(email, otp);
     } catch (emailError) {
       console.error("Email sending error:", emailError);
-      // Continue with request even if email fails
     }
 
-    const response = {
+    res.status(200).json({
       message: "Password reset OTP sent to email",
-      email,
-    };
-
-    // Include OTP in development mode for testing
-    if (process.env.NODE_ENV === "development") {
-      response.otp = otp;
-    }
-
-    res.status(200).json(response);
+      email: email.toLowerCase(),
+    });
   } catch (error) {
     console.error("Forgot password error:", error);
     res
@@ -224,25 +211,26 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    const storedOtpData = otpStore.get(`reset-${email}`);
+    const normalizedEmail = email.toLowerCase();
+    const storedOtpData = await OTP.findOne({ email: normalizedEmail });
 
-    if (!storedOtpData || storedOtpData.otp !== otp) {
-      return res.status(400).json({ message: "Invalid OTP" });
+    if (!storedOtpData) {
+      return res.status(400).json({ message: "OTP expired or invalid email" });
     }
 
-    if (Date.now() - storedOtpData.createdAt > 10 * 60 * 1000) {
-      otpStore.delete(`reset-${email}`);
-      return res.status(400).json({ message: "OTP expired" });
+    if (storedOtpData.otp !== otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
     }
 
     const hashedPassword = await hashPassword(newPassword);
     const user = await User.findOneAndUpdate(
-      { email: email.toLowerCase() },
+      { email: normalizedEmail },
       { password: hashedPassword },
       { new: true },
     ).select("-password");
 
-    otpStore.delete(`reset-${email}`);
+    // Delete OTP after successful reset
+    await OTP.deleteOne({ email: normalizedEmail });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
@@ -260,6 +248,7 @@ export const resetPassword = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Password reset error:", error);
     res
       .status(500)
       .json({ message: "Password reset failed", error: error.message });
@@ -353,10 +342,13 @@ export const updateEmail = async (req, res) => {
     }
 
     const otp = generateOTP();
-    otpStore.set(`email-${userId}`, {
+    
+    // Delete any existing OTP for this email and create new one
+    await OTP.deleteOne({ email: email.toLowerCase() });
+    await OTP.create({
+      email: email.toLowerCase(),
       otp,
-      email,
-      createdAt: Date.now(),
+      userData: { email: email.toLowerCase(), userId },
     });
 
     await sendOtpEmail(email, otp);
@@ -364,7 +356,6 @@ export const updateEmail = async (req, res) => {
     res.status(200).json({
       message: "OTP sent to new email",
       email,
-      otp: process.env.NODE_ENV === "development" ? otp : undefined,
     });
   } catch (error) {
     res
@@ -375,13 +366,14 @@ export const updateEmail = async (req, res) => {
 
 export const verifyEmailUpdate = async (req, res) => {
   try {
-    const { userId, otp } = req.body;
+    const { userId, email, otp } = req.body;
 
-    if (!userId || !otp) {
-      return res.status(400).json({ message: "User ID and OTP are required" });
+    if (!userId || !otp || !email) {
+      return res.status(400).json({ message: "User ID, email and OTP are required" });
     }
 
-    const storedOtpData = otpStore.get(`email-${userId}`);
+    const normalizedEmail = email.toLowerCase();
+    const storedOtpData = await OTP.findOne({ email: normalizedEmail });
 
     if (!storedOtpData) {
       return res.status(400).json({ message: "OTP expired or invalid" });
@@ -391,18 +383,14 @@ export const verifyEmailUpdate = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    if (Date.now() - storedOtpData.createdAt > 10 * 60 * 1000) {
-      otpStore.delete(`email-${userId}`);
-      return res.status(400).json({ message: "OTP expired" });
-    }
-
     const user = await User.findByIdAndUpdate(
       userId,
-      { email: storedOtpData.email.toLowerCase() },
+      { email: normalizedEmail },
       { new: true },
     ).select("-password");
 
-    otpStore.delete(`email-${userId}`);
+    // Delete OTP after successful verification
+    await OTP.deleteOne({ email: normalizedEmail });
 
     res.status(200).json({
       message: "Email updated successfully",
