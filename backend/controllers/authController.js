@@ -26,6 +26,12 @@ export const register = async (req, res) => {
 
     const normalizedEmail = email.toLowerCase();
 
+    // Check if user already exists (completed registration before)
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered. Please login instead." });
+    }
+
     // Check if there's a pending OTP for this email
     const pendingOtp = await OTP.findOne({ email: normalizedEmail });
     if (pendingOtp) {
@@ -75,7 +81,8 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Email and OTP are required" });
     }
 
-    const storedOtpData = await OTP.findOne({ email: email.toLowerCase() });
+    const normalizedEmail = email.toLowerCase();
+    const storedOtpData = await OTP.findOne({ email: normalizedEmail });
 
     if (!storedOtpData) {
       return res.status(400).json({ message: "OTP expired or invalid email" });
@@ -85,12 +92,44 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    const user = new User(storedOtpData.userData);
-    user.isEmailVerified = true;
-    await user.save();
+    // Check if user already exists (in case of retry or partial registration)
+    let existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      // User already registered, just return token
+      const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION,
+      });
+
+      // Delete OTP after successful verification
+      await OTP.deleteOne({ email: normalizedEmail });
+
+      return res.status(200).json({
+        message: "Already registered. Logged in successfully.",
+        token,
+        user: {
+          id: existingUser._id,
+          fullName: existingUser.fullName,
+          email: existingUser.email,
+          phoneNumber: existingUser.phoneNumber,
+          avatar: existingUser.avatar,
+        },
+      });
+    }
+
+    // Create new user with explicit field assignment
+    const userData = storedOtpData.userData;
+    const newUser = new User({
+      fullName: userData.fullName,
+      email: userData.email,
+      phoneNumber: userData.phoneNumber,
+      password: userData.password,
+      isEmailVerified: true,
+    });
+
+    const user = await newUser.save();
 
     // Delete OTP after successful verification
-    await OTP.deleteOne({ email: email.toLowerCase() });
+    await OTP.deleteOne({ email: normalizedEmail });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
