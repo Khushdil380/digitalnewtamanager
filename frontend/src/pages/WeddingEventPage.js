@@ -6,7 +6,7 @@ import QRCodeSection from "../components/QRCodeSection";
 import GuestList from "../components/GuestList";
 import "../styles/WeddingEventPage.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE_URL = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [wedding, setWedding] = useState(null);

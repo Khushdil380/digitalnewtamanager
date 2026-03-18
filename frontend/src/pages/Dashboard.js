@@ -7,7 +7,7 @@ import WeddingList from "../components/WeddingList";
 import GuestList from "../components/GuestList";
 import "../styles/Dashboard.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE_URL = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 const Dashboard = ({ onGoToWeddingEvent }) => {
   const [user, setUser] = useState(

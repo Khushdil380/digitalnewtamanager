@@ -5,7 +5,7 @@ import Button from "../Button";
 import AvatarSelector from "../AvatarSelector";
 import "../../styles/ProfileTab.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE_URL = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 export default function PersonalTab({ user, onUpdate }) {
   const [fullName, setFullName] = useState(user?.fullName || "");
