@@ -15,7 +15,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     credentials: true,
   }),
 );
