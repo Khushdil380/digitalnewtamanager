@@ -82,6 +82,8 @@ export const verifyOtp = async (req, res) => {
     }
 
     const normalizedEmail = email.toLowerCase();
+
+    // Find OTP record
     const storedOtpData = await OTP.findOne({ email: normalizedEmail });
 
     if (!storedOtpData) {
@@ -92,44 +94,51 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // Check if user already exists (in case of retry or partial registration)
-    let existingUser = await User.findOne({ email: normalizedEmail });
-    if (existingUser) {
-      // User already registered, just return token
-      const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRATION,
-      });
+    // Check if user already exists
+    let user = await User.findOne({ email: normalizedEmail });
+    
+    if (!user) {
+      // Create new user
+      try {
+        const userData = storedOtpData.userData;
+        
+        // Validate userData exists
+        if (!userData || !userData.fullName || !userData.phoneNumber || !userData.password) {
+          console.error("Invalid userData in OTP:", storedOtpData);
+          return res.status(400).json({ message: "Invalid registration data. Please register again." });
+        }
 
-      // Delete OTP after successful verification
-      await OTP.deleteOne({ email: normalizedEmail });
+        user = new User({
+          fullName: userData.fullName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+          password: userData.password,
+          isEmailVerified: true,
+        });
 
-      return res.status(200).json({
-        message: "Already registered. Logged in successfully.",
-        token,
-        user: {
-          id: existingUser._id,
-          fullName: existingUser.fullName,
-          email: existingUser.email,
-          phoneNumber: existingUser.phoneNumber,
-          avatar: existingUser.avatar,
-        },
-      });
+        await user.save();
+      } catch (userError) {
+        console.error("User creation error:", userError);
+        
+        // If it's a duplicate key error, user exists from previous attempt
+        if (userError.code === 11000) {
+          user = await User.findOne({ email: normalizedEmail });
+          if (!user) {
+            return res.status(500).json({ message: "User creation failed", error: userError.message });
+          }
+        } else {
+          return res.status(500).json({ message: "Failed to create user", error: userError.message });
+        }
+      }
     }
 
-    // Create new user with explicit field assignment
-    const userData = storedOtpData.userData;
-    const newUser = new User({
-      fullName: userData.fullName,
-      email: userData.email,
-      phoneNumber: userData.phoneNumber,
-      password: userData.password,
-      isEmailVerified: true,
-    });
-
-    const user = await newUser.save();
-
     // Delete OTP after successful verification
-    await OTP.deleteOne({ email: normalizedEmail });
+    try {
+      await OTP.deleteOne({ email: normalizedEmail });
+    } catch (otpDeleteError) {
+      console.error("OTP deletion error:", otpDeleteError);
+      // Continue despite OTP deletion error
+    }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
