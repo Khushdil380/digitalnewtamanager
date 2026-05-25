@@ -82,9 +82,6 @@ export const register = async (req, res) => {
       .json({ message: "Registration failed", error: error.message });
   }
 };
-      .json({ message: "Registration failed", error: error.message });
-  }
-};
 
 export const verifyOtp = async (req, res) => {
   try {

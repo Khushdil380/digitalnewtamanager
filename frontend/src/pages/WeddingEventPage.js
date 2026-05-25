@@ -12,8 +12,6 @@ const API_BASE_URL = (
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [wedding, setWedding] = useState(null);
-  // eslint-disable-next-line no-unused-vars
-  const [contributions, setContributions] = useState([]);
   const [userId, setUserId] = useState(null);
   const [showGuestList, setShowGuestList] = useState(false);
   const [stats, setStats] = useState({
@@ -34,38 +32,38 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   }, []);
 
   useEffect(() => {
-    fetchWeddingData();
-    fetchContributions();
+    fetchAllData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weddingId]);
 
-  const fetchWeddingData = async () => {
+  const fetchAllData = async () => {
     try {
-      const response = await axios.get(
-        `${API_BASE_URL}/api/weddings/${weddingId}`,
-      );
-      setWedding(response.data.wedding);
+      setLoading(true);
+      // Fetch both in parallel for better performance
+      const [weddingRes, statsRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/api/weddings/${weddingId}`),
+        axios.get(`${API_BASE_URL}/api/contributions/wedding/${weddingId}`),
+      ]);
+      
+      setWedding(weddingRes.data.wedding);
+      setStats(statsRes.data.stats || {});
       setLoading(false);
     } catch (error) {
-      console.error("Failed to fetch wedding:", error);
+      console.error("Failed to fetch wedding data:", error);
       setLoading(false);
-    }
-  };
-
-  const fetchContributions = async () => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/api/contributions/wedding/${weddingId}`,
-      );
-      setContributions(response.data.contributions || []);
-      setStats(response.data.stats || {});
-    } catch (error) {
-      console.error("Failed to fetch contributions:", error);
     }
   };
 
   const handleContributionRecorded = () => {
-    fetchContributions();
+    // Fetch updated stats after new contribution
+    axios
+      .get(`${API_BASE_URL}/api/contributions/wedding/${weddingId}`)
+      .then((res) => {
+        setStats(res.data.stats || {});
+      })
+      .catch((err) => {
+        console.error("Failed to refresh stats:", err);
+      });
   };
 
   if (loading) {

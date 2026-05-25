@@ -95,23 +95,41 @@ export const getContributionsByWedding = async (req, res) => {
       });
     }
 
-    const contributions = await Contribution.find({ weddingId })
-      .lean()
-      .sort({ createdAt: -1 });
+    // Use aggregation pipeline for better performance
+    const statsResult = await Contribution.aggregate([
+      { $match: { weddingId } },
+      {
+        $group: {
+          _id: null,
+          totalContributions: { $sum: 1 },
+          totalAmount: { $sum: "$amount" },
+          cashCount: {
+            $sum: { $cond: [{ $eq: ["$type", "cash"] }, 1, 0] },
+          },
+          onlineCount: {
+            $sum: { $cond: [{ $eq: ["$type", "upi"] }, 1, 0] },
+          },
+          personalCount: {
+            $sum: { $cond: ["$givenPersonally", 1, 0] },
+          },
+          throughOthersCount: {
+            $sum: { $cond: ["$givenPersonally", 0, 1] },
+          },
+        },
+      },
+    ]);
 
-    const stats = {
-      totalContributions: contributions.length,
-      totalAmount: contributions.reduce((sum, c) => sum + c.amount, 0),
-      cashCount: contributions.filter((c) => c.type === "cash").length,
-      onlineCount: contributions.filter((c) => c.type === "upi").length,
-      personalCount: contributions.filter((c) => c.givenPersonally).length,
-      throughOthersCount: contributions.filter((c) => !c.givenPersonally)
-        .length,
+    const stats = statsResult[0] || {
+      totalContributions: 0,
+      totalAmount: 0,
+      cashCount: 0,
+      onlineCount: 0,
+      personalCount: 0,
+      throughOthersCount: 0,
     };
 
     res.status(200).json({
       success: true,
-      contributions,
       stats,
     });
   } catch (error) {
