@@ -12,16 +12,28 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:3000";
+// Support multiple CORS origins (local + deployed)
+const allowedOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL,
+  process.env.CORS_ORIGIN,
+].filter(Boolean);
 
 console.log("Starting backend...");
 console.log("MONGODB_URI:", MONGODB_URI ? "SET" : "NOT SET");
-console.log("CORS_ORIGIN:", CORS_ORIGIN);
+console.log("Allowed Origins:", allowedOrigins);
 console.log("NODE_ENV:", process.env.NODE_ENV);
 
-// CORS configuration
+// CORS configuration - allows both local and deployed frontend
 const corsOptions = {
-  origin: CORS_ORIGIN,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -42,7 +54,7 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/debug/config", (req, res) => {
   res.json({ 
-    corsOrigin: process.env.CORS_ORIGIN || "NOT SET (using default: http://localhost:3000)",
+    allowedOrigins,
     mongoConnected: mongoose.connection.readyState === 1,
     nodeEnv: process.env.NODE_ENV || "not set",
   });

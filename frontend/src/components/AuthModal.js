@@ -168,6 +168,8 @@ const AuthModal = ({ isOpen, onClose }) => {
         },
       );
       setMessage(response.data.message);
+      setShowForgotPassword(false);
+      setShowOtpVerification(true);
       setShowPasswordResetOtp(true);
       setResetPasswordForm({
         ...resetPasswordForm,
@@ -221,6 +223,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       setTimeout(() => {
         setShowForgotPassword(false);
         setShowPasswordResetOtp(false);
+        setShowOtpVerification(false);
         setForgotPasswordEmail("");
         setResetPasswordForm({
           email: "",
@@ -525,6 +528,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     onClick={() => {
                       setShowForgotPassword(false);
                       setShowPasswordResetOtp(false);
+                      setShowOtpVerification(false);
                       setResetPasswordForm({
                         email: "",
                         otp: "",
