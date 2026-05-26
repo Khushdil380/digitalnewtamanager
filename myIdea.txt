@@ -1,7 +1,8 @@
 Hey I want to build a simple, fully functional website—completely both frontend and backend, for personal use. I also intend to publish it on GitHub and deploy it on Vercel.
 
 Here is My Key Idea about this project
-As you may already know, in middle-class Indian weddings, First the marriage decision is finalized, then every guest get printed. invitation cards.  on each card we-write the guest's name and deliver them to the guests' homes prior to the wedding day. On the day of the wedding, guests arrive and eat food and refreshments. Additionally, a designated person sits with a register; as each guest arrives, they offer a monetary contribution and record their name and address in the register. some guest gives envelope, because at that moment they dont want to show how much they contribute 
+As you may already know, in middle-class Indian weddings, First the marriage decision is finalized, then every guest get printed invitation cards. On each card we-write the guest's name and deliver them to the guests' homes prior to the wedding day. On the day of the wedding, guests arrive and eat food and refreshments. Additionally, a designated person sits with a register, as each guest arrives, they offer a monetary contribution and record their name and address in the register. some guest gives envelope, because at that moment they dont want to show how much they contribute 
+
 In rural parlance, this custom is referred to as 'Newta System'. so i want to make "DigitalNewtaManager" website - To manage this invited people list and on the wedding day to track exactly who attended the personally and how much they contribute (gives Newta) and who send via other people and dont attended personally.
 
 Core Goals of the System

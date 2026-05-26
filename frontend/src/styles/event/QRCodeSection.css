@@ -1,0 +1,229 @@
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  flex: 1;
+}
+
+.qr-header-simple {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.qr-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.qr-settings-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: all var(--transition);
+}
+
+.qr-settings-btn:hover {
+  opacity: 0.7;
+}
+
+.qr-code-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+/* Keep QR code square and responsive */
+.qr-code-display canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 220px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.qr-custom-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.6rem;
+  background: var(--primary);
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.qr-amount-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.qr-amount-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  text-align: center;
+  font-family: inherit;
+  transition: all var(--transition);
+  background: transparent;
+}
+
+.qr-amount-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 6px rgba(var(--primary-rgb), 0.2);
+}
+
+.qr-generate-btn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+
+.qr-generate-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.qr-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Settings Modal */
+.qr-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--primary-rgb), 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.qr-settings-box {
+  background: white;
+  border-radius: 8px;
+  max-width: 350px;
+  width: 90%;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+}
+
+.qr-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+}
+
+.qr-settings-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.qr-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-close-btn:hover {
+  opacity: 0.7;
+}
+
+.qr-settings-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.qr-settings-body label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.qr-settings-body input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: all var(--transition);
+}
+
+.qr-settings-body input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 6px rgba(var(--primary-rgb), 0.2);
+}
+
+.qr-save-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all var(--transition);
+}
+
+.qr-save-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .qr-section {
+    padding: 1rem;
+  }
+
+  .qr-code-display canvas {
+    max-width: 180px;
+  }
+
+  .qr-amount-row {
+    gap: 0.4rem;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AnimatedBackground from "./components/AnimatedBackground";
-import ThemeSwitcher from "./components/ThemeSwitcher";
+import AnimatedBackground from "./components/common/AnimatedBackground";
+import ThemeSwitcher from "./components/common/ThemeSwitcher";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WeddingEventPage from "./pages/WeddingEventPage";

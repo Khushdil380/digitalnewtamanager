@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../components/Button";
-import "../styles/Landing.css";
+import Button from "../components/common/Button";
+import "../styles/pages/Landing.css";
 
 const Landing = ({ onLoginClick }) => {
   return (

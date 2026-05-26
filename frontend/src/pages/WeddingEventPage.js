@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import WeddingWishesHeader from "../components/WeddingWishesHeader";
-import ContributionForm from "../components/ContributionForm";
-import QRCodeSection from "../components/QRCodeSection";
-import GuestList from "../components/GuestList";
-import "../styles/WeddingEventPage.css";
-
-const API_BASE_URL = (
-  process.env.REACT_APP_API_URL || "http://localhost:5000"
-).replace(/\/$/, "");
+import api from "../utils/api";
+import WeddingWishesHeader from "../components/Event/WeddingWishesHeader";
+import ContributionForm from "../components/Event/ContributionForm";
+import QRCodeSection from "../components/Event/QRCodeSection";
+import GuestList from "../components/Guest/GuestList";
+import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [wedding, setWedding] = useState(null);
@@ -39,10 +35,9 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      // Fetch both in parallel for better performance
       const [weddingRes, statsRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/api/weddings/${weddingId}`),
-        axios.get(`${API_BASE_URL}/api/contributions/wedding/${weddingId}`),
+        api.get(`/api/weddings/${weddingId}`),
+        api.get(`/api/contributions/wedding/${weddingId}`),
       ]);
       
       setWedding(weddingRes.data.wedding);
@@ -55,9 +50,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   };
 
   const handleContributionRecorded = () => {
-    // Fetch updated stats after new contribution
-    axios
-      .get(`${API_BASE_URL}/api/contributions/wedding/${weddingId}`)
+    api.get(`/api/contributions/wedding/${weddingId}`)
       .then((res) => {
         setStats(res.data.stats || {});
       })

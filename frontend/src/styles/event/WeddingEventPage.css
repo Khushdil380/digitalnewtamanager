@@ -1,0 +1,43 @@
+.wedding-event-page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+
+.event-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  align-items: stretch;
+}
+
+.form-container,
+.qr-container {
+  background: transparent;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #666;
+  font-size: 1rem;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .event-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+}

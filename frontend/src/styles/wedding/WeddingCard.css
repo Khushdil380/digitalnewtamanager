@@ -1,0 +1,118 @@
+.wedding-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 0.5rem;
+  animation: slideInCard 0.3s ease-out;
+}
+
+@keyframes slideInCard {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wedding-card-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
+}
+
+.wedding-couple {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 200px;
+  flex-shrink: 0;
+}
+
+.couple-icon { font-size: 1rem; flex-shrink: 0; }
+
+.couple-name {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.connector { color: #888; font-size: 0.7rem; flex-shrink: 0; }
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.detail-icon { font-size: 0.9rem; }
+
+.wedding-card-buttons {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.wedding-edit-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius);
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.wedding-edit-btn:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+}
+
+@media (max-width: 768px) {
+  .wedding-card {
+    padding: 0.5rem;
+  }
+
+  .wedding-card-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    gap: 0.3rem 0.5rem;
+    align-items: center;
+  }
+
+  /* Row 1: Couple names (left) + Edit button (right) */
+  .wedding-couple {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .wedding-edit-btn {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  /* Row 2: Details (venue, date, guest count) */
+  .detail-item {
+    grid-row: 2;
+    font-size: 0.75rem;
+  }
+
+  /* Row 3: Action buttons full width */
+  .wedding-card-buttons {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-left: 0;
+    margin-top: 0.2rem;
+  }
+
+  .wedding-card-buttons button {
+    flex: 1;
+  }
+}

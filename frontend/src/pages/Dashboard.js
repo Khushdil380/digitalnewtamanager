@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import DashboardHeader from "../components/DashboardHeader";
-import ProfileModal from "../components/ProfileModal";
-import WeddingModal from "../components/WeddingModal";
-import WeddingList from "../components/WeddingList";
-import GuestList from "../components/GuestList";
-import "../styles/Dashboard.css";
-
-const API_BASE_URL = (
-  process.env.REACT_APP_API_URL || "http://localhost:5000"
-).replace(/\/$/, "");
+import api from "../utils/api";
+import DashboardHeader from "../components/Dashboard/DashboardHeader";
+import ProfileModal from "../components/Profile/ProfileModal";
+import WeddingModal from "../components/Wedding/WeddingModal";
+import WeddingList from "../components/Wedding/WeddingList";
+import GuestList from "../components/Guest/GuestList";
+import Button from "../components/common/Button";
+import "../styles/dashboard/Dashboard.css";
 
 const Dashboard = ({ onGoToWeddingEvent }) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user") || "{}"),
-  );
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWeddingModal, setShowWeddingModal] = useState(false);
   const [showGuestList, setShowGuestList] = useState(false);
@@ -24,9 +19,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.id) {
-      fetchWeddings();
-    }
+    if (user?.id) fetchWeddings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
@@ -34,10 +27,8 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
     if (!user?.id) return;
     setLoading(true);
     try {
-      const res = await axios.get(
-        `${API_BASE_URL}/api/weddings/user/${user?.id}`,
-      );
-      setWeddings(res.data.weddings || []);
+      const { data } = await api.get(`/api/weddings/user/${user.id}`);
+      setWeddings(data.weddings || []);
     } catch (error) {
       console.error("Failed to fetch weddings:", error);
       setWeddings([]);
@@ -57,35 +48,18 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
-  const handleAddWeddingClick = () => {
-    setEditingWedding(null);
-    setShowWeddingModal(true);
-  };
-
-  const handleEditWedding = (wedding) => {
-    setEditingWedding(wedding);
-    setShowWeddingModal(true);
-  };
-
   const handleWeddingCreated = (newWedding) => {
     if (editingWedding) {
-      setWeddings(
-        weddings.map((w) => (w.id === newWedding.id ? newWedding : w)),
-      );
+      setWeddings(weddings.map((w) => (w.id === newWedding.id ? newWedding : w)));
     } else {
       setWeddings([newWedding, ...weddings]);
     }
   };
 
-  const handleGuestClick = (wedding) => {
-    setSelectedWeddingId(wedding._id || wedding.id);
-    setShowGuestList(true);
-  };
-
   const handleDeleteWedding = async (weddingId) => {
     if (window.confirm("Are you sure you want to delete this wedding?")) {
       try {
-        await axios.delete(`${API_BASE_URL}/api/weddings/${weddingId}`);
+        await api.delete(`/api/weddings/${weddingId}`);
         setWeddings(weddings.filter((w) => w.id !== weddingId));
       } catch (error) {
         console.error("Failed to delete wedding:", error);
@@ -102,23 +76,25 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
       />
 
       <div className="dashboard-content">
-        <div className="weddings-section">
-          <button className="add-wedding-btn" onClick={handleAddWeddingClick}>
-            + Add New Wedding
-          </button>
+        <Button
+          variant="primary"
+          className="add-wedding-btn"
+          onClick={() => { setEditingWedding(null); setShowWeddingModal(true); }}
+        >
+          + Add New Wedding
+        </Button>
 
-          {loading ? (
-            <div className="loading">Loading weddings...</div>
-          ) : (
-            <WeddingList
-              weddings={weddings}
-              onEditClick={handleEditWedding}
-              onGuestClick={handleGuestClick}
-              onDeleteClick={handleDeleteWedding}
-              onGoToWeddingEvent={onGoToWeddingEvent}
-            />
-          )}
-        </div>
+        {loading ? (
+          <div className="loading">Loading weddings...</div>
+        ) : (
+          <WeddingList
+            weddings={weddings}
+            onEditClick={(w) => { setEditingWedding(w); setShowWeddingModal(true); }}
+            onGuestClick={(w) => { setSelectedWeddingId(w._id || w.id); setShowGuestList(true); }}
+            onDeleteClick={handleDeleteWedding}
+            onGoToWeddingEvent={onGoToWeddingEvent}
+          />
+        )}
       </div>
 
       <ProfileModal
@@ -138,10 +114,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
       {showGuestList && selectedWeddingId && (
         <GuestList
           weddingId={selectedWeddingId}
-          onClose={() => {
-            setShowGuestList(false);
-            setSelectedWeddingId(null);
-          }}
+          onClose={() => { setShowGuestList(false); setSelectedWeddingId(null); }}
         />
       )}
     </div>

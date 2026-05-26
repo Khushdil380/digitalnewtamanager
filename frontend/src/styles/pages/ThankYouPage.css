@@ -1,0 +1,250 @@
+.thankyou-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #c41e3a, #9b2c7a, #e75480);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Background floating shapes */
+.thankyou-bg-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ty-shape {
+  position: absolute;
+  opacity: 0.15;
+  font-size: 3rem;
+}
+
+.ty-s1 { top: 8%; left: 10%; animation: tyFloat 7s ease-in-out infinite; }
+.ty-s2 { top: 20%; right: 8%; animation: tyFloat 9s ease-in-out infinite 1s; }
+.ty-s3 { bottom: 25%; left: 5%; animation: tyFloat 11s ease-in-out infinite 2s; }
+.ty-s4 { top: 50%; right: 15%; animation: tyFloat 8s ease-in-out infinite 0.5s; }
+.ty-s5 { bottom: 10%; right: 10%; animation: tyFloat 10s ease-in-out infinite 1.5s; }
+.ty-s6 { top: 70%; left: 15%; animation: tyFloat 12s ease-in-out infinite 3s; }
+
+@keyframes tyFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1); }
+}
+
+/* Main card */
+.thankyou-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  animation: cardAppear 0.6s ease-out;
+}
+
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.thankyou-header {
+  margin-bottom: 1.5rem;
+}
+
+.ty-emoji-top {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  animation: tyBounce 2s ease-in-out infinite;
+}
+
+@keyframes tyBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.ty-welcome {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Couple names */
+.thankyou-couple {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ty-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ty-name .ty-icon {
+  font-size: 2rem;
+}
+
+.ty-name span:last-child {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.ty-heart {
+  font-size: 1.5rem;
+  animation: heartBeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+}
+
+.ty-bride { animation: slideIn 0.5s ease-out 0.2s both; }
+.ty-groom { animation: slideIn 0.5s ease-out 0.4s both; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Divider */
+.thankyou-divider {
+  width: 60px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+}
+
+/* Message */
+.thankyou-message {
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s ease-out 0.6s both;
+}
+
+.thankyou-message p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 0 0 0.6rem;
+  opacity: 0.9;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Wishes */
+.thankyou-wishes {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s ease-out 0.8s both;
+}
+
+.ty-wish-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.thankyou-wishes p {
+  font-size: 0.85rem;
+  margin: 0 0 0.4rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.ty-tagline {
+  font-weight: 700;
+  font-size: 1rem !important;
+  opacity: 1 !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Footer */
+.thankyou-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .thankyou-page {
+    padding: 1rem;
+  }
+
+  .thankyou-card {
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+  }
+
+  .ty-emoji-top {
+    font-size: 2rem;
+  }
+
+  .ty-name {
+    padding: 0.75rem 1rem;
+  }
+
+  .ty-name .ty-icon {
+    font-size: 1.6rem;
+  }
+
+  .ty-name span:last-child {
+    font-size: 1rem;
+  }
+
+  .ty-heart {
+    font-size: 1.2rem;
+  }
+
+  .thankyou-message p {
+    font-size: 0.85rem;
+  }
+
+  .ty-shape {
+    font-size: 2rem;
+  }
+}
