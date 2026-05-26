@@ -255,8 +255,9 @@
   }
 
   .guest-list-modal {
-    height: 100vh;
-    border-radius: 0;
+    height: 95vh;
+    margin-top: auto;
+    border-radius: 12px 12px 0 0;
   }
 
   .inline-form {
