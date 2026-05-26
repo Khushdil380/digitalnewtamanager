@@ -1,14 +1,12 @@
 .guest-card-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 150px 100px 100px 80px 55px 30px 80px 30px 30px 80px auto;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.5rem;
-  background: transparent;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
   border-radius: var(--radius);
   border: 1px solid #f0f0f0;
   transition: all 0.2s;
-  overflow-x: auto;
-  flex-wrap: nowrap;
 }
 
 .guest-card-row:hover {
@@ -19,93 +17,87 @@
 .guest-name {
   font-weight: 600;
   color: var(--primary);
-  font-size: 0.78rem;
-  flex: 0 0 110px;
+  font-size: 0.8rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .guest-village {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: #666;
-  flex: 0 0 65px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .guest-mobile {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: #999;
-  flex: 0 0 70px;
   white-space: nowrap;
-  font-family: monospace;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: monospace;
 }
 
 .guest-tag {
   display: flex;
   align-items: center;
-  flex: 0 0 70px;
   border-left: 3px solid;
-  padding-left: 0.25rem;
+  padding-left: 0.3rem;
+  overflow: hidden;
 }
 
 .tag-badge {
   display: inline-block;
-  padding: 0.1rem 0.25rem;
+  padding: 0.1rem 0.3rem;
   border-radius: 4px;
   color: white;
-  font-size: 0.58rem;
+  font-size: 0.6rem;
   font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .guest-priority {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: #666;
-  flex: 0 0 40px;
   text-align: center;
+  white-space: nowrap;
 }
 
 .guest-attended {
-  font-size: 0.8rem;
-  flex: 0 0 25px;
+  font-size: 0.85rem;
   text-align: center;
 }
 
 .guest-amount {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--primary);
   font-weight: 600;
-  flex: 0 0 75px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .guest-payment {
-  font-size: 0.8rem;
-  flex: 0 0 25px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.guest-given-by {
+  font-size: 0.85rem;
   text-align: center;
 }
 
 .guest-added {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   color: #666;
-  flex: 0 0 70px;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 0.15rem;
-}
-
-.guest-given-by {
-  font-size: 0.8rem;
-  flex: 0 0 25px;
-  text-align: center;
+  gap: 0.2rem;
 }
 
 .date-badge {
@@ -119,18 +111,17 @@
 
 .guest-actions {
   display: flex;
-  gap: 0.3rem;
-  flex: 0 0 auto;
-  margin-left: auto;
+  gap: 0.4rem;
+  justify-content: flex-end;
 }
 
 .edit-guest-btn,
 .delete-guest-btn {
   background: none;
   border: none;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  padding: 0.15rem 0.25rem;
+  padding: 0.2rem 0.3rem;
   border-radius: 3px;
   transition: all 0.2s;
 }
@@ -145,14 +136,21 @@
 
 @media (max-width: 768px) {
   .guest-card-row {
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    padding: 0.35rem;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 0.2rem 0.5rem;
+    padding: 0.4rem;
   }
 
   .guest-name {
-    flex: 1 1 100%;
-    font-size: 0.8rem;
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 0.82rem;
+  }
+
+  .guest-actions {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .guest-village,
@@ -162,12 +160,30 @@
   .guest-attended,
   .guest-amount,
   .guest-payment,
+  .guest-given-by,
   .guest-added {
-    font-size: 0.65rem;
-    flex: 0 0 auto;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    font-size: 0.68rem;
+  }
+
+  /* Show all details in a single wrapped row */
+  .guest-card-row > *:not(.guest-name):not(.guest-actions) {
+    display: inline;
+  }
+
+  .guest-card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .guest-name {
+    flex: 1;
+    min-width: 0;
   }
 
   .guest-actions {
-    margin-left: auto;
+    flex-shrink: 0;
   }
 }
