@@ -88,7 +88,7 @@ const useGuestList = (weddingId) => {
     const grouped = {};
     filteredGuests.forEach((guest) => {
       let key = "Others";
-      if (groupBy === "village") key = guest.village;
+      if (groupBy === "village") key = guest.village.charAt(0).toUpperCase() + guest.village.slice(1).toLowerCase();
       else if (groupBy === "tag") key = guest.tag.charAt(0).toUpperCase() + guest.tag.slice(1);
       else if (groupBy === "priority") key = ["High Priority", "Medium Priority", "Low Priority"][guest.priority - 1];
       if (!grouped[key]) grouped[key] = [];
