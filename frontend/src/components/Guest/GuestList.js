@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import GuestCard from "./GuestCard";
 import GuestFilters from "./GuestFilters";
 import "../../styles/guest/GuestList.css";
-
-const API_BASE_URL = (
-  process.env.REACT_APP_API_URL || "http://localhost:5000"
-).replace(/\/$/, "");
 
 const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const [guests, setGuests] = useState([]);
@@ -41,8 +37,8 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const fetchGuests = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${API_BASE_URL}/api/guests/wedding/${weddingId}`,
+      const response = await api.get(
+        `/api/guests/wedding/${weddingId}`,
       );
       setGuests(response.data.guests || []);
       setError("");
@@ -115,7 +111,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const handleDeleteGuest = async (guestId) => {
     if (window.confirm("Are you sure you want to delete this guest?")) {
       try {
-        await axios.delete(`${API_BASE_URL}/api/guests/${guestId}`);
+        await api.delete(`/api/guests/${guestId}`);
         setGuests(guests.filter((g) => g._id !== guestId));
       } catch (err) {
         setError("Failed to delete guest");
@@ -169,7 +165,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
     try {
       if (editingGuestId) {
         // Update existing guest
-        await axios.put(`${API_BASE_URL}/api/guests/${editingGuestId}`, {
+        await api.put(`/api/guests/${editingGuestId}`, {
           name: name.trim(),
           village: village.trim(),
           mobileNumber: mobileNumber || null,
@@ -179,7 +175,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
         setFormMessage("Guest updated!");
       } else {
         // Create new guest
-        await axios.post(`${API_BASE_URL}/api/guests/create`, {
+        await api.post(`/api/guests/create`, {
           userId: user.id,
           weddingId,
           name: name.trim(),

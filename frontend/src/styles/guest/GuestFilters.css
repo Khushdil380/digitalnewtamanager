@@ -1,28 +1,20 @@
 .guest-filters-section {
-  background: #f9f9f9;
-  border-radius: 6px;
-  margin-bottom: 0.8rem;
-  border: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .wedding-guest-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8rem 1rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    rgba(var(--primary-rgb), 0.85) 100%
-  );
+  padding: 0.6rem 0.75rem;
+  background: var(--primary);
   color: white;
-  border-radius: 6px 6px 0 0;
-  border-bottom: 1px solid rgba(var(--primary-rgb), 0.2);
 }
 
 .wedding-guest-header h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
@@ -30,16 +22,16 @@
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  transition: all 0.2s;
+  padding: 0.2rem;
+  border-radius: var(--radius);
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  transition: all var(--transition);
 }
 
 .close-btn-filters:hover {
@@ -48,80 +40,80 @@
 
 .filters-row {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
-  padding: 0.6rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .search-box {
   flex: 1;
-  min-width: 200px;
+  min-width: 180px;
 }
 
 .search-input {
   width: 100%;
   padding: 0.4rem 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
   font-size: 0.8rem;
-  transition: all 0.2s;
+  font-family: inherit;
+  transition: all var(--transition);
+  background: transparent;
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  box-shadow: 0 0 4px rgba(var(--primary-rgb), 0.15);
 }
 
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 
 .filter-group label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text);
   white-space: nowrap;
 }
 
 .filter-group select {
-  padding: 0.35rem 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.35rem 0.4rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
   font-size: 0.75rem;
-  background: white;
+  background: transparent;
   cursor: pointer;
-  transition: all 0.2s;
   font-family: inherit;
-  min-width: 120px;
+  transition: all var(--transition);
 }
 
 .filter-group select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
 }
 
 .clear-filters-btn,
 .download-pdf-btn {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
-  background: white;
-  color: #333;
+  transition: all var(--transition);
+  background: transparent;
+  color: var(--text);
   white-space: nowrap;
 }
 
 .clear-filters-btn:hover {
-  background: #f0f0f0;
-  border-color: #999;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .download-pdf-btn {
@@ -131,64 +123,24 @@
 }
 
 .download-pdf-btn:hover {
-  background: #a01830;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
-  color: white;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .guest-filters-section {
-    padding: 0.75rem;
-  }
-
   .filters-row {
-    gap: 0.75rem;
-  }
-
-  .search-box {
-    flex: 1;
-    min-width: 150px;
-  }
-
-  .filter-group {
-    gap: 0.25rem;
-  }
-
-  .filter-group label {
-    font-size: 0.8rem;
-  }
-
-  .filter-group select {
-    font-size: 0.8rem;
-    padding: 0.45rem 0.5rem;
-  }
-
-  .clear-filters-btn,
-  .download-pdf-btn {
-    font-size: 0.8rem;
-    padding: 0.45rem 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .guest-filters-section {
-    padding: 0.5rem;
-  }
-
-  .filters-row {
-    flex-direction: column;
-    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    gap: 0.4rem;
   }
 
   .search-box {
     width: 100%;
     min-width: auto;
+    flex: none;
   }
 
   .filter-group {
-    width: 100%;
+    flex: 1;
   }
 
   .filter-group select {
@@ -197,8 +149,7 @@
 
   .clear-filters-btn,
   .download-pdf-btn {
-    width: 100%;
-    padding: 0.55rem;
-    font-size: 0.8rem;
+    flex: 1;
+    text-align: center;
   }
 }
