@@ -282,6 +282,10 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
       <div className="guest-list-modal">
         {!hideAddForm && (
           <div className="guest-form-inline">
+            <div className="guest-form-header">
+              <span className="guest-form-title">Add Guest</span>
+              <button type="button" onClick={onClose} className="guest-close-btn">✕</button>
+            </div>
             <form onSubmit={handleAddGuestSubmit} className="inline-form">
               <input
                 type="text"
@@ -329,7 +333,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
                     type="radio"
                     value="1"
                     checked={priority === 1}
-                    onChange={(e) => setPriority(1)}
+                    onChange={() => setPriority(1)}
                   />
                   1
                 </label>
@@ -338,7 +342,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
                     type="radio"
                     value="2"
                     checked={priority === 2}
-                    onChange={(e) => setPriority(2)}
+                    onChange={() => setPriority(2)}
                   />
                   2
                 </label>
@@ -347,7 +351,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
                     type="radio"
                     value="3"
                     checked={priority === 3}
-                    onChange={(e) => setPriority(3)}
+                    onChange={() => setPriority(3)}
                   />
                   3
                 </label>
@@ -360,17 +364,10 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
                 {formLoading ? "..." : editingGuestId ? "Update" : "Add Guest"}
               </button>
               {editingGuestId && (
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="cancel-edit-btn"
-                >
+                <button type="button" onClick={resetForm} className="cancel-edit-btn">
                   Cancel
                 </button>
               )}
-              <button type="button" onClick={onClose} className="close-btn">
-                ×
-              </button>
             </form>
             {formMessage && (
               <div
