@@ -137,25 +137,24 @@
 @media (max-width: 768px) {
   .guest-card-row {
     display: grid;
-    grid-template-columns: auto 1fr 1fr 50px 40px 30px 55px 25px 25px 55px 40px;
-    gap: 0.2rem;
-    padding: 0.3rem 0.4rem;
-    font-size: 0.62rem;
-    overflow: hidden;
+    grid-template-columns: 1fr 1fr 30px 65px 40px;
+    gap: 0.3rem;
+    padding: 0.35rem 0.4rem;
   }
 
-  .guest-name { font-size: 0.7rem; }
-  .guest-village { font-size: 0.62rem; }
-  .guest-mobile { font-size: 0.6rem; }
-  .guest-tag { overflow: hidden; }
-  .tag-badge { font-size: 0.5rem; padding: 0.05rem 0.15rem; }
-  .guest-priority { font-size: 0.6rem; }
-  .guest-attended { font-size: 0.7rem; }
-  .guest-amount { font-size: 0.62rem; }
-  .guest-payment { font-size: 0.7rem; }
-  .guest-given-by { font-size: 0.7rem; }
-  .guest-added { font-size: 0.55rem; }
-  .date-badge { font-size: 0.5rem; }
-  .edit-guest-btn, .delete-guest-btn { font-size: 0.7rem; padding: 0.1rem; }
+  .guest-mobile,
+  .guest-tag,
+  .guest-priority,
+  .guest-payment,
+  .guest-given-by,
+  .guest-added {
+    display: none;
+  }
+
+  .guest-name { font-size: 0.75rem; }
+  .guest-village { font-size: 0.7rem; }
+  .guest-attended { font-size: 0.8rem; }
+  .guest-amount { font-size: 0.7rem; }
   .guest-actions { gap: 0.2rem; }
+  .edit-guest-btn, .delete-guest-btn { font-size: 0.75rem; padding: 0.1rem; }
 }
