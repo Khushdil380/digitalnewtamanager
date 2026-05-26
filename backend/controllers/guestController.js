@@ -56,7 +56,11 @@ export const getGuestsByWeddingId = async (req, res) => {
       return res.status(400).json({ success: false, message: "weddingId is required" });
     }
 
-    const guests = await Guest.find({ weddingId }).lean().sort({ createdAt: -1 });
+    const guests = await Guest.find({ weddingId })
+      .select("name village mobileNumber tag priority addedOn attended attendedBy amount paymentType createdAt")
+      .lean()
+      .sort({ createdAt: -1 });
+
     res.status(200).json({ success: true, guests });
   } catch (error) {
     console.error("Get guests error:", error);

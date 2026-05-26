@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import GuestCard from "./GuestCard";
 import GuestFilters from "./GuestFilters";
 import GuestAddForm from "./GuestAddForm";
 import useGuestList from "./useGuestList";
 import "../../styles/guest/GuestList.css";
+
+const BATCH_SIZE = 30;
 
 const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const {
@@ -15,6 +17,21 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const { formJSX, handleEdit } = GuestAddForm({
     weddingId, user, onGuestAdded: fetchGuests, onClose, guests,
   });
+
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const scrollRef = useRef(null);
+
+  // Reset visible count when filters change
+  useEffect(() => { setVisibleCount(BATCH_SIZE); }, [searchQuery, sortBy, groupBy]);
+
+  // Load more on scroll
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+      setVisibleCount((prev) => prev + BATCH_SIZE);
+    }
+  }, []);
 
   const handleDownloadPDF = () => {
     const text = filteredGuests
@@ -57,12 +74,12 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
         {filteredGuests.length === 0 ? (
           <div className="no-guests"><p>💍 No guests found. Add one to get started!</p></div>
         ) : (
-          <div className="guests-display">
+          <div className="guests-display" ref={scrollRef} onScroll={handleScroll}>
             {Object.entries(groupedGuests()).map(([key, list]) => (
               <div key={key} className="guest-group">
                 {groupBy !== "none" && <div className="group-header">{key} ({list.length})</div>}
                 <div className="guests-list">
-                  {list.map((guest) => (
+                  {list.slice(0, visibleCount).map((guest) => (
                     <GuestCard key={guest._id} guest={guest} onEditClick={handleEdit} onDeleteClick={deleteGuest} />
                   ))}
                 </div>

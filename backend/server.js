@@ -60,16 +60,19 @@ app.get("/api/debug/config", (req, res) => {
   });
 });
 
-// Connect to MongoDB
+// Connect to MongoDB with optimized settings
 if (MONGODB_URI) {
   mongoose
-    .connect(MONGODB_URI)
+    .connect(MONGODB_URI, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    })
     .then(() => {
       console.log("Connected to MongoDB");
     })
     .catch((err) => {
       console.error("MongoDB connection error:", err.message);
-      // Don't exit - let the app serve requests anyway (useful for debugging on Vercel)
     });
 } else {
   console.error("ERROR: MONGODB_URI environment variable is not set!");
