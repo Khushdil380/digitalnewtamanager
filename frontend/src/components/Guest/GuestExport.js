@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import api from "../../utils/api";
 
-const GuestExport = ({ filteredGuests, weddingId }) => {
+const GuestExport = ({ filteredGuests, weddingId, weddingInfo }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [sending, setSending] = useState(false);
   const menuRef = useRef(null);
@@ -23,11 +23,27 @@ const GuestExport = ({ filteredGuests, weddingId }) => {
     const { default: jsPDF } = await import("jspdf");
     const { default: autoTable } = await import("jspdf-autotable");
     const doc = new jsPDF({ orientation: "landscape" });
-    doc.setFontSize(14);
+
+    // Wedding header
+    doc.setFontSize(16);
     doc.text("Digital Newta Manager - Guest List", 14, 15);
+    doc.setFontSize(10);
+    if (weddingInfo) {
+      doc.text(`${weddingInfo.brideName} & ${weddingInfo.groomName}`, 14, 23);
+      doc.text(`Date: ${weddingInfo.date || "—"}  |  Venue: ${weddingInfo.venue || "—"}`, 14, 29);
+    }
     doc.setFontSize(9);
-    doc.text(`Total: ${filteredGuests.length} guests`, 14, 22);
-    autoTable(doc, { head: [headers], body: getRows(), startY: 26, styles: { fontSize: 8 } });
+    doc.text(`Total Guests: ${filteredGuests.length}`, 14, 36);
+
+    autoTable(doc, { head: [headers], body: getRows(), startY: 40, styles: { fontSize: 8 } });
+
+    // Footer with website link
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+    doc.text("Visit: https://digitalnewtamanager.vercel.app/", 14, pageHeight - 10);
+    doc.setTextColor(0);
+
     doc.save(`guest-list-${new Date().toISOString().split("T")[0]}.pdf`);
     setShowMenu(false);
   };

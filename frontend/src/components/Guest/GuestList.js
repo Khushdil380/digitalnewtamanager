@@ -8,7 +8,7 @@ import "../../styles/guest/GuestList.css";
 
 const BATCH_SIZE = 30;
 
-const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
+const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null }) => {
   const {
     guests, filteredGuests, loading, error, user,
     searchQuery, setSearchQuery, sortBy, setSortBy, groupBy, setGroupBy,
@@ -52,7 +52,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
           sortBy={sortBy} setSortBy={setSortBy}
           groupBy={groupBy} setGroupBy={setGroupBy}
           onClearFilters={clearFilters}
-          exportSlot={<GuestExport filteredGuests={filteredGuests} weddingId={weddingId} />}
+          exportSlot={<GuestExport filteredGuests={filteredGuests} weddingId={weddingId} weddingInfo={weddingInfo} />}
           hideAddForm={hideAddForm} onClose={onClose}
         />
 

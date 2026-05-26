@@ -117,6 +117,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
           weddingId={weddingId}
           onClose={() => setShowGuestList(false)}
           hideAddForm={true}
+          weddingInfo={wedding ? { brideName: wedding.brideName, groomName: wedding.groomName, date: wedding.date, venue: wedding.venue } : null}
         />
       )}
     </div>

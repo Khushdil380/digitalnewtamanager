@@ -90,7 +90,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
           <WeddingList
             weddings={weddings}
             onEditClick={(w) => { setEditingWedding(w); setShowWeddingModal(true); }}
-            onGuestClick={(w) => { setSelectedWeddingId(w._id || w.id); setShowGuestList(true); }}
+            onGuestClick={(w) => { setSelectedWeddingId(w._id || w.id); setEditingWedding(w); setShowGuestList(true); }}
             onDeleteClick={handleDeleteWedding}
             onGoToWeddingEvent={onGoToWeddingEvent}
           />
@@ -115,6 +115,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
         <GuestList
           weddingId={selectedWeddingId}
           onClose={() => { setShowGuestList(false); setSelectedWeddingId(null); }}
+          weddingInfo={editingWedding ? { brideName: editingWedding.brideName, groomName: editingWedding.groomName, date: editingWedding.date, venue: editingWedding.venue } : null}
         />
       )}
     </div>
