@@ -4,7 +4,7 @@ import api from "../../utils/api";
 const useContributionForm = (weddingId, userId, onContributionRecorded) => {
   const [guests, setGuests] = useState([]);
   const [formData, setFormData] = useState({
-    guestName: "", village: "", amount: "", type: "cash", givenPersonally: true, givenBy: "",
+    guestName: "", village: "", amount: "", paymentType: "cash", givenBy: "personally",
   });
   const [suggestions, setSuggestions] = useState({ names: [], villages: [] });
   const [loading, setLoading] = useState(false);
@@ -56,12 +56,23 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     setSuggestions({ ...suggestions, villages: [] });
   };
 
+  const handlePaymentTypeChange = (paymentType) => {
+    // If envelope, auto-set amount to 0 (user can still edit)
+    if (paymentType === "envelope") {
+      setFormData({ ...formData, paymentType, amount: "0" });
+    } else {
+      setFormData({ ...formData, paymentType });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); setMessage("");
     if (!formData.guestName.trim()) { setError("Guest name is required"); return; }
     if (!formData.village.trim()) { setError("Village/City is required"); return; }
-    if (!formData.amount || parseFloat(formData.amount) < 0) { setError("Valid amount is required"); return; }
+    if (formData.paymentType !== "envelope" && (!formData.amount || parseFloat(formData.amount) < 0)) {
+      setError("Valid amount is required"); return;
+    }
     if (!userId) { setError("Please log in again"); return; }
 
     setLoading(true);
@@ -84,14 +95,17 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
       }
 
       const { data } = await api.post("/api/contributions/record", {
-        weddingId, guestId, guestName: formData.guestName, village: formData.village,
-        amount: parseFloat(formData.amount), type: formData.type,
-        givenPersonally: formData.givenPersonally, givenBy: formData.givenBy || null,
+        weddingId, guestId,
+        guestName: formData.guestName,
+        village: formData.village,
+        amount: parseFloat(formData.amount) || 0,
+        paymentType: formData.paymentType,
+        givenBy: formData.givenBy,
       });
 
       if (data.success) {
         setMessage(`✓ Recorded for ${formData.guestName}`);
-        setFormData({ guestName: "", village: "", amount: "", type: "cash", givenPersonally: true, givenBy: "" });
+        setFormData({ guestName: "", village: "", amount: "", paymentType: "cash", givenBy: "personally" });
         setSuggestions({ names: [], villages: [] });
         if (onContributionRecorded) onContributionRecorded();
         setTimeout(() => setMessage(""), 3000);
@@ -105,7 +119,8 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
 
   return {
     formData, setFormData, suggestions, loading, message, error,
-    handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage, handleSubmit,
+    handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
+    handlePaymentTypeChange, handleSubmit,
   };
 };
 

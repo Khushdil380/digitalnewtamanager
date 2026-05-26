@@ -33,8 +33,6 @@ const guestSchema = new mongoose.Schema(
       default: null,
       trim: true,
       maxlength: 15,
-      sparse: true,
-      index: true,
     },
     tag: {
       type: String,
@@ -46,42 +44,35 @@ const guestSchema = new mongoose.Schema(
       type: Number,
       enum: [1, 2, 3],
       default: 3,
-      index: true,
     },
+    // "earlier" = added via guest form before wedding, "wedding" = added on wedding day
     addedOn: {
       type: String,
-      enum: ["beforeWedding", "onWeddingDay"],
-      default: "beforeWedding",
-      index: true,
+      enum: ["earlier", "wedding"],
+      default: "earlier",
     },
-    invitedStatus: {
-      type: Boolean,
-      default: true,
-    },
-    attendedStatus: {
+    // true if any contribution (cash/upi/envelope) was recorded for this guest
+    attended: {
       type: Boolean,
       default: false,
     },
-    contributionAmount: {
+    // "personally" or "someone" — how the contribution was given
+    attendedBy: {
+      type: String,
+      enum: ["personally", "someone", null],
+      default: null,
+    },
+    // Contribution amount (0 for envelope if unknown)
+    amount: {
       type: Number,
       default: 0,
       min: 0,
     },
-    contributionType: {
+    // Payment method
+    paymentType: {
       type: String,
-      enum: ["cash", "upi", "check", "envelope", null],
+      enum: ["cash", "upi", "envelope", null],
       default: null,
-    },
-    givenBy: {
-      type: String,
-      default: null,
-      trim: true,
-      maxlength: 100,
-    },
-    notes: {
-      type: String,
-      default: null,
-      maxlength: 500,
     },
   },
   { timestamps: true },
@@ -90,7 +81,6 @@ const guestSchema = new mongoose.Schema(
 // Compound indexes for optimized queries
 guestSchema.index({ weddingId: 1, createdAt: -1 });
 guestSchema.index({ weddingId: 1, name: 1 });
-guestSchema.index({ weddingId: 1, village: 1 });
 guestSchema.index({ userId: 1, weddingId: 1 });
 
 export default mongoose.model("Guest", guestSchema);

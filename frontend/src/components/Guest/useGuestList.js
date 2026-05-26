@@ -44,7 +44,7 @@ const useGuestList = (weddingId) => {
         g.name.toLowerCase().includes(query) ||
         g.village.toLowerCase().includes(query) ||
         (g.mobileNumber && g.mobileNumber.includes(query)) ||
-        (g.contributionAmount && g.contributionAmount.toString().includes(query))
+        (g.amount && g.amount.toString().includes(query))
       );
     }
 
@@ -54,11 +54,12 @@ const useGuestList = (weddingId) => {
       case "village": result.sort((a, b) => a.village.localeCompare(b.village)); break;
       case "addedEarlier": result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); break;
       case "addedWeddingDay": result = result.filter((g) => g.addedOn === "onWeddingDay"); break;
-      case "attended": result = result.filter((g) => g.attendedStatus === "attended"); break;
-      case "notAttended": result = result.filter((g) => g.attendedStatus !== "attended"); break;
-      case "amount": result.sort((a, b) => (b.contributionAmount || 0) - (a.contributionAmount || 0)); break;
-      case "upi": result = result.filter((g) => g.contributionType === "online"); break;
-      case "cash": result = result.filter((g) => g.contributionType === "cash"); break;
+      case "attended": result = result.filter((g) => g.attended === true); break;
+      case "notAttended": result = result.filter((g) => g.attended !== true); break;
+      case "amount": result.sort((a, b) => (b.amount || 0) - (a.amount || 0)); break;
+      case "upi": result = result.filter((g) => g.paymentType === "upi"); break;
+      case "cash": result = result.filter((g) => g.paymentType === "cash"); break;
+      case "envelope": result = result.filter((g) => g.paymentType === "envelope"); break;
       default: result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); break;
     }
 

@@ -31,38 +31,22 @@ const contributionSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    type: {
+    paymentType: {
       type: String,
-      enum: ["cash", "envelope"],
+      enum: ["cash", "upi", "envelope"],
       default: "cash",
     },
-    givenPersonally: {
-      type: Boolean,
-      default: true,
-    },
+    // "personally" = guest came in person, "someone" = sent via another person
     givenBy: {
       type: String,
-      default: null,
-      trim: true,
-      maxlength: 100,
-    },
-    description: {
-      type: String,
-      default: null,
-      trim: true,
-      maxlength: 500,
-    },
-    attended: {
-      type: Boolean,
-      default: true,
+      enum: ["personally", "someone"],
+      default: "personally",
     },
   },
   { timestamps: true },
 );
 
-// Compound indexes for efficient queries
 contributionSchema.index({ weddingId: 1, createdAt: -1 });
 contributionSchema.index({ weddingId: 1, guestId: 1 });
-contributionSchema.index({ guestId: 1, weddingId: 1 });
 
 export default mongoose.model("Contribution", contributionSchema);

@@ -1,120 +1,74 @@
 import Contribution from "../models/Contribution.js";
 import Guest from "../models/Guest.js";
+import mongoose from "mongoose";
 
 export const recordContribution = async (req, res) => {
   try {
-    const {
-      weddingId,
-      guestId,
-      guestName,
-      village,
-      amount,
-      type,
-      givenPersonally,
-      givenBy,
-    } = req.body;
+    const { weddingId, guestId, guestName, village, amount, paymentType, givenBy } = req.body;
 
-    // Validation
-    if (
-      !weddingId ||
-      !guestId ||
-      !guestName ||
-      !village ||
-      amount === undefined
-    ) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "weddingId, guestId, guestName, village, and amount are required",
-      });
+    if (!weddingId || !guestId || !guestName || !village) {
+      return res.status(400).json({ success: false, message: "weddingId, guestId, guestName, and village are required" });
     }
 
-    if (amount < 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Amount cannot be negative",
-      });
+    // For envelope, amount defaults to 0 if not provided
+    const finalAmount = paymentType === "envelope" ? (amount || 0) : (amount || 0);
+
+    if (finalAmount < 0) {
+      return res.status(400).json({ success: false, message: "Amount cannot be negative" });
     }
 
-    // Record contribution - if amount is recorded, guest is automatically marked as attended
     const contribution = new Contribution({
       weddingId,
       guestId,
       guestName: guestName.trim(),
       village: village.trim(),
-      amount,
-      type: type || "cash",
-      givenPersonally: givenPersonally !== false,
-      givenBy: !givenPersonally && givenBy ? givenBy.trim() : null,
-      attended: true, // Automatically mark as attended when contribution is recorded
+      amount: finalAmount,
+      paymentType: paymentType || "cash",
+      givenBy: givenBy || "personally",
     });
 
     await contribution.save();
 
-    // Update guest with contribution details
-    const updateData = {
-      attendedStatus: true,
-      contributionAmount: amount,
-      contributionType: type || "cash",
-      givenBy: !givenPersonally && givenBy ? givenBy.trim() : null,
-    };
-
-    await Guest.findByIdAndUpdate(guestId, updateData);
+    // Update guest record — mark as attended with contribution details
+    await Guest.findByIdAndUpdate(guestId, {
+      attended: true,
+      attendedBy: givenBy || "personally",
+      amount: finalAmount,
+      paymentType: paymentType || "cash",
+    });
 
     res.status(201).json({
       success: true,
-      message: "Contribution recorded successfully",
-      contribution: {
-        _id: contribution._id,
-        guestName: contribution.guestName,
-        village: contribution.village,
-        amount: contribution.amount,
-        type: contribution.type,
-        givenPersonally: contribution.givenPersonally,
-        attended: contribution.attended,
-      },
+      message: "Contribution recorded",
+      contribution,
     });
   } catch (error) {
     console.error("Record contribution error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error recording contribution",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Error recording contribution" });
   }
 };
 
 export const getContributionsByWedding = async (req, res) => {
   try {
     const { weddingId } = req.params;
-
     if (!weddingId) {
-      return res.status(400).json({
-        success: false,
-        message: "weddingId is required",
-      });
+      return res.status(400).json({ success: false, message: "weddingId is required" });
     }
 
-    // Use aggregation pipeline for better performance
+    const objectId = new mongoose.Types.ObjectId(weddingId);
+
     const statsResult = await Contribution.aggregate([
-      { $match: { weddingId } },
+      { $match: { weddingId: objectId } },
       {
         $group: {
           _id: null,
           totalContributions: { $sum: 1 },
           totalAmount: { $sum: "$amount" },
-          cashCount: {
-            $sum: { $cond: [{ $eq: ["$type", "cash"] }, 1, 0] },
-          },
-          onlineCount: {
-            $sum: { $cond: [{ $eq: ["$type", "upi"] }, 1, 0] },
-          },
-          personalCount: {
-            $sum: { $cond: ["$givenPersonally", 1, 0] },
-          },
-          throughOthersCount: {
-            $sum: { $cond: ["$givenPersonally", 0, 1] },
-          },
+          cashCount: { $sum: { $cond: [{ $eq: ["$paymentType", "cash"] }, 1, 0] } },
+          upiCount: { $sum: { $cond: [{ $eq: ["$paymentType", "upi"] }, 1, 0] } },
+          envelopeCount: { $sum: { $cond: [{ $eq: ["$paymentType", "envelope"] }, 1, 0] } },
+          personalCount: { $sum: { $cond: [{ $eq: ["$givenBy", "personally"] }, 1, 0] } },
+          bySomeoneCount: { $sum: { $cond: [{ $eq: ["$givenBy", "someone"] }, 1, 0] } },
         },
       },
     ]);
@@ -123,130 +77,68 @@ export const getContributionsByWedding = async (req, res) => {
       totalContributions: 0,
       totalAmount: 0,
       cashCount: 0,
-      onlineCount: 0,
+      upiCount: 0,
+      envelopeCount: 0,
       personalCount: 0,
-      throughOthersCount: 0,
+      bySomeoneCount: 0,
     };
 
-    res.status(200).json({
-      success: true,
-      stats,
-    });
+    res.status(200).json({ success: true, stats });
   } catch (error) {
     console.error("Get contributions error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error fetching contributions",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Error fetching contributions" });
   }
 };
 
 export const updateContribution = async (req, res) => {
   try {
     const { contributionId } = req.params;
-    const { amount, type, givenPersonally, givenBy, description, attended } =
-      req.body;
+    const { amount, paymentType, givenBy } = req.body;
 
     if (!contributionId) {
-      return res.status(400).json({
-        success: false,
-        message: "contributionId is required",
-      });
+      return res.status(400).json({ success: false, message: "contributionId is required" });
     }
 
     const contribution = await Contribution.findById(contributionId);
-
     if (!contribution) {
-      return res.status(404).json({
-        success: false,
-        message: "Contribution not found",
-      });
+      return res.status(404).json({ success: false, message: "Contribution not found" });
     }
 
-    if (amount !== undefined) {
-      if (amount < 0) {
-        return res.status(400).json({
-          success: false,
-          message: "Amount cannot be negative",
-        });
-      }
-      contribution.amount = amount;
-    }
-
-    if (type) contribution.type = type;
-    if (givenPersonally !== undefined)
-      contribution.givenPersonally = givenPersonally;
-    if (givenBy !== undefined)
-      contribution.givenBy = givenBy ? givenBy.trim() : null;
-    if (description !== undefined)
-      contribution.description = description ? description.trim() : null;
-    if (attended !== undefined) contribution.attended = attended;
+    if (amount !== undefined) contribution.amount = Math.max(0, amount);
+    if (paymentType) contribution.paymentType = paymentType;
+    if (givenBy) contribution.givenBy = givenBy;
 
     await contribution.save();
 
-    // Sync guest record with updated contribution details
-    const updateData = {};
-    if (amount !== undefined) {
-      updateData.contributionAmount = amount;
-      // Auto-mark as attended if amount is given
-      if (amount > 0) {
-        updateData.attendedStatus = true;
-      }
-    }
-    if (type) updateData.contributionType = type;
-    if (givenBy !== undefined)
-      updateData.givenBy = givenBy ? givenBy.trim() : null;
-
-    if (Object.keys(updateData).length > 0) {
-      await Guest.findByIdAndUpdate(contribution.guestId, updateData);
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Contribution updated successfully",
-      contribution,
+    // Sync guest record
+    await Guest.findByIdAndUpdate(contribution.guestId, {
+      amount: contribution.amount,
+      paymentType: contribution.paymentType,
+      attendedBy: contribution.givenBy,
     });
+
+    res.status(200).json({ success: true, message: "Contribution updated", contribution });
   } catch (error) {
     console.error("Update contribution error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error updating contribution",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Error updating contribution" });
   }
 };
 
 export const deleteContribution = async (req, res) => {
   try {
     const { contributionId } = req.params;
-
     if (!contributionId) {
-      return res.status(400).json({
-        success: false,
-        message: "contributionId is required",
-      });
+      return res.status(400).json({ success: false, message: "contributionId is required" });
     }
 
     const contribution = await Contribution.findByIdAndDelete(contributionId);
-
     if (!contribution) {
-      return res.status(404).json({
-        success: false,
-        message: "Contribution not found",
-      });
+      return res.status(404).json({ success: false, message: "Contribution not found" });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Contribution deleted successfully",
-    });
+    res.status(200).json({ success: true, message: "Contribution deleted" });
   } catch (error) {
     console.error("Delete contribution error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error deleting contribution",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Error deleting contribution" });
   }
 };

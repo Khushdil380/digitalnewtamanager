@@ -95,11 +95,17 @@
 .guest-added {
   font-size: 0.65rem;
   color: #666;
-  flex: 0 0 80px;
+  flex: 0 0 70px;
   white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 0.15rem;
+}
+
+.guest-given-by {
+  font-size: 0.8rem;
+  flex: 0 0 25px;
+  text-align: center;
 }
 
 .date-badge {

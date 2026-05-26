@@ -5,7 +5,8 @@ import "../../styles/event/ContributionForm.css";
 const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
   const {
     formData, setFormData, suggestions, loading, message, error,
-    handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage, handleSubmit,
+    handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
+    handlePaymentTypeChange, handleSubmit,
   } = useContributionForm(weddingId, userId, onContributionRecorded);
 
   return (
@@ -40,23 +41,24 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
         </div>
 
         <div className="form-group">
-          <label>Amount *</label>
-          <input type="number" placeholder="Enter amount" value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} className="form-input" min="0" />
+          <label>Amount {formData.paymentType === "envelope" ? "(optional)" : "*"}</label>
+          <input type="number" placeholder={formData.paymentType === "envelope" ? "0 (envelope)" : "Enter amount"} value={formData.amount} onChange={(e) => setFormData({ ...formData, amount: e.target.value })} className="form-input" min="0" />
         </div>
 
         <div className="form-group">
           <label>Payment Type *</label>
           <div className="radio-group">
-            <label className="radio-label"><input type="radio" checked={formData.type === "cash"} onChange={() => setFormData({ ...formData, type: "cash" })} />💵 Cash</label>
-            <label className="radio-label"><input type="radio" checked={formData.type === "upi"} onChange={() => setFormData({ ...formData, type: "upi" })} />🔗 UPI</label>
+            <label className="radio-label"><input type="radio" checked={formData.paymentType === "cash"} onChange={() => handlePaymentTypeChange("cash")} />💵 Cash</label>
+            <label className="radio-label"><input type="radio" checked={formData.paymentType === "upi"} onChange={() => handlePaymentTypeChange("upi")} />🔗 UPI</label>
+            <label className="radio-label"><input type="radio" checked={formData.paymentType === "envelope"} onChange={() => handlePaymentTypeChange("envelope")} />✉️ Envelope</label>
           </div>
         </div>
 
         <div className="form-group">
           <label>Given By:</label>
           <div className="radio-group">
-            <label className="radio-label"><input type="radio" checked={formData.givenPersonally} onChange={() => setFormData({ ...formData, givenPersonally: true, givenBy: "" })} />Personally</label>
-            <label className="radio-label"><input type="radio" checked={!formData.givenPersonally} onChange={() => setFormData({ ...formData, givenPersonally: false })} />By Someone</label>
+            <label className="radio-label"><input type="radio" checked={formData.givenBy === "personally"} onChange={() => setFormData({ ...formData, givenBy: "personally" })} />Personally</label>
+            <label className="radio-label"><input type="radio" checked={formData.givenBy === "someone"} onChange={() => setFormData({ ...formData, givenBy: "someone" })} />By Someone</label>
           </div>
         </div>
 

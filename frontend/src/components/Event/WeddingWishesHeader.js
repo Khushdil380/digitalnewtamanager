@@ -21,10 +21,11 @@ const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuest
 
       {showStats && stats && (
         <div className="header-stats-bar">
-          <span className="stat-chip">🎉 {stats.totalContributions} guests</span>
+          <span className="stat-chip">🎉 {stats.totalContributions}</span>
           <span className="stat-chip">₹{(stats.totalAmount || 0).toLocaleString()}</span>
           <span className="stat-chip">💵 {stats.cashCount}</span>
-          <span className="stat-chip">🔗 {stats.onlineCount || 0}</span>
+          <span className="stat-chip">🔗 {stats.upiCount || 0}</span>
+          <span className="stat-chip">✉️ {stats.envelopeCount || 0}</span>
         </div>
       )}
     </header>

@@ -72,7 +72,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
         )}
 
         <div className="guests-stats">
-          <span>👥 Invited/Attended: {guests.length}/{guests.filter((g) => g.attendedStatus).length}</span>
+          <span>👥 Invited/Attended: {guests.length}/{guests.filter((g) => g.attended).length}</span>
           <span>📊 Showing: {filteredGuests.length}</span>
         </div>
       </div>

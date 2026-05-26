@@ -48,6 +48,7 @@ const GuestFilters = ({
             <option value="amount">Amount (High to Low)</option>
             <option value="upi">Paid by UPI 🔗</option>
             <option value="cash">Paid by Cash 💵</option>
+            <option value="envelope">Envelope ✉️</option>
           </select>
         </div>
 
