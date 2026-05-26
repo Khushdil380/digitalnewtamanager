@@ -44,9 +44,45 @@
 .qr-code-display canvas {
   width: 100% !important;
   height: auto !important;
-  max-width: 220px;
+  max-width: 200px;
   aspect-ratio: 1;
-  object-fit: contain;
+}
+
+.qr-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0;
+}
+
+.countdown-num {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.countdown-label {
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.qr-upi-display {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #666;
+  padding: 0.2rem 0;
+  font-family: monospace;
+  letter-spacing: 0.3px;
+}
+
+.qr-error {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #ef4444;
+  padding: 0.25rem 0.5rem;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: var(--radius);
 }
 
 .qr-custom-badge {
