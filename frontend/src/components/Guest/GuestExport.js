@@ -21,13 +21,13 @@ const GuestExport = ({ filteredGuests, weddingId }) => {
 
   const downloadPDF = async () => {
     const { default: jsPDF } = await import("jspdf");
-    await import("jspdf-autotable");
+    const { default: autoTable } = await import("jspdf-autotable");
     const doc = new jsPDF({ orientation: "landscape" });
     doc.setFontSize(14);
     doc.text("Digital Newta Manager - Guest List", 14, 15);
     doc.setFontSize(9);
     doc.text(`Total: ${filteredGuests.length} guests`, 14, 22);
-    doc.autoTable({ head: [headers], body: getRows(), startY: 26, styles: { fontSize: 8 } });
+    autoTable(doc, { head: [headers], body: getRows(), startY: 26, styles: { fontSize: 8 } });
     doc.save(`guest-list-${new Date().toISOString().split("T")[0]}.pdf`);
     setShowMenu(false);
   };
