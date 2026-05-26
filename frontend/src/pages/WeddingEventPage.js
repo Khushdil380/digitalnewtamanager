@@ -14,9 +14,10 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
     totalContributions: 0,
     totalAmount: 0,
     cashCount: 0,
-    onlineCount: 0,
+    upiCount: 0,
+    envelopeCount: 0,
     personalCount: 0,
-    throughOthersCount: 0,
+    bySomeoneCount: 0,
   });
   const [loading, setLoading] = useState(true);
 
