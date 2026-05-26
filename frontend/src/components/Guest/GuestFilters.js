@@ -2,36 +2,20 @@ import React from "react";
 import "../../styles/guest/GuestFilters.css";
 
 const GuestFilters = ({
-  searchQuery,
-  setSearchQuery,
-  sortBy,
-  setSortBy,
-  groupBy,
-  setGroupBy,
-  onClearFilters,
-  onDownloadPDF,
-  hideAddForm = false,
-  onClose,
+  searchQuery, setSearchQuery, sortBy, setSortBy, groupBy, setGroupBy,
+  onClearFilters, exportSlot, hideAddForm = false, onClose,
 }) => {
   return (
     <div className="guest-filters-section">
       {hideAddForm && (
         <div className="wedding-guest-header">
           <h3>👥 Wedding Guests</h3>
-          <button className="close-btn-filters" onClick={onClose}>
-            ✕
-          </button>
+          <button className="close-btn-filters" onClick={onClose}>✕</button>
         </div>
       )}
       <div className="filters-row">
         <div className="search-box">
-          <input
-            type="text"
-            placeholder="🔍 Search guest name, village, mobile..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
+          <input type="text" placeholder="🔍 Search guest name, village, mobile..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="search-input" />
         </div>
 
         <div className="filter-group">
@@ -62,13 +46,8 @@ const GuestFilters = ({
           </select>
         </div>
 
-        <button className="clear-filters-btn" onClick={onClearFilters}>
-          🔄 Clear
-        </button>
-
-        <button className="download-pdf-btn" onClick={onDownloadPDF}>
-          📥 Download PDF
-        </button>
+        <button className="clear-filters-btn" onClick={onClearFilters}>🔄 Clear</button>
+        {exportSlot}
       </div>
     </div>
   );

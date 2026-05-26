@@ -153,3 +153,44 @@
     text-align: center;
   }
 }
+
+
+/* Export dropdown */
+.export-wrapper {
+  position: relative;
+}
+
+.export-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.3rem;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  overflow: hidden;
+  min-width: 130px;
+}
+
+.export-menu button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: var(--text);
+}
+
+.export-menu button:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+}
+
+.export-menu button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

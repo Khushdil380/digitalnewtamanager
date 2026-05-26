@@ -114,3 +114,42 @@ export const deleteGuest = async (req, res) => {
     res.status(500).json({ success: false, message: "Error deleting guest" });
   }
 };
+
+import User from "../models/User.js";
+import { sendOtpEmail } from "../utils/emailService.js";
+import nodemailer from "nodemailer";
+
+export const sendGuestListEmail = async (req, res) => {
+  try {
+    const { weddingId, guestListText, totalGuests } = req.body;
+
+    if (!weddingId || !guestListText) {
+      return res.status(400).json({ success: false, message: "weddingId and guest list are required" });
+    }
+
+    // Get user from wedding
+    const Guest = (await import("../models/Guest.js")).default;
+    const guest = await Guest.findOne({ weddingId }).select("userId");
+    if (!guest) return res.status(404).json({ success: false, message: "No guests found" });
+
+    const user = await User.findById(guest.userId).select("email fullName");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    const transporter = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD },
+    });
+
+    await transporter.sendMail({
+      from: `"DigitalNewtaManager" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: `Guest List (${totalGuests} guests) - DigitalNewtaManager`,
+      text: `Hi ${user.fullName},\n\nHere is your guest list:\n\n${guestListText}\n\nTotal: ${totalGuests} guests\n\n— DigitalNewtaManager`,
+    });
+
+    res.status(200).json({ success: true, message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Send email error:", error);
+    res.status(500).json({ success: false, message: "Failed to send email" });
+  }
+};

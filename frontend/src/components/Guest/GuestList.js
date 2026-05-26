@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import GuestCard from "./GuestCard";
 import GuestFilters from "./GuestFilters";
 import GuestAddForm from "./GuestAddForm";
+import GuestExport from "./GuestExport";
 import useGuestList from "./useGuestList";
 import "../../styles/guest/GuestList.css";
 
@@ -21,10 +22,8 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const scrollRef = useRef(null);
 
-  // Reset visible count when filters change
   useEffect(() => { setVisibleCount(BATCH_SIZE); }, [searchQuery, sortBy, groupBy]);
 
-  // Load more on scroll
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -32,19 +31,6 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
       setVisibleCount((prev) => prev + BATCH_SIZE);
     }
   }, []);
-
-  const handleDownloadPDF = () => {
-    const text = filteredGuests
-      .map((g, i) => `${i + 1}. ${g.name.padEnd(25)} | ${g.village.padEnd(20)} | ${g.mobileNumber || "N/A"} | ${g.tag}`)
-      .join("\n");
-    const blob = new Blob([`Digital Newta Manager - Guest List\n${"=".repeat(60)}\n\n${text}`], { type: "text/plain" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `guest-list-${new Date().toISOString().split("T")[0]}.txt`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
 
   if (loading) {
     return (
@@ -65,7 +51,8 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false }) => {
           searchQuery={searchQuery} setSearchQuery={setSearchQuery}
           sortBy={sortBy} setSortBy={setSortBy}
           groupBy={groupBy} setGroupBy={setGroupBy}
-          onClearFilters={clearFilters} onDownloadPDF={handleDownloadPDF}
+          onClearFilters={clearFilters}
+          exportSlot={<GuestExport filteredGuests={filteredGuests} weddingId={weddingId} />}
           hideAddForm={hideAddForm} onClose={onClose}
         />
 
