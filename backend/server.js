@@ -52,6 +52,16 @@ app.get("/api/health", (req, res) => {
   res.json({ message: "Backend is running" });
 });
 
+// Keep-alive cron endpoint - pings MongoDB daily to prevent Atlas M0 inactivity
+app.get("/api/keep-alive", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.json({ status: "alive", timestamp: new Date().toISOString() });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
 app.get("/api/debug/config", (req, res) => {
   res.json({ 
     allowedOrigins,
