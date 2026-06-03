@@ -20,6 +20,22 @@
   padding: 0.75rem;
   width: 220px;
   position: relative;
+  cursor: default;
+  user-select: none;
+}
+
+.calc-drag-handle {
+  text-align: center;
+  color: #bbb;
+  font-size: 1rem;
+  cursor: grab;
+  margin-bottom: 0.25rem;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.calc-drag-handle:active {
+  cursor: grabbing;
 }
 
 .calc-close {
