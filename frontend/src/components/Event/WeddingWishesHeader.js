@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/event/WeddingWishesHeader.css";
 
-const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuestListClick }) => {
+const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuestListClick, onCalcClick }) => {
   const [showStats, setShowStats] = useState(false);
 
   return (
@@ -17,6 +17,7 @@ const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuest
         <button className="header-icon-btn" onClick={() => setShowStats(!showStats)} title="Stats">
           {showStats ? "🙈" : "👁️"}
         </button>
+        <button className="header-icon-btn" onClick={onCalcClick} title="Calculator">🧮</button>
       </div>
 
       {showStats && stats && (

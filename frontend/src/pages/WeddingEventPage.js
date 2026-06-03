@@ -4,12 +4,14 @@ import WeddingWishesHeader from "../components/Event/WeddingWishesHeader";
 import ContributionForm from "../components/Event/ContributionForm";
 import QRCodeSection from "../components/Event/QRCodeSection";
 import GuestList from "../components/Guest/GuestList";
+import Calculator from "../components/Calculator/Calculator";
 import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [wedding, setWedding] = useState(null);
   const [userId, setUserId] = useState(null);
   const [showGuestList, setShowGuestList] = useState(false);
+  const [showCalc, setShowCalc] = useState(false);
   const [stats, setStats] = useState({
     totalContributions: 0,
     totalAmount: 0,
@@ -89,6 +91,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
           stats={stats}
           onBackClick={onBackClick}
           onGuestListClick={() => setShowGuestList(true)}
+          onCalcClick={() => setShowCalc((v) => !v)}
         />
       </div>
 
@@ -111,7 +114,8 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
         </div>
       </div>
 
-      {/* Guest List Modal */}
+      {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
+
       {showGuestList && (
         <GuestList
           weddingId={weddingId}

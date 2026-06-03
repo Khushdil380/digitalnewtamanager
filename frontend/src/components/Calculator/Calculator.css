@@ -1,0 +1,142 @@
+.calc-overlay {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 3000;
+  animation: calcSlideIn 0.25s ease-out;
+}
+
+@keyframes calcSlideIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.calc-container {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+  padding: 0.75rem;
+  width: 220px;
+  position: relative;
+}
+
+.calc-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(var(--primary-rgb), 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.calc-close:hover {
+  background: rgba(var(--primary-rgb), 0.2);
+}
+
+.calc-display {
+  background: rgba(var(--primary-rgb), 0.06);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  text-align: right;
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.calc-op-indicator {
+  font-size: 0.65rem;
+  color: #888;
+  margin-bottom: 0.15rem;
+}
+
+.calc-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+}
+
+.calc-btn {
+  padding: 0.6rem 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text);
+}
+
+.calc-btn:hover {
+  background: rgba(var(--primary-rgb), 0.12);
+  transform: scale(1.05);
+}
+
+.calc-btn:active {
+  transform: scale(0.95);
+}
+
+.calc-op {
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+}
+
+.calc-eq {
+  background: var(--primary);
+  color: white;
+}
+
+.calc-eq:hover {
+  background: var(--primary);
+  opacity: 0.9;
+}
+
+.calc-clear {
+  color: #ef4444;
+}
+
+.calc-zero {
+  grid-column: span 1;
+}
+
+@media (max-width: 768px) {
+  .calc-overlay {
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .calc-container {
+    width: 195px;
+    padding: 0.6rem;
+  }
+
+  .calc-value {
+    font-size: 1.3rem;
+  }
+
+  .calc-btn {
+    padding: 0.55rem 0;
+    font-size: 0.8rem;
+  }
+}
