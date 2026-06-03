@@ -8,12 +8,22 @@ import "../../styles/guest/GuestList.css";
 
 const BATCH_SIZE = 30;
 
+// Returns true if today is after the wedding date
+const isAfterWeddingDay = (weddingDate) => {
+  if (!weddingDate) return false;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const wedding = new Date(weddingDate); wedding.setHours(0, 0, 0, 0);
+  return today > wedding;
+};
+
 const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null }) => {
   const {
     guests, filteredGuests, loading, error, user,
     searchQuery, setSearchQuery, sortBy, setSortBy, groupBy, setGroupBy,
     fetchGuests, deleteGuest, clearFilters, groupedGuests,
   } = useGuestList(weddingId);
+
+  const pastWeddingDay = isAfterWeddingDay(weddingInfo?.date);
 
   const { formJSX, handleEdit } = GuestAddForm({
     weddingId, user, onGuestAdded: fetchGuests, onClose, guests,
@@ -45,7 +55,19 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
   return (
     <div className="guest-list-container">
       <div className="guest-list-modal">
-        {!hideAddForm && formJSX}
+        {!hideAddForm && (
+          pastWeddingDay ? (
+            <div className="past-wedding-notice">
+              <div className="guest-form-header">
+                <span className="guest-form-title">Guest List</span>
+                <button type="button" onClick={onClose} className="guest-close-btn">✕</button>
+              </div>
+              <div className="past-wedding-msg">
+                📅 Wedding day has passed. New guests can only be added via the <strong>Record Contribution</strong> page, which labels them as <em>Wedding Day</em>.
+              </div>
+            </div>
+          ) : formJSX
+        )}
 
         <GuestFilters
           searchQuery={searchQuery} setSearchQuery={setSearchQuery}

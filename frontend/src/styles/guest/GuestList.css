@@ -293,3 +293,20 @@
     font-size: 0.7rem;
   }
 }
+
+.past-wedding-notice {
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.past-wedding-msg {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  color: #666;
+  background: rgba(var(--primary-rgb), 0.04);
+  border-left: 3px solid var(--primary);
+}
+
+.past-wedding-msg strong {
+  color: var(--primary);
+}
