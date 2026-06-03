@@ -68,6 +68,9 @@
   border-bottom: 1px solid #f0f0f0;
   transition: all 0.2s;
   font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .suggestion-item:hover {
@@ -77,6 +80,19 @@
 
 .suggestion-item:last-child {
   border-bottom: none;
+}
+
+.suggestion-attended {
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.suggestion-attended:hover {
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.suggestion-check {
+  font-size: 0.7rem;
+  flex-shrink: 0;
 }
 
 .radio-group {

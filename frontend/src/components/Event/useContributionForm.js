@@ -21,8 +21,12 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
   const getNameSuggestions = (input) => {
     if (!input.trim()) return [];
     const q = input.toLowerCase();
-    return guests.filter((g) => g.name.toLowerCase().includes(q))
-      .map((g) => g.name).filter((v, i, a) => a.indexOf(v) === i).slice(0, 5);
+    const seen = new Set();
+    return guests
+      .filter((g) => g.name.toLowerCase().includes(q))
+      .filter((g) => { if (seen.has(g.name.toLowerCase())) return false; seen.add(g.name.toLowerCase()); return true; })
+      .slice(0, 5)
+      .map((g) => ({ name: g.name, attended: g.attended }));
   };
 
   const getVillageSuggestions = (name) => {
@@ -36,7 +40,8 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     setSuggestions({ ...suggestions, names: value.trim() ? getNameSuggestions(value) : [] });
   };
 
-  const handleSelectName = (name) => {
+  const handleSelectName = (suggestion) => {
+    const name = typeof suggestion === "string" ? suggestion : suggestion.name;
     setFormData({ ...formData, guestName: name });
     const villages = getVillageSuggestions(name);
     setSuggestions({ names: [], villages });

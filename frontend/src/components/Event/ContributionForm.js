@@ -18,8 +18,11 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
             <input type="text" placeholder="Enter guest name" value={formData.guestName} onChange={(e) => handleNameChange(e.target.value)} className="form-input" />
             {suggestions.names.length > 0 && (
               <div className="suggestions-list">
-                {suggestions.names.map((name, i) => (
-                  <div key={i} className="suggestion-item" onClick={() => handleSelectName(name)}>{name}</div>
+                {suggestions.names.map((s, i) => (
+                  <div key={i} className={`suggestion-item ${s.attended ? "suggestion-attended" : ""}`} onClick={() => handleSelectName(s)}>
+                    {s.attended && <span className="suggestion-check" title="Already contributed">✅</span>}
+                    {s.name}
+                  </div>
                 ))}
               </div>
             )}
