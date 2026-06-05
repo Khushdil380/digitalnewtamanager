@@ -6,6 +6,7 @@ import QRCodeSection from "../components/Event/QRCodeSection";
 import GuestList from "../components/Guest/GuestList";
 import Calculator from "../components/Calculator/Calculator";
 import NotesModal from "../components/Notes/NotesModal";
+import AttendanceBar from "../components/Progress/AttendanceBar";
 import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
@@ -23,6 +24,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
     personalCount: 0,
     bySomeoneCount: 0,
   });
+  const [totalGuests, setTotalGuests] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,13 +42,15 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      const [weddingRes, statsRes] = await Promise.all([
+      const [weddingRes, statsRes, guestsRes] = await Promise.all([
         api.get(`/api/weddings/${weddingId}`),
         api.get(`/api/contributions/wedding/${weddingId}`),
+        api.get(`/api/guests/wedding/${weddingId}`),
       ]);
       
       setWedding(weddingRes.data.wedding);
       setStats(statsRes.data.stats || {});
+      setTotalGuests((guestsRes.data.guests || []).length);
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch wedding data:", error);
@@ -62,6 +66,11 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
       .catch((err) => {
         console.error("Failed to refresh stats:", err);
       });
+    api.get(`/api/guests/wedding/${weddingId}`)
+      .then((res) => {
+        setTotalGuests((res.data.guests || []).length);
+      })
+      .catch(() => {});
   };
 
   if (loading) {
@@ -116,6 +125,9 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
           />
         </div>
       </div>
+
+      {/* Attendance Progress Bar */}
+      <AttendanceBar attended={stats.totalContributions} total={totalGuests} />
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
 
