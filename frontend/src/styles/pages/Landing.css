@@ -50,8 +50,8 @@
 }
 
 .landing-icon {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   color: var(--primary);
   cursor: pointer;
   transition: all var(--transition);
@@ -71,7 +71,7 @@
 
 .landing-help-tooltip {
   position: absolute;
-  bottom: calc(100% + 8px);
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.98);
@@ -133,8 +133,8 @@
   }
 
   .landing-icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   .landing-help-tooltip {
