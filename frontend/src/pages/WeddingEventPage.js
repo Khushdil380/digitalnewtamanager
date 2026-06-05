@@ -5,6 +5,7 @@ import ContributionForm from "../components/Event/ContributionForm";
 import QRCodeSection from "../components/Event/QRCodeSection";
 import GuestList from "../components/Guest/GuestList";
 import Calculator from "../components/Calculator/Calculator";
+import NotesModal from "../components/Notes/NotesModal";
 import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
@@ -12,6 +13,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [userId, setUserId] = useState(null);
   const [showGuestList, setShowGuestList] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
   const [stats, setStats] = useState({
     totalContributions: 0,
     totalAmount: 0,
@@ -92,6 +94,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
           onBackClick={onBackClick}
           onGuestListClick={() => setShowGuestList(true)}
           onCalcClick={() => setShowCalc((v) => !v)}
+          onNotesClick={() => setShowNotes(true)}
         />
       </div>
 
@@ -124,6 +127,12 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
           weddingInfo={wedding ? { brideName: wedding.brideName, groomName: wedding.groomName, date: wedding.date, venue: wedding.venue } : null}
         />
       )}
+
+      <NotesModal
+        isOpen={showNotes}
+        onClose={() => setShowNotes(false)}
+        weddingId={weddingId}
+      />
     </div>
   );
 };

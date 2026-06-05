@@ -1,0 +1,120 @@
+.notes-modal {
+  position: relative;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notes-modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+  padding-right: 2rem;
+  flex-shrink: 0;
+}
+
+.notes-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.15);
+  flex-shrink: 0;
+}
+
+.notes-form .input-field {
+  margin-bottom: 0;
+}
+
+.notes-form-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.notes-error {
+  color: #ef4444;
+  font-size: 0.72rem;
+  margin: 0;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.notes-list-section {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Delete confirmation overlay */
+.notes-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--primary-rgb), 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  z-index: 1001;
+}
+
+.notes-confirm-box {
+  background: var(--light);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.notes-confirm-box p {
+  margin: 0 0 1rem 0;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.notes-confirm-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .notes-modal {
+    height: 85vh;
+  }
+
+  .notes-modal-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .notes-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .notes-form-actions {
+    align-items: center;
+  }
+}
+
+/* Override modal container for notes - wider and fixed height, no outer scroll */
+.modal-container:has(.notes-modal) {
+  max-width: 750px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .modal-container:has(.notes-modal) {
+    max-width: 95vw;
+  }
+}

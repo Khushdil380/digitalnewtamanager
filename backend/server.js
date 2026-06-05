@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import weddingRoutes from "./routes/weddingRoutes.js";
 import guestRoutes from "./routes/guestRoutes.js";
 import contributionRoutes from "./routes/contributionRoutes.js";
+import noteRoutes from "./routes/noteRoutes.js";
 
 dotenv.config();
 
@@ -92,6 +93,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/weddings", weddingRoutes);
 app.use("/api/guests", guestRoutes);
 app.use("/api/contributions", contributionRoutes);
+app.use("/api/notes", noteRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
