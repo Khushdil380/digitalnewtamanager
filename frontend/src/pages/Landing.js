@@ -19,6 +19,22 @@ const Landing = ({ onLoginClick }) => {
         >
           Get Started
         </Button>
+
+        <div className="landing-links">
+          <a href="https://khushdil-ansari-portfolio-frontend.vercel.app" target="_blank" rel="noopener noreferrer" className="landing-link">
+            Portfolio
+          </a>
+          <a href="https://github.com/Khushdil380" target="_blank" rel="noopener noreferrer" className="landing-link">
+            GitHub
+          </a>
+          <div className="landing-link-wrapper">
+            <span className="landing-link">Help</span>
+            <div className="landing-help-tooltip">
+              <p>For any help, feedback,<br />or queries contact us at:</p>
+              <a href="mailto:helpdigitalnewtamanager@gmail.com">helpdigitalnewtamanager@gmail.com</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
