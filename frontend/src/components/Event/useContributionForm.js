@@ -10,6 +10,7 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [alreadyContributed, setAlreadyContributed] = useState(null);
 
   useEffect(() => {
     api.get(`/api/guests/wedding/${weddingId}`)
@@ -38,6 +39,7 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
   const handleNameChange = (value) => {
     setFormData({ ...formData, guestName: value });
     setSuggestions({ ...suggestions, names: value.trim() ? getNameSuggestions(value) : [] });
+    setAlreadyContributed(null);
   };
 
   const handleSelectName = (suggestion) => {
@@ -45,11 +47,13 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     setFormData({ ...formData, guestName: name });
     const villages = getVillageSuggestions(name);
     setSuggestions({ names: [], villages });
+    setAlreadyContributed(null);
     if (villages.length === 1) setFormData((prev) => ({ ...prev, guestName: name, village: villages[0] }));
   };
 
   const handleVillageChange = (value) => {
     setFormData({ ...formData, village: value });
+    setAlreadyContributed(null);
     if (value.trim()) {
       const villages = getVillageSuggestions(formData.guestName);
       setSuggestions({ ...suggestions, villages: villages.filter((v) => v.toLowerCase().includes(value.toLowerCase())) });
@@ -59,10 +63,10 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
   const handleSelectVillage = (village) => {
     setFormData({ ...formData, village });
     setSuggestions({ ...suggestions, villages: [] });
+    setAlreadyContributed(null);
   };
 
   const handlePaymentTypeChange = (paymentType) => {
-    // If envelope, auto-set amount to 0 (user can still edit)
     if (paymentType === "envelope") {
       setFormData({ ...formData, paymentType, amount: "0" });
     } else {
@@ -70,8 +74,16 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     }
   };
 
+  const findMatchingGuest = () => {
+    return guests.find((g) =>
+      g.name.toLowerCase() === formData.guestName.toLowerCase() &&
+      g.village.toLowerCase() === formData.village.toLowerCase()
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (alreadyContributed) return; // Block form submission while popup is active
     setError(""); setMessage("");
     if (!formData.guestName.trim()) { setError("Guest name is required"); return; }
     if (!formData.village.trim()) { setError("Village/City is required"); return; }
@@ -80,11 +92,20 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     }
     if (!userId) { setError("Please log in again"); return; }
 
+    // Check if guest already contributed
+    const matchingGuest = findMatchingGuest();
+    if (matchingGuest && matchingGuest.attended) {
+      setAlreadyContributed(matchingGuest);
+      return;
+    }
+
+    await recordContribution();
+  };
+
+  const recordContribution = async () => {
     setLoading(true);
-    const matchingGuest = guests.find((g) =>
-      g.name.toLowerCase() === formData.guestName.toLowerCase() &&
-      g.village.toLowerCase() === formData.village.toLowerCase()
-    );
+    setAlreadyContributed(null);
+    const matchingGuest = findMatchingGuest();
 
     try {
       let guestId;
@@ -112,6 +133,10 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
         setMessage(`✓ Recorded for ${formData.guestName}`);
         setFormData({ guestName: "", village: "", amount: "", paymentType: "cash", givenBy: "personally" });
         setSuggestions({ names: [], villages: [] });
+        // Update local guests state to reflect the contribution
+        setGuests((prev) => prev.map((g) =>
+          g._id === guestId ? { ...g, attended: true, amount: parseFloat(formData.amount) || 0, paymentType: formData.paymentType, attendedBy: formData.givenBy } : g
+        ));
         if (onContributionRecorded) onContributionRecorded();
         setTimeout(() => setMessage(""), 3000);
       }
@@ -122,10 +147,20 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     }
   };
 
+  const handleUpdateAmount = () => {
+    // User confirmed update — proceed with recording (will overwrite)
+    recordContribution();
+  };
+
+  const handleCancelDuplicate = () => {
+    setAlreadyContributed(null);
+  };
+
   return {
     formData, setFormData, suggestions, loading, message, error,
+    alreadyContributed,
     handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
-    handlePaymentTypeChange, handleSubmit,
+    handlePaymentTypeChange, handleSubmit, handleUpdateAmount, handleCancelDuplicate,
   };
 };
 

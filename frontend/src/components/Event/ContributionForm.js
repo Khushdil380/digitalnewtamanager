@@ -5,8 +5,9 @@ import "../../styles/event/ContributionForm.css";
 const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
   const {
     formData, setFormData, suggestions, loading, message, error,
+    alreadyContributed,
     handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
-    handlePaymentTypeChange, handleSubmit,
+    handlePaymentTypeChange, handleSubmit, handleUpdateAmount, handleCancelDuplicate,
   } = useContributionForm(weddingId, userId, onContributionRecorded);
 
   return (
@@ -68,7 +69,22 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
         {error && <div className="error-message">{error}</div>}
         {message && <div className="success-message">{message}</div>}
 
-        <button type="submit" disabled={loading} className="submit-btn">
+        {/* Already Contributed Warning Popup */}
+        {alreadyContributed && (
+          <div className="duplicate-popup-overlay">
+            <div className="duplicate-popup-box">
+              <p className="duplicate-popup-icon">⚠️</p>
+              <p className="duplicate-popup-msg"><strong>{alreadyContributed.name}</strong> has already contributed ₹{alreadyContributed.amount || 0}</p>
+              <p className="duplicate-popup-hint">Enter the final total amount (not additional)</p>
+              <div className="duplicate-popup-actions">
+                <button type="button" onClick={handleUpdateAmount} className="warning-update-btn">Update Amount</button>
+                <button type="button" onClick={handleCancelDuplicate} className="warning-cancel-btn">Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <button type="submit" disabled={loading || !!alreadyContributed} className="submit-btn">
           {loading ? "Recording..." : "✓ Record Contribution"}
         </button>
       </form>
