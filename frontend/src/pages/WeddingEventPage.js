@@ -7,6 +7,7 @@ import GuestList from "../components/Guest/GuestList";
 import Calculator from "../components/Calculator/Calculator";
 import NotesModal from "../components/Notes/NotesModal";
 import AttendanceBar from "../components/Progress/AttendanceBar";
+import CelebrationBurst from "../components/Celebration/CelebrationBurst";
 import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
@@ -15,6 +16,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const [showGuestList, setShowGuestList] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
+  const [celebrationTrigger, setCelebrationTrigger] = useState(0);
   const [stats, setStats] = useState({
     totalContributions: 0,
     totalAmount: 0,
@@ -71,6 +73,10 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
         setTotalGuests((res.data.guests || []).length);
       })
       .catch(() => {});
+    // Trigger celebration if enabled
+    if (localStorage.getItem("celebrationMode") !== "off") {
+      setCelebrationTrigger((prev) => prev + 1);
+    }
   };
 
   if (loading) {
@@ -145,6 +151,8 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
         onClose={() => setShowNotes(false)}
         weddingId={weddingId}
       />
+
+      <CelebrationBurst trigger={celebrationTrigger} />
     </div>
   );
 };

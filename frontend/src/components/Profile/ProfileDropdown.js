@@ -7,6 +7,9 @@ export default function ProfileDropdown({
   onLogoutClick,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [celebrationOn, setCelebrationOn] = useState(() => {
+    return localStorage.getItem("celebrationMode") !== "off";
+  });
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -30,6 +33,12 @@ export default function ProfileDropdown({
     setIsOpen(false);
   };
 
+  const toggleCelebration = () => {
+    const newVal = !celebrationOn;
+    setCelebrationOn(newVal);
+    localStorage.setItem("celebrationMode", newVal ? "on" : "off");
+  };
+
   return (
     <div className="profile-dropdown" ref={dropdownRef}>
       <button
@@ -47,6 +56,10 @@ export default function ProfileDropdown({
         <div className="dropdown-menu">
           <button className="dropdown-item" onClick={handleProfileClick}>
             👤 Profile
+          </button>
+          <button className="dropdown-item" onClick={toggleCelebration}>
+            🎉 Celebration {celebrationOn ? "ON" : "OFF"}
+            <span className={`toggle-dot ${celebrationOn ? "on" : "off"}`} />
           </button>
           <button className="dropdown-item logout" onClick={handleLogoutClick}>
             🚪 Logout
