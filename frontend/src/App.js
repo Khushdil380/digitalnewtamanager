@@ -18,9 +18,33 @@ function AppContent() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    // Check inactivity — auto logout after 2 hours
+    if (token) {
+      const lastActivity = parseInt(localStorage.getItem("lastActivity") || "0");
+      const now = Date.now();
+      const twoHours = 2 * 60 * 60 * 1000;
+      if (lastActivity && now - lastActivity > twoHours) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("lastActivity");
+        setIsLoggedIn(false);
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem("lastActivity", now.toString());
+    }
     setIsLoggedIn(!!token);
     setLoading(false);
   }, []);
+
+  // Update last activity on user interactions
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const updateActivity = () => localStorage.setItem("lastActivity", Date.now().toString());
+    const events = ["click", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, updateActivity, { passive: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, updateActivity));
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -61,6 +85,7 @@ function AppContent() {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
+      localStorage.setItem("lastActivity", Date.now().toString());
     }
   };
 
