@@ -32,6 +32,8 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - Sort by: name, priority, village, attendance, amount, payment type, date added
 - Group by: village, category, priority
 - Guests added on wedding day are automatically labeled "Wedding Day"
+- **Duplicate detection** — warns when same name + village already exists, with "Add Anyway" (numbered) or "Edit Name" options
+- **Name suggestions** — shows existing guest names while typing for quick reference
 
 ### 💰 Contribution Recording (Wedding Day)
 - Autocomplete name and village from guest list
@@ -39,6 +41,33 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - Track whether given **Personally** or **By Someone**
 - Auto-marks attendance when contribution is recorded
 - Unknown guests auto-added to list
+- **Already-contributed warning** — popup when recording for a guest who already contributed, with "Update Amount" (final total) or "Cancel"
+
+### 📝 Notes (per wedding)
+- Add, edit, and delete notes for any wedding
+- Accessible via Notes icon in the wedding event page header
+- Title + description with timestamps
+- Confirmation prompt before deleting
+- Scrollable list inside a fixed-height modal
+
+### 📊 Attendance Progress Bar
+- Animated horizontal bar showing real-time attended/total percentage
+- Updates live after each contribution
+- Positioned below the contribution form and QR section
+
+### 🎉 Celebration Burst
+- Emoji rain animation (🎉💰🎊💵✨🪙💸🥳) on successful contribution
+- Toggle ON/OFF from Profile dropdown
+- Stored in localStorage for persistence
+
+### 💬 SMS Thank You (httpSMS)
+- Auto-send custom thank you message to guests after contribution
+- Uses your Android phone as SMS gateway via [httpSMS](https://httpsms.com)
+- Setup: Profile → SMS tab with step-by-step instructions
+- Custom message editor with `{name}` placeholder for guest name
+- SMS ON/OFF toggle on wedding day page (only activates if configured)
+- Sent message counter badge for tracking daily 100 SMS limit
+- Only sends when: toggle ON + attended personally + guest has mobile number
 
 ### 📲 QR Code (UPI Payments)
 - Default QR links to a beautiful animated thank-you page for the couple
@@ -57,6 +86,7 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - Animated wedding background (hearts, rings, flowers, doves)
 - Fully responsive — Desktop and Mobile
 - Transparent backgrounds let animation show through
+- Landing page with Portfolio, GitHub, and Help links
 
 ### 🔄 Keep-Alive
 - Daily cron job pings the backend to keep MongoDB Atlas M0 active
@@ -71,6 +101,7 @@ In Indian weddings — especially in rural and middle-class families — a desig
 | Backend | Node.js, Express |
 | Database | MongoDB Atlas |
 | Auth | JWT + OTP via Nodemailer (Gmail) |
+| SMS | httpSMS (Android gateway API) |
 | PDF | jsPDF + jspdf-autotable |
 | QR Code | qrcode.react |
 | Deployment | Vercel (frontend + backend separately) |
@@ -82,8 +113,8 @@ In Indian weddings — especially in rural and middle-class families — a desig
 ```
 digitalnewtamanager/
 ├── backend/
-│   ├── controllers/          # Auth, Wedding, Guest, Contribution
-│   ├── models/               # User, Wedding, Guest, Contribution, OTP
+│   ├── controllers/          # Auth, Wedding, Guest, Contribution, Note, SMS
+│   ├── models/               # User, Wedding, Guest, Contribution, OTP, Note
 │   ├── routes/               # Express route definitions
 │   ├── utils/                # Email service, helpers
 │   └── server.js
@@ -91,11 +122,14 @@ digitalnewtamanager/
 │   └── src/
 │       ├── components/
 │       │   ├── AuthModal/    # Login, Register, OTP, Forgot, Reset
+│       │   ├── Celebration/  # CelebrationBurst (emoji rain)
 │       │   ├── common/       # Modal, Button, InputField, ThemeSwitcher, AnimatedBackground
 │       │   ├── Dashboard/    # DashboardHeader
 │       │   ├── Event/        # ContributionForm, QRCodeSection, WeddingWishesHeader
 │       │   ├── Guest/        # GuestList, GuestCard, GuestFilters, GuestExport, GuestAddForm
-│       │   ├── Profile/      # ProfileModal, ProfileDropdown, ProfileTabs, AvatarSelector
+│       │   ├── Notes/        # NotesModal, NoteList, NoteCard
+│       │   ├── Profile/      # ProfileModal, ProfileDropdown, ProfileTabs (Personal, Email, Password, SMS)
+│       │   ├── Progress/     # AttendanceBar
 │       │   └── Wedding/      # WeddingCard, WeddingList, WeddingModal
 │       ├── pages/            # Landing, Dashboard, WeddingEventPage, ThankYouPage
 │       ├── styles/           # Organized mirrors component structure
@@ -165,4 +199,5 @@ REACT_APP_API_URL=http://localhost:5000
 Built by **Khushdil Ansari**
 
 - GitHub: [@Khushdil380](https://github.com/Khushdil380)
+- Portfolio: [khushdil-ansari-portfolio-frontend.vercel.app](https://khushdil-ansari-portfolio-frontend.vercel.app)
 - Live: [digitalnewtamanager.vercel.app](https://digitalnewtamanager.vercel.app/)
