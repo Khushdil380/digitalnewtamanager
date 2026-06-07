@@ -121,7 +121,7 @@ function AppContent() {
         element={
           <div className="app">
             <AnimatedBackground />
-            {!isLoggedIn && <ThemeSwitcher />}
+            {!isLoggedIn && !showHowToUse && <ThemeSwitcher />}
             {isLoggedIn ? (
               currentView === "dashboard" ? (
                 <Dashboard onGoToWeddingEvent={handleGoToWeddingEvent} />

@@ -3,17 +3,42 @@ import "../../styles/howToUse/TipsSection.css";
 
 const TipsSection = () => {
   return (
-    <section className="htu-tips">
-      <h2 className="htu-section-title">💡 Tips & Best Practices</h2>
-      <ul className="htu-tips-list">
-        <li><strong>Add guests early</strong> — When you distribute invitation cards, add guest names immediately. This saves time on the wedding day.</li>
-        <li><strong>Use priority</strong> — Mark important guests as Priority 1 so you can quickly filter and find them.</li>
-        <li><strong>Mobile numbers</strong> — Add mobile numbers for guests you want to send thank you SMS to.</li>
-        <li><strong>Multiple weddings</strong> — If you have multiple family weddings, create separate entries. Each has its own guest list and contributions.</li>
-        <li><strong>Export before the event</strong> — Export your guest list as PDF before the wedding for a printed backup.</li>
-        <li><strong>SMS setup</strong> — Configure httpSMS in Profile → SMS tab before the wedding day so auto thank you messages work seamlessly.</li>
-        <li><strong>2-hour auto logout</strong> — For security, the app logs out after 2 hours of inactivity.</li>
-      </ul>
+    <section className="htu-tips htu-theme-red">
+      <h2 className="htu-section-title">💡 Pro Tips</h2>
+      <div className="htu-tips-grid">
+        <div className="htu-tip-card">
+          <span>📅</span>
+          <p><strong>कार्ड बांटते समय ही</strong> guest list बनाएं — शादी के दिन time बचेगा, नाम auto-suggest होगा।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>⭐</span>
+          <p><strong>Priority use करें</strong> — VIP guests को Priority 1 दें, जल्दी filter और find कर पाएंगे।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>📱</span>
+          <p><strong>Mobile number add करें</strong> — जिन्हें thank you SMS भेजना है उनका number जरूर डालें।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>💒</span>
+          <p><strong>Multiple weddings</strong> — हर शादी का अलग entry बनाएं, सब independent है।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>📄</span>
+          <p><strong>शादी से पहले Export करें</strong> — PDF backup print रखें, बिजली/internet गई तो काम आएगी।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>💬</span>
+          <p><strong>SMS पहले setup करें</strong> — Profile → SMS tab में httpSMS configure करें ताकि wedding day पर seamless चले।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>🔒</span>
+          <p><strong>Auto-logout</strong> — Security के लिए 2 घंटे inactivity पर automatic logout हो जाता है।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>🎉</span>
+          <p><strong>Celebration OFF करें</strong> — अगर fast recording कर रहे हैं तो emoji burst OFF कर दें, distraction कम।</p>
+        </div>
+      </div>
     </section>
   );
 };

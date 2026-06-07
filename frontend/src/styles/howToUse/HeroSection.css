@@ -1,52 +1,84 @@
 .htu-hero {
+  padding: 4rem 2rem 3rem;
   text-align: center;
-  margin-bottom: 2rem;
+  background: linear-gradient(135deg, rgba(196, 30, 58, 0.03), rgba(196, 30, 58, 0.08));
+}
+
+.htu-hero-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: rgba(196, 30, 58, 0.1);
+  border: 1px solid rgba(196, 30, 58, 0.2);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c41e3a;
+  margin-bottom: 1rem;
 }
 
 .htu-hero-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #c41e3a;
   margin: 0 0 0.5rem 0;
+  line-height: 1.2;
 }
 
 .htu-hero-subtitle {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #666;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 2rem 0;
 }
 
-.htu-hero-context {
+.htu-hero-card {
+  max-width: 650px;
+  margin: 0 auto;
   text-align: left;
-  background: rgba(var(--primary-rgb), 0.04);
-  border-left: 3px solid var(--primary);
-  padding: 1rem;
-  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(196, 30, 58, 0.15);
+  border-left: 4px solid #c41e3a;
+  padding: 1.25rem;
+  border-radius: 8px;
 }
 
-.htu-hero-context h3 {
-  font-size: 0.95rem;
-  color: var(--primary);
-  margin: 0 0 0.5rem 0;
+.htu-hero-card h3 {
+  font-size: 1rem;
+  color: #c41e3a;
+  margin: 0 0 0.75rem 0;
 }
 
-.htu-hero-context p {
-  font-size: 0.82rem;
-  color: #555;
+.htu-hero-card p {
+  font-size: 0.85rem;
+  color: #444;
   margin: 0 0 0.5rem 0;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.htu-hero-highlight {
+  background: rgba(196, 30, 58, 0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem !important;
 }
 
 @media (max-width: 768px) {
+  .htu-hero {
+    padding: 3rem 1rem 2rem;
+  }
+
   .htu-hero-title {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   .htu-hero-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
-  .htu-hero-context {
-    padding: 0.75rem;
+  .htu-hero-card {
+    padding: 1rem;
+  }
+
+  .htu-hero-card p {
+    font-size: 0.78rem;
   }
 }
