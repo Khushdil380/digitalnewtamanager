@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import WeddingEventPage from "./pages/WeddingEventPage";
 import ThankYouPage from "./pages/ThankYouPage";
+import HowToUsePage from "./pages/HowToUsePage";
 import AuthModal from "./components/AuthModal";
 import "./styles/index.css";
 
@@ -15,6 +16,7 @@ function AppContent() {
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState("dashboard");
   const [selectedWeddingId, setSelectedWeddingId] = useState(null);
+  const [showHowToUse, setShowHowToUse] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -129,9 +131,11 @@ function AppContent() {
                   onBackClick={handleBackToDashboard}
                 />
               ) : null
+            ) : showHowToUse ? (
+              <HowToUsePage onBack={() => setShowHowToUse(false)} />
             ) : (
               <>
-                <Landing onLoginClick={handleLoginClick} />
+                <Landing onLoginClick={handleLoginClick} onHowToUseClick={() => setShowHowToUse(true)} />
                 <AuthModal isOpen={showAuthModal} onClose={handleAuthClose} />
               </>
             )}

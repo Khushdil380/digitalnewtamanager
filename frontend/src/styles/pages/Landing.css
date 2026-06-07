@@ -45,6 +45,28 @@
   margin-top: 1.5rem;
 }
 
+.landing-how-to-use {
+  margin-top: 1rem;
+}
+
+.how-to-use-btn {
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.how-to-use-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
 .landing-icon-wrapper {
   position: relative;
 }

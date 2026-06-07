@@ -1,0 +1,52 @@
+.htu-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.htu-hero-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.htu-hero-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 1.5rem 0;
+}
+
+.htu-hero-context {
+  text-align: left;
+  background: rgba(var(--primary-rgb), 0.04);
+  border-left: 3px solid var(--primary);
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+.htu-hero-context h3 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.htu-hero-context p {
+  font-size: 0.82rem;
+  color: #555;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .htu-hero-title {
+    font-size: 1.2rem;
+  }
+
+  .htu-hero-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .htu-hero-context {
+    padding: 0.75rem;
+  }
+}

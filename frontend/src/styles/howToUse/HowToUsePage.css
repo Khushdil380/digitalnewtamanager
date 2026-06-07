@@ -1,0 +1,57 @@
+.how-to-use-page {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+.htu-back-btn {
+  padding: 0.4rem 0.8rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 1rem;
+}
+
+.htu-back-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.htu-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 1rem 0;
+}
+
+.htu-footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 0.75rem;
+  color: #888;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
+  margin-top: 2rem;
+}
+
+.htu-footer a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .how-to-use-page {
+    padding: 1rem;
+  }
+
+  .htu-section-title {
+    font-size: 1rem;
+  }
+}

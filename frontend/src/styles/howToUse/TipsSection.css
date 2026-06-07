@@ -1,0 +1,33 @@
+.htu-tips {
+  margin-bottom: 1.5rem;
+}
+
+.htu-tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.htu-tips-list li {
+  font-size: 0.78rem;
+  color: #555;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-left: 2px solid var(--primary);
+  background: rgba(var(--primary-rgb), 0.02);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.htu-tips-list li strong {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .htu-tips-list li {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.6rem;
+  }
+}

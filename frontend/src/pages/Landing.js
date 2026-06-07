@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../components/common/Button";
 import "../styles/pages/Landing.css";
 
-const Landing = ({ onLoginClick }) => {
+const Landing = ({ onLoginClick, onHowToUseClick }) => {
   return (
     <div className="landing-container">
       <div className="landing-content">
@@ -19,6 +19,10 @@ const Landing = ({ onLoginClick }) => {
         >
           Get Started
         </Button>
+
+        <div className="landing-how-to-use">
+          <button className="how-to-use-btn" onClick={onHowToUseClick}>📖 How to Use</button>
+        </div>
 
         <div className="landing-links">
           <a href="https://khushdil-ansari-portfolio-frontend.vercel.app" target="_blank" rel="noopener noreferrer" className="landing-icon" title="Portfolio">
