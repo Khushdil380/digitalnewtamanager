@@ -14,12 +14,12 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
   const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
   const [showMsgEditor, setShowMsgEditor] = useState(false);
   const [customMsg, setCustomMsg] = useState(() =>
-    localStorage.getItem("smsCustomMsg") || `🙏 Thank you {name} for attending ${brideName || ""} & ${groomName || ""}'s wedding! We are grateful for your presence and blessings.`
+    localStorage.getItem("smsCustomMsg") || `आपका बहुत बहुत शुक्रिया {name} जी, ${brideName || ""} और ${groomName || ""} की शादी में शामिल होकर इस दिन को और भी यादगार बनाने के लिए, आपकी मौजूदगी, प्यार और आशीर्वाद ने इस दिन को हमारे जीवन का सबसे खूबसूरत पल बना दिया। हम इस नई शुरुआत में आपकी शुभकामनाओं को हमेशा संजोकर रखेंगे।\n\nआप आए तो महफ़िल में निखार आ गया, हर तरफ खुशियों का खुमार आ गया।\nदिल से करते हैं हम आपका शुक्रिया,\nआपके आने से हमारी शादी में बहार आ गया।\n\nएक बार फिर से आपका तहे दिल से शुक्रिया। 🙏`
   );
 
   useEffect(() => {
     if (brideName && groomName && !localStorage.getItem("smsCustomMsg")) {
-      setCustomMsg(`🙏 Thank you {name} for attending ${brideName} & ${groomName}'s wedding! We are grateful for your presence and blessings.`);
+      setCustomMsg(`आपका बहुत बहुत शुक्रिया {name} जी, ${brideName} और ${groomName} की शादी में शामिल होकर इस दिन को और भी यादगार बनाने के लिए, आपकी मौजूदगी, प्यार और आशीर्वाद ने इस दिन को हमारे जीवन का सबसे खूबसूरत पल बना दिया। हम इस नई शुरुआत में आपकी शुभकामनाओं को हमेशा संजोकर रखेंगे।\n\nआप आए तो महफ़िल में निखार आ गया, हर तरफ खुशियों का खुमार आ गया।\nदिल से करते हैं हम आपका शुक्रिया,\nआपके आने से हमारी शादी में बहार आ गया।\n\nएक बार फिर से आपका तहे दिल से शुक्रिया। 🙏`);
     }
   }, [brideName, groomName]);
 

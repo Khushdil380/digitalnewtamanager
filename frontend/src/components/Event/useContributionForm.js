@@ -140,7 +140,7 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
           );
           const mobile = guest?.mobileNumber;
           if (mobile && userId) {
-            const customMsg = localStorage.getItem("smsCustomMsg") || `🙏 Thank you ${formData.guestName} for attending the wedding! We are grateful.`;
+            const customMsg = localStorage.getItem("smsCustomMsg") || `आपका बहुत बहुत शुक्रिया ${formData.guestName} जी, शादी में शामिल होने के लिए। 🙏`;
             const thankMsg = customMsg.replace(/\{name\}/g, formData.guestName);
             api.post("/api/sms/send", { userId, to: mobile, message: thankMsg }).catch(() => {});
           }
