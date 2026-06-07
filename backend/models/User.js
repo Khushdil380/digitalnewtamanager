@@ -32,6 +32,16 @@ const userSchema = new Schema({
     default: null,
     maxlength: 500,
   },
+  smsApiKey: {
+    type: String,
+    default: null,
+    trim: true,
+  },
+  smsPhoneNumber: {
+    type: String,
+    default: null,
+    trim: true,
+  },
   isEmailVerified: {
     type: Boolean,
     default: false,

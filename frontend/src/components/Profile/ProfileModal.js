@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Modal from "../common/Modal";
 import PersonalTab from "./ProfileTabs/PersonalTab";
 import EmailTab from "./ProfileTabs/EmailTab";
-import MobileTab from "./ProfileTabs/MobileTab";
 import PasswordTab from "./ProfileTabs/PasswordTab";
+import SmsTab from "./ProfileTabs/SmsTab";
 import "../../styles/profile/ProfileModal.css";
 
 export default function ProfileModal({ isOpen, user, onClose, onUserUpdate }) {
@@ -16,8 +16,8 @@ export default function ProfileModal({ isOpen, user, onClose, onUserUpdate }) {
   const tabs = [
     { id: "personal", label: "Personal", icon: "👤" },
     { id: "email", label: "Email", icon: "✉️" },
-    { id: "mobile", label: "Mobile", icon: "📱" },
     { id: "password", label: "Password", icon: "🔐" },
+    { id: "sms", label: "SMS", icon: "💬" },
   ];
 
   return (
@@ -46,10 +46,8 @@ export default function ProfileModal({ isOpen, user, onClose, onUserUpdate }) {
             {activeTab === "email" && (
               <EmailTab user={user} onUpdate={handleUserUpdate} />
             )}
-            {activeTab === "mobile" && (
-              <MobileTab user={user} onUpdate={handleUserUpdate} />
-            )}
             {activeTab === "password" && <PasswordTab user={user} />}
+            {activeTab === "sms" && <SmsTab user={user} />}
           </div>
         </div>
       </div>

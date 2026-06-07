@@ -131,6 +131,21 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
 
       if (data.success) {
         setMessage(`✓ Recorded for ${formData.guestName}`);
+
+        // Auto-send thank you SMS if enabled
+        if (localStorage.getItem("smsThankYou") === "on" && formData.givenBy === "personally") {
+          const guest = guests.find((g) =>
+            g.name.toLowerCase() === formData.guestName.toLowerCase() &&
+            g.village.toLowerCase() === formData.village.toLowerCase()
+          );
+          const mobile = guest?.mobileNumber;
+          if (mobile && userId) {
+            const customMsg = localStorage.getItem("smsCustomMsg") || `🙏 Thank you ${formData.guestName} for attending the wedding! We are grateful.`;
+            const thankMsg = customMsg.replace(/\{name\}/g, formData.guestName);
+            api.post("/api/sms/send", { userId, to: mobile, message: thankMsg }).catch(() => {});
+          }
+        }
+
         setFormData({ guestName: "", village: "", amount: "", paymentType: "cash", givenBy: "personally" });
         setSuggestions({ names: [], villages: [] });
         // Update local guests state to reflect the contribution

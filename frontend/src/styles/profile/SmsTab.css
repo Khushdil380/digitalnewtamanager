@@ -1,0 +1,120 @@
+.tab-section {
+  padding: 0.5rem;
+}
+
+.tab-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.75rem 0;
+}
+
+.sms-instructions {
+  background: rgba(var(--primary-rgb), 0.04);
+  padding: 0.6rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--primary);
+}
+
+.instruction-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.3rem 0;
+}
+
+.sms-instructions ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.72rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.sms-instructions a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.sms-form,
+.sms-test-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.sms-form .input-label,
+.sms-test-section .input-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.configured-badge {
+  font-size: 0.65rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.sms-input {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-family: inherit;
+  transition: all var(--transition);
+  background: transparent;
+}
+
+.sms-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 4px rgba(var(--primary-rgb), 0.15);
+}
+
+.sms-save-btn,
+.sms-test-btn {
+  padding: 0.45rem 0.75rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 0.3rem;
+}
+
+.sms-save-btn:hover:not(:disabled),
+.sms-test-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.sms-save-btn:disabled,
+.sms-test-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sms-test-section {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.sms-message {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  background: rgba(var(--primary-rgb), 0.05);
+  color: var(--primary);
+  border-left: 3px solid var(--primary);
+}

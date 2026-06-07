@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useContributionForm from "./useContributionForm";
+import Modal from "../common/Modal";
 import "../../styles/event/ContributionForm.css";
 
-const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
+const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName, groomName }) => {
   const {
     formData, setFormData, suggestions, loading, message, error,
     alreadyContributed,
     handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
     handlePaymentTypeChange, handleSubmit, handleUpdateAmount, handleCancelDuplicate,
   } = useContributionForm(weddingId, userId, onContributionRecorded);
+
+  const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
+  const [showMsgEditor, setShowMsgEditor] = useState(false);
+  const [customMsg, setCustomMsg] = useState(() =>
+    localStorage.getItem("smsCustomMsg") || `🙏 Thank you {name} for attending ${brideName || ""} & ${groomName || ""}'s wedding! We are grateful for your presence and blessings.`
+  );
+
+  useEffect(() => {
+    if (brideName && groomName && !localStorage.getItem("smsCustomMsg")) {
+      setCustomMsg(`🙏 Thank you {name} for attending ${brideName} & ${groomName}'s wedding! We are grateful for your presence and blessings.`);
+    }
+  }, [brideName, groomName]);
+
+  const toggleSms = () => {
+    const newVal = !smsOn;
+    setSmsOn(newVal);
+    localStorage.setItem("smsThankYou", newVal ? "on" : "off");
+  };
+
+  const saveCustomMsg = () => {
+    localStorage.setItem("smsCustomMsg", customMsg);
+    setShowMsgEditor(false);
+  };
 
   return (
     <div className="contribution-form-container">
@@ -84,10 +108,39 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded }) => {
           </div>
         )}
 
-        <button type="submit" disabled={loading || !!alreadyContributed} className="submit-btn">
-          {loading ? "Recording..." : "✓ Record Contribution"}
-        </button>
+        <div className="submit-row">
+          <div className="sms-controls">
+            <button type="button" className={`sms-toggle-btn ${smsOn ? "active" : ""}`} onClick={toggleSms} title={smsOn ? "SMS: ON" : "SMS: OFF"}>
+              {smsOn ? "📩" : "✉️"}
+            </button>
+            <button type="button" className="sms-edit-btn" onClick={() => setShowMsgEditor(true)} title="Edit thank you message">
+              ✏️
+            </button>
+          </div>
+          <button type="submit" disabled={loading || !!alreadyContributed} className="submit-btn">
+            {loading ? "Recording..." : "✓ Record"}
+          </button>
+        </div>
       </form>
+
+      {/* Custom Message Editor Modal */}
+      <Modal isOpen={showMsgEditor} onClose={() => setShowMsgEditor(false)} size="medium">
+        <div className="msg-editor">
+          <h3 className="msg-editor-title">✏️ Custom Thank You Message</h3>
+          <p className="msg-editor-hint">Use {"{name}"} to insert guest name automatically</p>
+          <textarea
+            className="msg-editor-input"
+            value={customMsg}
+            onChange={(e) => setCustomMsg(e.target.value)}
+            rows={4}
+            maxLength={300}
+          />
+          <div className="msg-editor-actions">
+            <button type="button" onClick={saveCustomMsg} className="sms-save-btn">Save Message</button>
+            <button type="button" onClick={() => setShowMsgEditor(false)} className="warning-cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
