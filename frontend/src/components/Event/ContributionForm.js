@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useContributionForm from "./useContributionForm";
 import Modal from "../common/Modal";
+import api from "../../utils/api";
 import "../../styles/event/ContributionForm.css";
 
 const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName, groomName }) => {
@@ -13,6 +14,8 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
 
   const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
   const [smsCount, setSmsCount] = useState(() => parseInt(localStorage.getItem("smsCount") || "0"));
+  const [smsConfigured, setSmsConfigured] = useState(false);
+  const [smsWarning, setSmsWarning] = useState("");
   const [showMsgEditor, setShowMsgEditor] = useState(false);
   const [customMsg, setCustomMsg] = useState(() =>
     localStorage.getItem("smsCustomMsg") || `आपका बहुत बहुत शुक्रिया {name} जी, ${brideName || ""} और ${groomName || ""} की शादी में शामिल होकर इस दिन को और भी यादगार बनाने के लिए, आपकी मौजूदगी, प्यार और आशीर्वाद ने इस दिन को हमारे जीवन का सबसे खूबसूरत पल बना दिया। हम इस नई शुरुआत में आपकी शुभकामनाओं को हमेशा संजोकर रखेंगे।\n\nआप आए तो महफ़िल में निखार आ गया, हर तरफ खुशियों का खुमार आ गया।\nदिल से करते हैं हम आपका शुक्रिया,\nआपके आने से हमारी शादी में बहार आ गया।\n\nएक बार फिर से आपका तहे दिल से शुक्रिया। 🙏`
@@ -32,7 +35,20 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
     return () => window.removeEventListener("smsCountUpdated", handleSmsCount);
   }, []);
 
+  useEffect(() => {
+    if (userId) {
+      api.get(`/api/sms/settings/${userId}`)
+        .then(({ data }) => setSmsConfigured(data.isConfigured))
+        .catch(() => setSmsConfigured(false));
+    }
+  }, [userId]);
+
   const toggleSms = () => {
+    if (!smsOn && !smsConfigured) {
+      setSmsWarning("⚠️ Please setup SMS first in Profile → SMS tab");
+      setTimeout(() => setSmsWarning(""), 5000);
+      return;
+    }
     const newVal = !smsOn;
     setSmsOn(newVal);
     localStorage.setItem("smsThankYou", newVal ? "on" : "off");
@@ -126,6 +142,7 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
             <button type="button" className="sms-edit-btn" onClick={() => setShowMsgEditor(true)} title="Edit thank you message">
               ✏️
             </button>
+            {smsWarning && <span className="sms-warning-toast">{smsWarning}</span>}
           </div>
           <button type="submit" disabled={loading || !!alreadyContributed} className="submit-btn">
             {loading ? "Recording..." : "✓ Record"}
