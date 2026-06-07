@@ -327,7 +327,14 @@
     gap: 0.85rem;
   }
 
-  .submit-btn {
+  .submit-row {
     margin-top: 0.5rem;
+  }
+
+  .sms-toggle-btn,
+  .sms-edit-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
   }
 }

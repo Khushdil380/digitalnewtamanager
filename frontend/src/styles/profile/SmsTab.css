@@ -37,16 +37,14 @@
   font-weight: 600;
 }
 
-.sms-form,
-.sms-test-section {
+.sms-form {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   margin-bottom: 0.75rem;
 }
 
-.sms-form .input-label,
-.sms-test-section .input-label {
+.sms-form .input-label {
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--text);
@@ -78,8 +76,7 @@
   box-shadow: 0 0 4px rgba(var(--primary-rgb), 0.15);
 }
 
-.sms-save-btn,
-.sms-test-btn {
+.sms-save-btn {
   padding: 0.45rem 0.75rem;
   background: var(--primary);
   color: white;
@@ -92,21 +89,14 @@
   margin-top: 0.3rem;
 }
 
-.sms-save-btn:hover:not(:disabled),
-.sms-test-btn:hover:not(:disabled) {
+.sms-save-btn:hover:not(:disabled) {
   opacity: 0.9;
   transform: translateY(-1px);
 }
 
-.sms-save-btn:disabled,
-.sms-test-btn:disabled {
+.sms-save-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.sms-test-section {
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
 }
 
 .sms-message {
