@@ -159,8 +159,8 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
             className="msg-editor-input"
             value={customMsg}
             onChange={(e) => setCustomMsg(e.target.value)}
-            rows={4}
-            maxLength={300}
+            rows={6}
+            maxLength={1000}
           />
           <div className="msg-editor-actions">
             <button type="button" onClick={saveCustomMsg} className="sms-save-btn">Save Message</button>
