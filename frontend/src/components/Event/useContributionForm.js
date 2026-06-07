@@ -142,7 +142,13 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
           if (mobile && userId) {
             const customMsg = localStorage.getItem("smsCustomMsg") || `आपका बहुत बहुत शुक्रिया ${formData.guestName} जी, शादी में शामिल होने के लिए। 🙏`;
             const thankMsg = customMsg.replace(/\{name\}/g, formData.guestName);
-            api.post("/api/sms/send", { userId, to: mobile, message: thankMsg }).catch(() => {});
+            api.post("/api/sms/send", { userId, to: mobile, message: thankMsg })
+              .then(() => {
+                const count = parseInt(localStorage.getItem("smsCount") || "0") + 1;
+                localStorage.setItem("smsCount", count.toString());
+                window.dispatchEvent(new Event("smsCountUpdated"));
+              })
+              .catch(() => {});
           }
         }
 

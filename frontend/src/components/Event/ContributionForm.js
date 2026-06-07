@@ -12,6 +12,7 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
   } = useContributionForm(weddingId, userId, onContributionRecorded);
 
   const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
+  const [smsCount, setSmsCount] = useState(() => parseInt(localStorage.getItem("smsCount") || "0"));
   const [showMsgEditor, setShowMsgEditor] = useState(false);
   const [customMsg, setCustomMsg] = useState(() =>
     localStorage.getItem("smsCustomMsg") || `आपका बहुत बहुत शुक्रिया {name} जी, ${brideName || ""} और ${groomName || ""} की शादी में शामिल होकर इस दिन को और भी यादगार बनाने के लिए, आपकी मौजूदगी, प्यार और आशीर्वाद ने इस दिन को हमारे जीवन का सबसे खूबसूरत पल बना दिया। हम इस नई शुरुआत में आपकी शुभकामनाओं को हमेशा संजोकर रखेंगे।\n\nआप आए तो महफ़िल में निखार आ गया, हर तरफ खुशियों का खुमार आ गया।\nदिल से करते हैं हम आपका शुक्रिया,\nआपके आने से हमारी शादी में बहार आ गया।\n\nएक बार फिर से आपका तहे दिल से शुक्रिया। 🙏`
@@ -22,6 +23,12 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
       setCustomMsg(`आपका बहुत बहुत शुक्रिया {name} जी, ${brideName} और ${groomName} की शादी में शामिल होकर इस दिन को और भी यादगार बनाने के लिए, आपकी मौजूदगी, प्यार और आशीर्वाद ने इस दिन को हमारे जीवन का सबसे खूबसूरत पल बना दिया। हम इस नई शुरुआत में आपकी शुभकामनाओं को हमेशा संजोकर रखेंगे।\n\nआप आए तो महफ़िल में निखार आ गया, हर तरफ खुशियों का खुमार आ गया।\nदिल से करते हैं हम आपका शुक्रिया,\nआपके आने से हमारी शादी में बहार आ गया।\n\nएक बार फिर से आपका तहे दिल से शुक्रिया। 🙏`);
     }
   }, [brideName, groomName]);
+
+  useEffect(() => {
+    const handleSmsCount = () => setSmsCount(parseInt(localStorage.getItem("smsCount") || "0"));
+    window.addEventListener("smsCountUpdated", handleSmsCount);
+    return () => window.removeEventListener("smsCountUpdated", handleSmsCount);
+  }, []);
 
   const toggleSms = () => {
     const newVal = !smsOn;
@@ -112,6 +119,7 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
           <div className="sms-controls">
             <button type="button" className={`sms-toggle-btn ${smsOn ? "active" : ""}`} onClick={toggleSms} title={smsOn ? "SMS: ON" : "SMS: OFF"}>
               {smsOn ? "📩" : "✉️"}
+              {smsCount > 0 && <span className="sms-badge">{smsCount}</span>}
             </button>
             <button type="button" className="sms-edit-btn" onClick={() => setShowMsgEditor(true)} title="Edit thank you message">
               ✏️

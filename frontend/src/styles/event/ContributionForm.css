@@ -193,6 +193,28 @@
   background: rgba(16, 185, 129, 0.1);
 }
 
+.sms-toggle-btn {
+  position: relative;
+}
+
+.sms-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 700;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  line-height: 1;
+}
+
 .sms-toggle-btn:hover,
 .sms-edit-btn:hover {
   transform: scale(1.05);
