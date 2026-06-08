@@ -14,7 +14,7 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
 
   useEffect(() => {
     api.get(`/api/guests/wedding/${weddingId}`)
-      .then(({ data }) => setGuests(data.guests || []))
+      .then(({ data }) => setGuests((data.guests || []).filter((g) => !g.isDeleted)))
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weddingId]);

@@ -11,7 +11,7 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
     const weddingId = wedding._id || wedding.id;
     api.get(`/api/guests/wedding/${weddingId}`)
       .then(({ data }) => {
-        const guests = data.guests || [];
+        const guests = (data.guests || []).filter((g) => !g.isDeleted);
         setGuestStats({
           invited: guests.length,
           attended: guests.filter((g) => g.attended).length,

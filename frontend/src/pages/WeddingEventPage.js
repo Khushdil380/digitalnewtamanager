@@ -52,7 +52,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
       
       setWedding(weddingRes.data.wedding);
       setStats(statsRes.data.stats || {});
-      setTotalGuests((guestsRes.data.guests || []).length);
+      setTotalGuests((guestsRes.data.guests || []).filter((g) => !g.isDeleted).length);
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch wedding data:", error);
@@ -70,7 +70,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
       });
     api.get(`/api/guests/wedding/${weddingId}`)
       .then((res) => {
-        setTotalGuests((res.data.guests || []).length);
+        setTotalGuests((res.data.guests || []).filter((g) => !g.isDeleted).length);
       })
       .catch(() => {});
     // Trigger celebration if enabled
