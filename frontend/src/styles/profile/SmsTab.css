@@ -108,3 +108,21 @@
   color: var(--primary);
   border-left: 3px solid var(--primary);
 }
+
+.sms-test-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.sms-test-input {
+  flex: 1;
+}
+
+.sms-test-send {
+  white-space: nowrap;
+  margin-top: 0;
+}

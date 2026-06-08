@@ -8,6 +8,8 @@ const SmsTab = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isConfigured, setIsConfigured] = useState(false);
+  const [testNumber, setTestNumber] = useState("");
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     if (user?.id) {
@@ -36,6 +38,24 @@ const SmsTab = ({ user }) => {
       setMessage(err.response?.data?.message || "Error saving settings");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleTestSend = async () => {
+    if (!testNumber.trim()) { setMessage("Enter a test number"); return; }
+    setSending(true);
+    setMessage("");
+    try {
+      const { data } = await api.post("/api/sms/send", {
+        userId: user.id,
+        to: testNumber,
+        message: "✅ This is a test message from DigitalNewtaManager. Your SMS setup is working correctly!",
+      });
+      setMessage(data.success ? "✅ Test SMS sent!" : data.message);
+    } catch (err) {
+      setMessage(err.response?.data?.message || "❌ Failed to send. Check your setup.");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -78,6 +98,21 @@ const SmsTab = ({ user }) => {
       </div>
 
       {message && <div className="sms-message">{message}</div>}
+
+      {isConfigured && (
+        <div className="sms-test-row">
+          <input
+            type="text"
+            placeholder="Test number (e.g. 7759898972)"
+            value={testNumber}
+            onChange={(e) => setTestNumber(e.target.value)}
+            className="sms-input sms-test-input"
+          />
+          <button onClick={handleTestSend} disabled={sending} className="sms-save-btn sms-test-send">
+            {sending ? "..." : "Send Test"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
