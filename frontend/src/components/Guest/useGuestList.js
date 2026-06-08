@@ -56,7 +56,7 @@ const useGuestList = (weddingId) => {
       case "name": result.sort((a, b) => a.name.localeCompare(b.name)); break;
       case "priority": result.sort((a, b) => a.priority - b.priority); break;
       case "village": result.sort((a, b) => a.village.localeCompare(b.village)); break;
-      case "addedEarlier": result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); break;
+      case "addedEarlier": result = result.filter((g) => g.addedOn === "earlier"); break;
       case "addedWeddingDay": result = result.filter((g) => g.addedOn === "wedding"); break;
       case "attended": result = result.filter((g) => g.attended === true); break;
       case "notAttended": result = result.filter((g) => g.attended !== true); break;

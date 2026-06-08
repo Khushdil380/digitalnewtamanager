@@ -19,20 +19,20 @@ const GuestFilters = ({
         </div>
 
         <div className="filter-group">
-          <label>Sort By:</label>
+          <label>Filter/Sort:</label>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="added">Recently Added</option>
-            <option value="addedEarlier">Added Earlier</option>
-            <option value="addedWeddingDay">Added on Wedding Day</option>
             <option value="name">Name (A-Z)</option>
-            <option value="priority">Priority (High to Low)</option>
+            <option value="priority">Priority (High→Low)</option>
             <option value="village">Village (A-Z)</option>
-            <option value="attended">Attended ✅</option>
-            <option value="notAttended">Not Attended ❌</option>
-            <option value="amount">Amount (High to Low)</option>
-            <option value="upi">Paid by UPI 🔗</option>
-            <option value="cash">Paid by Cash 💵</option>
-            <option value="envelope">Envelope ✉️</option>
+            <option value="amount">Amount (High→Low)</option>
+            <option value="addedEarlier">📋 Added via Guest List</option>
+            <option value="addedWeddingDay">👰 Added on Wedding Day</option>
+            <option value="attended">✅ Attended</option>
+            <option value="notAttended">❌ Not Attended</option>
+            <option value="cash">💵 Cash</option>
+            <option value="upi">🔗 UPI</option>
+            <option value="envelope">✉️ Envelope</option>
           </select>
         </div>
 
