@@ -108,6 +108,10 @@ export const deleteGuest = async (req, res) => {
       return res.status(404).json({ success: false, message: "Guest not found" });
     }
 
+    // Also delete associated contribution records
+    const Contribution = (await import("../models/Contribution.js")).default;
+    await Contribution.deleteMany({ guestId });
+
     res.status(200).json({ success: true, message: "Guest deleted" });
   } catch (error) {
     console.error("Delete guest error:", error);
