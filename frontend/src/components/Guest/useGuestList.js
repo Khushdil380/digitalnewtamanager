@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import api from "../../utils/api";
 
 const useGuestList = (weddingId) => {
-  const [guests, setGuests] = useState([]);
+  const [allGuests, setAllGuests] = useState([]);
   const [filteredGuests, setFilteredGuests] = useState([]);
+  const [deletedGuests, setDeletedGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,6 +12,9 @@ const useGuestList = (weddingId) => {
   const [groupBy, setGroupBy] = useState("none");
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  // Active guests (not deleted)
+  const guests = allGuests.filter((g) => !g.isDeleted);
 
   useEffect(() => {
     fetchGuests();
@@ -20,13 +24,15 @@ const useGuestList = (weddingId) => {
   useEffect(() => {
     applyFiltersAndSort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [guests, searchQuery, sortBy, groupBy]);
+  }, [allGuests, searchQuery, sortBy, groupBy]);
 
   const fetchGuests = async () => {
     try {
       setLoading(true);
       const { data } = await api.get(`/api/guests/wedding/${weddingId}`);
-      setGuests(data.guests || []);
+      const all = data.guests || [];
+      setAllGuests(all);
+      setDeletedGuests(all.filter((g) => g.isDeleted));
       setError("");
     } catch (err) {
       setError("Failed to load guests");
@@ -36,7 +42,7 @@ const useGuestList = (weddingId) => {
   };
 
   const applyFiltersAndSort = () => {
-    let result = [...guests];
+    let result = allGuests.filter((g) => !g.isDeleted);
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -53,7 +59,7 @@ const useGuestList = (weddingId) => {
       case "priority": result.sort((a, b) => a.priority - b.priority); break;
       case "village": result.sort((a, b) => a.village.localeCompare(b.village)); break;
       case "addedEarlier": result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); break;
-      case "addedWeddingDay": result = result.filter((g) => g.addedOn === "onWeddingDay"); break;
+      case "addedWeddingDay": result = result.filter((g) => g.addedOn === "wedding"); break;
       case "attended": result = result.filter((g) => g.attended === true); break;
       case "notAttended": result = result.filter((g) => g.attended !== true); break;
       case "amount": result.sort((a, b) => (b.amount || 0) - (a.amount || 0)); break;
@@ -70,7 +76,7 @@ const useGuestList = (weddingId) => {
     if (window.confirm("Are you sure you want to delete this guest?")) {
       try {
         await api.delete(`/api/guests/${guestId}`);
-        setGuests(guests.filter((g) => g._id !== guestId));
+        setAllGuests(allGuests.map((g) => g._id === guestId ? { ...g, isDeleted: true, attended: false, amount: 0, paymentType: null, attendedBy: null } : g));
       } catch (err) {
         setError("Failed to delete guest");
       }
@@ -98,7 +104,7 @@ const useGuestList = (weddingId) => {
   };
 
   return {
-    guests, filteredGuests, loading, error, user,
+    guests, filteredGuests, deletedGuests, loading, error, user,
     searchQuery, setSearchQuery, sortBy, setSortBy, groupBy, setGroupBy,
     fetchGuests, deleteGuest, clearFilters, groupedGuests,
   };

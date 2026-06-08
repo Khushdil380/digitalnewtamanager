@@ -74,6 +74,11 @@ const guestSchema = new mongoose.Schema(
       enum: ["cash", "upi", "envelope", null],
       default: null,
     },
+    // Soft delete flag
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

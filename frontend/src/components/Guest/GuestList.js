@@ -18,7 +18,7 @@ const isAfterWeddingDay = (weddingDate) => {
 
 const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null }) => {
   const {
-    guests, filteredGuests, loading, error, user,
+    guests, filteredGuests, deletedGuests, loading, error, user,
     searchQuery, setSearchQuery, sortBy, setSortBy, groupBy, setGroupBy,
     fetchGuests, deleteGuest, clearFilters, groupedGuests,
   } = useGuestList(weddingId);
@@ -101,6 +101,20 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
           <span>👥 Invited/Attended: {guests.length}/{guests.filter((g) => g.attended).length}</span>
           <span>📊 Showing: {filteredGuests.length}</span>
         </div>
+
+        {deletedGuests.length > 0 && (
+          <div className="deleted-guests-section">
+            <div className="deleted-header">🗑️ Deleted ({deletedGuests.length})</div>
+            <div className="deleted-list">
+              {deletedGuests.map((guest) => (
+                <div key={guest._id} className="deleted-guest-row">
+                  <span className="deleted-name">{guest.name}</span>
+                  <span className="deleted-village">{guest.village}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

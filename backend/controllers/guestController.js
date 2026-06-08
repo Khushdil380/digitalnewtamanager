@@ -57,7 +57,7 @@ export const getGuestsByWeddingId = async (req, res) => {
     }
 
     const guests = await Guest.find({ weddingId })
-      .select("name village mobileNumber tag priority addedOn attended attendedBy amount paymentType createdAt")
+      .select("name village mobileNumber tag priority addedOn attended attendedBy amount paymentType isDeleted createdAt")
       .lean()
       .sort({ createdAt: -1 });
 
@@ -103,12 +103,20 @@ export const deleteGuest = async (req, res) => {
       return res.status(400).json({ success: false, message: "guestId is required" });
     }
 
-    const guest = await Guest.findByIdAndDelete(guestId);
+    const guest = await Guest.findById(guestId);
     if (!guest) {
       return res.status(404).json({ success: false, message: "Guest not found" });
     }
 
-    // Also delete associated contribution records
+    // Soft delete — mark as deleted, don't remove from DB
+    guest.isDeleted = true;
+    guest.attended = false;
+    guest.amount = 0;
+    guest.paymentType = null;
+    guest.attendedBy = null;
+    await guest.save();
+
+    // Delete associated contribution records so stats stay accurate
     const Contribution = (await import("../models/Contribution.js")).default;
     await Contribution.deleteMany({ guestId });
 
