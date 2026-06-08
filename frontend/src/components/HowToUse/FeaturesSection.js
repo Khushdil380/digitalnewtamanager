@@ -50,6 +50,18 @@ const features = [
     desc: "शादी के दिन live animated progress bar — दिखाता है कि कितने % मेहमान आ चुके (attended/total). हर record के बाद real-time update।",
     howTo: "Wedding Day page पर automatically दिखता है — कोई setup required नहीं।",
   },
+  {
+    icon: "🗑️",
+    title: "Soft Delete (No Data Loss)",
+    desc: "Guest delete करने पर data permanently नहीं हटता। Deleted guests एक collapsible section में दिखते हैं — अगर गलती से delete हुआ तो reference बना रहता है।",
+    howTo: "Guest List में Delete button → guest 'Deleted' section में चला जाता है। Stats और suggestions में count नहीं होता।",
+  },
+  {
+    icon: "🔒",
+    title: "Auto Logout (2 Hours)",
+    desc: "Security के लिए 2 घंटे inactivity के बाद automatic logout हो जाता है। Active use करते रहें तो session जारी रहता है।",
+    howTo: "Automatic — कोई setting नहीं करनी। 2 घंटे बाद page open करने पर login page दिखेगा।",
+  },
 ];
 
 const FeaturesSection = () => {

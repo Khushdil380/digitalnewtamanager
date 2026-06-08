@@ -34,6 +34,7 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - Guests added on wedding day are automatically labeled "Wedding Day"
 - **Duplicate detection** — warns when same name + village already exists, with "Add Anyway" (numbered) or "Edit Name" options
 - **Name suggestions** — shows existing guest names while typing for quick reference
+- **Soft delete** — deleted guests are not permanently removed; shown in a collapsible section for reference. Excluded from stats, suggestions, and counts
 
 ### 💰 Contribution Recording (Wedding Day)
 - Autocomplete name and village from guest list
@@ -90,6 +91,10 @@ In Indian weddings — especially in rural and middle-class families — a desig
 
 ### 🔄 Keep-Alive
 - Daily cron job pings the backend to keep MongoDB Atlas M0 active
+
+### 🔒 Security
+- Auto-logout after 2 hours of inactivity
+- JWT-based session management
 
 ---
 
