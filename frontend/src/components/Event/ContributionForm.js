@@ -13,7 +13,15 @@ const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName
   } = useContributionForm(weddingId, userId, onContributionRecorded);
 
   const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
-  const [smsCount, setSmsCount] = useState(() => parseInt(localStorage.getItem("smsCount") || "0"));
+  const [smsCount, setSmsCount] = useState(() => {
+    const today = new Date().toDateString();
+    if (localStorage.getItem("smsCountDate") !== today) {
+      localStorage.setItem("smsCount", "0");
+      localStorage.setItem("smsCountDate", today);
+      return 0;
+    }
+    return parseInt(localStorage.getItem("smsCount") || "0");
+  });
   const [smsConfigured, setSmsConfigured] = useState(false);
   const [smsWarning, setSmsWarning] = useState("");
   const [showMsgEditor, setShowMsgEditor] = useState(false);

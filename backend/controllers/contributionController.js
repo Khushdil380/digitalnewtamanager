@@ -27,7 +27,16 @@ export const recordContribution = async (req, res) => {
       givenBy: givenBy || "personally",
     });
 
-    await contribution.save();
+    // Upsert: if contribution already exists for this guest+wedding, update it
+    const existing = await Contribution.findOne({ weddingId, guestId });
+    if (existing) {
+      existing.amount = finalAmount;
+      existing.paymentType = paymentType || "cash";
+      existing.givenBy = givenBy || "personally";
+      await existing.save();
+    } else {
+      await contribution.save();
+    }
 
     // Update guest record — mark as attended with contribution details
     await Guest.findByIdAndUpdate(guestId, {

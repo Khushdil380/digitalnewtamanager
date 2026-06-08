@@ -144,8 +144,14 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
             const thankMsg = customMsg.replace(/\{name\}/g, formData.guestName);
             api.post("/api/sms/send", { userId, to: mobile, message: thankMsg })
               .then(() => {
-                const count = parseInt(localStorage.getItem("smsCount") || "0") + 1;
-                localStorage.setItem("smsCount", count.toString());
+                const today = new Date().toDateString();
+                if (localStorage.getItem("smsCountDate") !== today) {
+                  localStorage.setItem("smsCount", "1");
+                  localStorage.setItem("smsCountDate", today);
+                } else {
+                  const count = parseInt(localStorage.getItem("smsCount") || "0") + 1;
+                  localStorage.setItem("smsCount", count.toString());
+                }
                 window.dispatchEvent(new Event("smsCountUpdated"));
               })
               .catch(() => {});
