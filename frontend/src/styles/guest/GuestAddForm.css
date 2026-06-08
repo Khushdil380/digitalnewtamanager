@@ -215,42 +215,59 @@
 
 @media (max-width: 768px) {
   .inline-form {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 0.35rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
     padding: 0.5rem;
     align-items: center;
   }
 
-  .inline-form .input-with-suggestions {
-    grid-column: 1;
-  }
-
   .inline-form input,
   .inline-form select {
-    width: 100%;
-    font-size: 0.82rem;
-    padding: 0.45rem 0.5rem;
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+
+  /* Row 1: Guest Name (60%) + Village (37%) */
+  .inline-form .input-with-suggestions {
+    width: 59%;
+    flex: none;
+  }
+
+  .inline-form input[placeholder="📍 Village"] {
+    width: 37%;
+    flex: none;
+  }
+
+  /* Row 2: Mobile (35%) + Tag (32%) + Priority (28%) */
+  .inline-form input[type="tel"] {
+    width: 35%;
+    flex: none;
+  }
+
+  .inline-form select {
+    width: 32%;
+    flex: none;
   }
 
   .inline-form .priority-inline {
-    grid-column: span 1;
-    justify-content: flex-start;
-    gap: 0.6rem;
+    width: 28%;
+    flex: none;
+    justify-content: center;
+    gap: 0.3rem;
   }
 
+  /* Button row */
   .add-guest-submit-btn {
     width: 78%;
-    margin: 0 auto;
-    padding: 0.5rem;
-    grid-column: 1 / -1;
+    margin: 0.2rem auto 0;
+    padding: 0.45rem;
   }
 
   .cancel-edit-btn {
     width: 78%;
     margin: 0 auto;
-    padding: 0.5rem;
-    grid-column: 1 / -1;
+    padding: 0.45rem;
   }
 
   .duplicate-popup-box {
