@@ -2,7 +2,7 @@ import React from "react";
 import "../../styles/guest/GuestCard.css";
 
 const TAG_COLORS = {
-  friend: "#ff6b9d", family: "#c41e3a", relative: "#9b2c7a", neighbour: "#ffc0cb", other: "#808080",
+  friend: "#16a34a", family: "#9b2c7a", relative: "#e75480", neighbour: "#c41e3a", other: "#808080",
 };
 
 const GuestCard = ({ guest, onEditClick, onDeleteClick, isDeleted = false }) => {
