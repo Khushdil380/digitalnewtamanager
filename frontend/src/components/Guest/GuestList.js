@@ -30,6 +30,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
   });
 
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const [showDeleted, setShowDeleted] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => { setVisibleCount(BATCH_SIZE); }, [searchQuery, sortBy, groupBy]);
@@ -104,12 +105,18 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
 
         {deletedGuests.length > 0 && (
           <div className="deleted-guests-section">
-            <div className="deleted-header">🗑️ Deleted ({deletedGuests.length})</div>
-            <div className="guests-list deleted-list">
-              {deletedGuests.map((guest) => (
-                <GuestCard key={guest._id} guest={guest} isDeleted />
-              ))}
-            </div>
+            <button className="deleted-toggle" onClick={() => setShowDeleted(!showDeleted)}>
+              🗑️ Deleted ({deletedGuests.length}) <span className={`deleted-arrow ${showDeleted ? "open" : ""}`}>▾</span>
+            </button>
+            {showDeleted && (
+              <div className="deleted-list-scroll">
+                <div className="guests-list">
+                  {deletedGuests.map((guest) => (
+                    <GuestCard key={guest._id} guest={guest} isDeleted />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

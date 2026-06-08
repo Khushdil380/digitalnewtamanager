@@ -128,17 +128,40 @@
 /* Deleted Guests Section */
 .deleted-guests-section {
   border-top: 1px dashed rgba(239, 68, 68, 0.3);
-  padding: 0.4rem 0.75rem;
   flex-shrink: 0;
-  max-height: 150px;
-  overflow-y: auto;
 }
 
-.deleted-header {
+.deleted-toggle {
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  background: none;
+  border: none;
   font-size: 0.72rem;
   font-weight: 600;
   color: #ef4444;
-  margin-bottom: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all var(--transition);
+}
+
+.deleted-toggle:hover {
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.deleted-arrow {
+  transition: transform 0.2s;
+}
+
+.deleted-arrow.open {
+  transform: rotate(180deg);
+}
+
+.deleted-list-scroll {
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 0 0.75rem 0.4rem;
 }
 
 @media (max-width: 768px) {
