@@ -22,18 +22,20 @@ const GuestCard = ({ guest, onEditClick, onDeleteClick, isDeleted = false }) => 
       <div className="guest-attended">{guest.attended ? "✅" : "❌"}</div>
       <div className="guest-amount">₹{(guest.amount || 0).toLocaleString()}</div>
       <div className="guest-payment">
-        {guest.paymentType === "cash" && "💵"}
-        {guest.paymentType === "upi" && "🔗"}
-        {guest.paymentType === "envelope" && "✉️"}
+        {guest.paymentType === "cash" && "Cash"}
+        {guest.paymentType === "upi" && "UPI"}
+        {guest.paymentType === "envelope" && "Envelope"}
         {!guest.paymentType && "—"}
       </div>
       <div className="guest-given-by">
-        {guest.attendedBy === "personally" && "🧑"}
-        {guest.attendedBy === "someone" && "👥"}
+        {guest.attendedBy === "personally" && "Personally"}
+        {guest.attendedBy === "someone" && "By Someone"}
         {!guest.attendedBy && "—"}
       </div>
-      <div className="guest-added">
-        {guest.addedOn === "wedding" ? "👰" : "📋"}
+      <div className="guest-added-on">
+        {guest.addedOn === "wedding" ? "Wedding" : "Earlier"}
+      </div>
+      <div className="guest-date">
         <span className="date-badge">
           {guest.createdAt ? new Date(guest.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : ""}
         </span>
