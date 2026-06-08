@@ -105,12 +105,9 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
         {deletedGuests.length > 0 && (
           <div className="deleted-guests-section">
             <div className="deleted-header">🗑️ Deleted ({deletedGuests.length})</div>
-            <div className="deleted-list">
+            <div className="guests-list deleted-list">
               {deletedGuests.map((guest) => (
-                <div key={guest._id} className="deleted-guest-row">
-                  <span className="deleted-name">{guest.name}</span>
-                  <span className="deleted-village">{guest.village}</span>
-                </div>
+                <GuestCard key={guest._id} guest={guest} isDeleted />
               ))}
             </div>
           </div>

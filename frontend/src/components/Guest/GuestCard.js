@@ -5,11 +5,11 @@ const TAG_COLORS = {
   friend: "#ff6b9d", family: "#c41e3a", relative: "#9b2c7a", neighbour: "#ffc0cb", other: "#808080",
 };
 
-const GuestCard = ({ guest, onEditClick, onDeleteClick }) => {
+const GuestCard = ({ guest, onEditClick, onDeleteClick, isDeleted = false }) => {
   const tagColor = TAG_COLORS[guest.tag] || TAG_COLORS.other;
 
   return (
-    <div className="guest-card-row">
+    <div className={`guest-card-row ${isDeleted ? "guest-deleted" : ""}`}>
       <div className="guest-name">👤 {guest.name}</div>
       <div className="guest-village">📍 {guest.village}</div>
       <div className="guest-mobile">📱 {guest.mobileNumber || "---"}</div>
@@ -38,10 +38,12 @@ const GuestCard = ({ guest, onEditClick, onDeleteClick }) => {
           {guest.createdAt ? new Date(guest.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : ""}
         </span>
       </div>
-      <div className="guest-actions">
-        <button className="edit-guest-btn" onClick={() => onEditClick(guest)} title="Edit">✏️</button>
-        <button className="delete-guest-btn" onClick={() => onDeleteClick(guest._id)} title="Delete">🗑️</button>
-      </div>
+      {!isDeleted && (
+        <div className="guest-actions">
+          <button className="edit-guest-btn" onClick={() => onEditClick(guest)} title="Edit">✏️</button>
+          <button className="delete-guest-btn" onClick={() => onDeleteClick(guest._id)} title="Delete">🗑️</button>
+        </div>
+      )}
     </div>
   );
 };

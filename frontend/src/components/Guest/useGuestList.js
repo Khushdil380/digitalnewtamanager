@@ -4,7 +4,6 @@ import api from "../../utils/api";
 const useGuestList = (weddingId) => {
   const [allGuests, setAllGuests] = useState([]);
   const [filteredGuests, setFilteredGuests] = useState([]);
-  const [deletedGuests, setDeletedGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +14,7 @@ const useGuestList = (weddingId) => {
 
   // Active guests (not deleted)
   const guests = allGuests.filter((g) => !g.isDeleted);
+  const deletedGuests = allGuests.filter((g) => g.isDeleted);
 
   useEffect(() => {
     fetchGuests();
@@ -30,9 +30,7 @@ const useGuestList = (weddingId) => {
     try {
       setLoading(true);
       const { data } = await api.get(`/api/guests/wedding/${weddingId}`);
-      const all = data.guests || [];
-      setAllGuests(all);
-      setDeletedGuests(all.filter((g) => g.isDeleted));
+      setAllGuests(data.guests || []);
       setError("");
     } catch (err) {
       setError("Failed to load guests");

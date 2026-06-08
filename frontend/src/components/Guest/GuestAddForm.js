@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../../utils/api";
+import "../../styles/guest/GuestAddForm.css";
 
 const GuestAddForm = ({ weddingId, user, onGuestAdded, onClose, guests }) => {
   const [name, setName] = useState("");
