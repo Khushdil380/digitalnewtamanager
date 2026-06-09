@@ -45,8 +45,8 @@
   }
 
   .wedding-list > * {
-    min-width: 80vw;
-    max-width: 80vw;
+    min-width: 65vw;
+    max-width: 65vw;
     scroll-snap-align: center;
     flex-shrink: 0;
   }
