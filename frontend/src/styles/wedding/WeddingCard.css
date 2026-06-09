@@ -1,118 +1,111 @@
 .wedding-card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 0.5rem 0.75rem;
-  box-shadow: var(--shadow);
-  margin-bottom: 0.5rem;
-  animation: slideInCard 0.3s ease-out;
-}
-
-@keyframes slideInCard {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.wedding-card-row {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  flex-wrap: nowrap;
+  text-align: center;
+  padding: 1.5rem 1rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+  background: linear-gradient(180deg, rgba(var(--primary-rgb), 0.04) 0%, rgba(var(--primary-rgb), 0.01) 100%);
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.06);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-.wedding-couple {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: 200px;
-  flex-shrink: 0;
+.wedding-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation: shimmer 3s ease-in-out infinite;
 }
 
-.couple-icon { font-size: 1rem; flex-shrink: 0; }
-
-.couple-name {
-  font-weight: 600;
-  color: var(--primary);
-  font-size: 0.85rem;
-  white-space: nowrap;
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
-.connector { color: #888; font-size: 0.7rem; flex-shrink: 0; }
-
-.detail-item {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.8rem;
-  color: #666;
-  white-space: nowrap;
-  flex-shrink: 0;
+.wedding-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(var(--primary-rgb), 0.14);
+  border-color: rgba(var(--primary-rgb), 0.3);
 }
 
-.detail-icon { font-size: 0.9rem; }
-
-.wedding-card-buttons {
-  display: flex;
-  gap: 0.3rem;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.wedding-edit-btn {
+.wc-edit-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
   background: none;
   border: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: var(--radius);
-  transition: all var(--transition);
-  flex-shrink: 0;
+  opacity: 0.4;
+  transition: all 0.2s;
 }
 
-.wedding-edit-btn:hover {
-  background: rgba(var(--primary-rgb), 0.1);
+.wc-edit-btn:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.wc-couple {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.wc-bride,
+.wc-groom {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.wc-amp {
+  font-size: 0.75rem;
+  color: rgba(var(--primary-rgb), 0.5);
+  font-weight: 400;
+}
+
+.wc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.wc-detail {
+  font-size: 0.72rem;
+  color: #666;
+}
+
+.wc-actions {
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.wc-actions button {
+  flex: 1;
 }
 
 @media (max-width: 768px) {
   .wedding-card {
-    padding: 0.5rem;
+    padding: 1.25rem 0.75rem 0.75rem;
   }
 
-  .wedding-card-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto auto;
-    gap: 0.3rem 0.5rem;
-    align-items: center;
+  .wc-bride,
+  .wc-groom {
+    font-size: 0.88rem;
   }
 
-  /* Row 1: Couple names (left) + Edit button (right) */
-  .wedding-couple {
-    grid-column: 1;
-    grid-row: 1;
-    min-width: 0;
-  }
-
-  .wedding-edit-btn {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  /* Row 2: Details (venue, date, guest count) */
-  .detail-item {
-    grid-row: 2;
-    font-size: 0.75rem;
-  }
-
-  /* Row 3: Action buttons full width */
-  .wedding-card-buttons {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    margin-left: 0;
-    margin-top: 0.2rem;
-  }
-
-  .wedding-card-buttons button {
-    flex: 1;
+  .wc-detail {
+    font-size: 0.68rem;
   }
 }

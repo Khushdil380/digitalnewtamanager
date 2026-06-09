@@ -1,8 +1,9 @@
 .wedding-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
   width: 100%;
+  padding: 0.5rem 0;
 }
 
 .wedding-list-empty {
@@ -29,11 +30,8 @@
 }
 
 @media (max-width: 768px) {
-  .wedding-list-empty {
-    padding: 1.5rem 1rem;
-  }
-
-  .empty-icon {
-    font-size: 2.5rem;
+  .wedding-list {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
   }
 }
