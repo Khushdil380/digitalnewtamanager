@@ -90,18 +90,19 @@
 
 .bulk-sms-trigger {
   background: none;
-  border: 1px solid var(--primary);
-  border-radius: var(--radius);
+  border: none;
   font-size: 0.85rem;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem;
   transition: all var(--transition);
   color: var(--primary);
+  display: flex;
+  align-items: center;
 }
 
 .bulk-sms-trigger:hover {
-  background: rgba(var(--primary-rgb), 0.1);
-  transform: scale(1.1);
+  transform: scale(1.15);
+  opacity: 0.8;
 }
 
 .error-message {
