@@ -62,6 +62,12 @@ const features = [
     desc: "Security के लिए 2 घंटे inactivity के बाद automatic logout हो जाता है। Active use करते रहें तो session जारी रहता है।",
     howTo: "Automatic — कोई setting नहीं करनी। 2 घंटे बाद page open करने पर login page दिखेगा।",
   },
+  {
+    icon: "📨",
+    title: "Bulk SMS (Card/Reminder/Custom)",
+    desc: "Guest List से bulk messages भेजें — Card Distribution (एक बार), Reminder (बार-बार), या Custom message। हर guest को track किया जाता है कि किसे क्या भेजा।",
+    howTo: "Guest List → नीचे 📨 icon click → Message type चुनें → Recipients select करें (All/Tag/Individual/Search) → Send। Card Distribution सिर्फ एक बार, Reminder और Custom कितनी बार भी।",
+  },
 ];
 
 const FeaturesSection = () => {

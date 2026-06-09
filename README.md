@@ -70,6 +70,15 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - Sent message counter badge for tracking daily 100 SMS limit
 - Only sends when: toggle ON + attended personally + guest has mobile number
 
+### 📨 Bulk SMS (Card Distribution / Reminder / Custom)
+- Send bulk messages from the Guest List (📨 icon in stats bar)
+- Three message types: Card Distribution (one-time only), Reminder (repeatable), Custom (repeatable)
+- Default Hindi templates with editable placeholders
+- Select recipients: All / by Tag / individual / search
+- Duplicate tracking: Card messages blocked if already sent to that guest
+- Sent indicators (📨⏰✍️) shown per guest in recipient list
+- Alphabetically sorted recipients with search
+
 ### 📲 QR Code (UPI Payments)
 - Default QR links to a beautiful animated thank-you page for the couple
 - Set your UPI ID once — it persists across sessions
@@ -118,8 +127,8 @@ In Indian weddings — especially in rural and middle-class families — a desig
 ```
 digitalnewtamanager/
 ├── backend/
-│   ├── controllers/          # Auth, Wedding, Guest, Contribution, Note, SMS
-│   ├── models/               # User, Wedding, Guest, Contribution, OTP, Note
+│   ├── controllers/          # Auth, Wedding, Guest, Contribution, Note, SMS, BulkSms
+│   ├── models/               # User, Wedding, Guest, Contribution, OTP, Note, SmsLog
 │   ├── routes/               # Express route definitions
 │   ├── utils/                # Email service, helpers
 │   └── server.js
@@ -127,6 +136,7 @@ digitalnewtamanager/
 │   └── src/
 │       ├── components/
 │       │   ├── AuthModal/    # Login, Register, OTP, Forgot, Reset
+│       │   ├── BulkSms/     # BulkSmsModal, RecipientSelector, MessageTemplates
 │       │   ├── Celebration/  # CelebrationBurst (emoji rain)
 │       │   ├── common/       # Modal, Button, InputField, ThemeSwitcher, AnimatedBackground
 │       │   ├── Dashboard/    # DashboardHeader
