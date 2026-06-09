@@ -78,8 +78,8 @@ const BulkSmsModal = ({ isOpen, onClose, weddingId, guests }) => {
               className="bulk-sms-textarea"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              rows={6}
-              maxLength={1000}
+              rows={14}
+              maxLength={1500}
             />
           </div>
 

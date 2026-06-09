@@ -90,16 +90,17 @@
 
 .bulk-sms-trigger {
   background: none;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--primary);
   border-radius: var(--radius);
   font-size: 0.85rem;
   cursor: pointer;
   padding: 0.2rem 0.4rem;
   transition: all var(--transition);
+  color: var(--primary);
 }
 
 .bulk-sms-trigger:hover {
-  border-color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.1);
   transform: scale(1.1);
 }
 
