@@ -78,6 +78,7 @@
   gap: 0.25rem;
   flex-wrap: wrap;
   margin-bottom: 0.4rem;
+  align-items: center;
 }
 
 .recipient-action-btn {
@@ -88,6 +89,7 @@
   font-size: 0.65rem;
   cursor: pointer;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .recipient-action-btn:hover {
@@ -98,6 +100,23 @@
 .recipient-action-btn.clear {
   color: #ef4444;
   border-color: rgba(239, 68, 68, 0.3);
+}
+
+.recipient-search {
+  flex: 1;
+  min-width: 60px;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-family: inherit;
+  transition: all var(--transition);
+  background: transparent;
+}
+
+.recipient-search:focus {
+  outline: none;
+  border-color: var(--primary);
 }
 
 .recipient-list {

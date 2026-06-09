@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messageType }) => {
-  const eligibleGuests = guests.filter((g) => g.mobileNumber && !g.isDeleted);
+  const [search, setSearch] = useState("");
+
+  const eligibleGuests = guests
+    .filter((g) => g.mobileNumber && !g.isDeleted)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const filteredGuests = search.trim()
+    ? eligibleGuests.filter((g) => g.name.toLowerCase().includes(search.toLowerCase()))
+    : eligibleGuests;
 
   const alreadySent = new Set(
     smsLogs.filter((l) => l.messageType === messageType).map((l) => l.guestId)
@@ -14,11 +22,11 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
   };
 
   const selectAll = () => {
-    setSelectedIds(eligibleGuests.filter((g) => !alreadySent.has(g._id)).map((g) => g._id));
+    setSelectedIds(filteredGuests.filter((g) => !alreadySent.has(g._id)).map((g) => g._id));
   };
 
   const selectByTag = (tag) => {
-    setSelectedIds(eligibleGuests.filter((g) => g.tag === tag && !alreadySent.has(g._id)).map((g) => g._id));
+    setSelectedIds(filteredGuests.filter((g) => g.tag === tag && !alreadySent.has(g._id)).map((g) => g._id));
   };
 
   const clearAll = () => setSelectedIds([]);
@@ -32,9 +40,16 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
         <button type="button" onClick={() => selectByTag("relative")} className="recipient-action-btn">Relative</button>
         <button type="button" onClick={() => selectByTag("neighbour")} className="recipient-action-btn">Neighbour</button>
         <button type="button" onClick={clearAll} className="recipient-action-btn clear">Clear</button>
+        <input
+          type="text"
+          className="recipient-search"
+          placeholder="🔍 Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       <div className="recipient-list">
-        {eligibleGuests.map((guest) => {
+        {filteredGuests.map((guest) => {
           const sent = alreadySent.has(guest._id);
           return (
             <label key={guest._id} className={`recipient-item ${sent ? "already-sent" : ""}`}>
@@ -50,7 +65,7 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
             </label>
           );
         })}
-        {eligibleGuests.length === 0 && <p className="no-recipients">No guests with mobile numbers</p>}
+        {filteredGuests.length === 0 && <p className="no-recipients">No guests found</p>}
       </div>
       <div className="recipient-count">
         Selected: {selectedIds.length} / {eligibleGuests.filter((g) => !alreadySent.has(g._id)).length} eligible
