@@ -33,21 +33,24 @@ export const sendBulkSms = async (req, res) => {
       .select("name mobileNumber")
       .lean();
 
-    // Check already sent logs for this type
+    // Check already sent logs — only block duplicates for "card" type
     const existingLogs = await SmsLog.find({
       weddingId,
       guestId: { $in: guestIds },
-      messageType,
-    }).select("guestId").lean();
+      ...(messageType === "card" ? { messageType: "card" } : {}),
+    }).select("guestId messageType").lean();
 
-    const alreadySent = new Set(existingLogs.map((l) => l.guestId.toString()));
+    const alreadySentCard = new Set(
+      existingLogs.filter((l) => l.messageType === "card").map((l) => l.guestId.toString())
+    );
 
     let sentCount = 0;
     let skippedCount = 0;
     const errors = [];
 
     for (const guest of guests) {
-      if (alreadySent.has(guest._id.toString())) {
+      // Only skip for card type (one-time only)
+      if (messageType === "card" && alreadySentCard.has(guest._id.toString())) {
         skippedCount++;
         continue;
       }

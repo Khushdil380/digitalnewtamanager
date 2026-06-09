@@ -151,16 +151,31 @@
   width: 13px;
   height: 13px;
   accent-color: var(--primary);
+  flex-shrink: 0;
 }
 
 .recipient-name {
   font-weight: 500;
   color: var(--primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .recipient-village {
   color: #888;
   font-size: 0.65rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recipient-icons {
+  margin-left: auto;
+  display: flex;
+  gap: 0.15rem;
+  flex-shrink: 0;
+  font-size: 0.6rem;
 }
 
 .sent-badge {

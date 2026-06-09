@@ -11,9 +11,18 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
     ? eligibleGuests.filter((g) => g.name.toLowerCase().includes(search.toLowerCase()))
     : eligibleGuests;
 
-  const alreadySent = new Set(
-    smsLogs.filter((l) => l.messageType === messageType).map((l) => l.guestId)
+  // For card type: check if already sent (block duplicate)
+  const cardSent = new Set(
+    smsLogs.filter((l) => l.messageType === "card").map((l) => l.guestId)
   );
+  const reminderSent = new Set(
+    smsLogs.filter((l) => l.messageType === "reminder").map((l) => l.guestId)
+  );
+  const customSent = new Set(
+    smsLogs.filter((l) => l.messageType === "custom").map((l) => l.guestId)
+  );
+
+  const isDisabled = (guestId) => messageType === "card" && cardSent.has(guestId);
 
   const toggleGuest = (id) => {
     setSelectedIds((prev) =>
@@ -22,11 +31,11 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
   };
 
   const selectAll = () => {
-    setSelectedIds(filteredGuests.filter((g) => !alreadySent.has(g._id)).map((g) => g._id));
+    setSelectedIds(filteredGuests.filter((g) => !isDisabled(g._id)).map((g) => g._id));
   };
 
   const selectByTag = (tag) => {
-    setSelectedIds(filteredGuests.filter((g) => g.tag === tag && !alreadySent.has(g._id)).map((g) => g._id));
+    setSelectedIds(filteredGuests.filter((g) => g.tag === tag && !isDisabled(g._id)).map((g) => g._id));
   };
 
   const clearAll = () => setSelectedIds([]);
@@ -50,25 +59,29 @@ const RecipientSelector = ({ guests, selectedIds, setSelectedIds, smsLogs, messa
       </div>
       <div className="recipient-list">
         {filteredGuests.map((guest) => {
-          const sent = alreadySent.has(guest._id);
+          const disabled = isDisabled(guest._id);
           return (
-            <label key={guest._id} className={`recipient-item ${sent ? "already-sent" : ""}`}>
+            <label key={guest._id} className={`recipient-item ${disabled ? "already-sent" : ""}`}>
               <input
                 type="checkbox"
                 checked={selectedIds.includes(guest._id)}
                 onChange={() => toggleGuest(guest._id)}
-                disabled={sent}
+                disabled={disabled}
               />
               <span className="recipient-name">{guest.name}</span>
               <span className="recipient-village">{guest.village}</span>
-              {sent && <span className="sent-badge">✓ Sent</span>}
+              <span className="recipient-icons">
+                {cardSent.has(guest._id) && <span className="icon-card" title="Card sent">📨</span>}
+                {reminderSent.has(guest._id) && <span className="icon-reminder" title="Reminder sent">⏰</span>}
+                {customSent.has(guest._id) && <span className="icon-custom" title="Custom sent">✍️</span>}
+              </span>
             </label>
           );
         })}
         {filteredGuests.length === 0 && <p className="no-recipients">No guests found</p>}
       </div>
       <div className="recipient-count">
-        Selected: {selectedIds.length} / {eligibleGuests.filter((g) => !alreadySent.has(g._id)).length} eligible
+        Selected: {selectedIds.length} / {eligibleGuests.filter((g) => !isDisabled(g._id)).length} eligible
       </div>
     </div>
   );
