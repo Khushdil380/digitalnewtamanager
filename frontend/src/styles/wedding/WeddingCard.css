@@ -76,13 +76,13 @@
 }
 
 .wc-person {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--primary);
 }
 
 .wc-amp {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: rgba(var(--primary-rgb), 0.5);
   margin: 0.1rem 0;
 }
@@ -115,7 +115,7 @@
 
 .wc-venue,
 .wc-date {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: #555;
   font-weight: 500;
 }
