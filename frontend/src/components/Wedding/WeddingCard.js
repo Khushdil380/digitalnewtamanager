@@ -4,7 +4,14 @@ import { formatDate } from "../../utils/formatDate";
 import Button from "../common/Button";
 import "../../styles/wedding/WeddingCard.css";
 
-const CARD_IMAGES = ["/images/1.svg", "/images/2.svg", "/images/3.svg", "/images/4.svg", "/images/5.svg", "/images/6.svg"];
+const CARD_IMAGES = [
+  `${process.env.PUBLIC_URL}/images/1.svg`,
+  `${process.env.PUBLIC_URL}/images/2.svg`,
+  `${process.env.PUBLIC_URL}/images/3.svg`,
+  `${process.env.PUBLIC_URL}/images/4.svg`,
+  `${process.env.PUBLIC_URL}/images/5.svg`,
+  `${process.env.PUBLIC_URL}/images/6.svg`,
+];
 const CELEBRATION_EMOJIS = ["💍", "💐", "❤️", "🌹", "💒", "🎊"];
 
 export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDeleteClick, onGoToWeddingEvent }) {
