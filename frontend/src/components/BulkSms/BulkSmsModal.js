@@ -24,10 +24,16 @@ const BulkSmsModal = ({ isOpen, onClose, weddingId, guests }) => {
   }, [isOpen, weddingId]);
 
   useEffect(() => {
-    setMessage(DEFAULT_TEMPLATES[messageType]);
+    const saved = localStorage.getItem(`bulkMsg_${weddingId}_${messageType}`);
+    setMessage(saved || DEFAULT_TEMPLATES[messageType]);
     setSelectedIds([]);
     setResult("");
-  }, [messageType]);
+  }, [messageType, weddingId]);
+
+  const handleMessageChange = (value) => {
+    setMessage(value);
+    localStorage.setItem(`bulkMsg_${weddingId}_${messageType}`, value);
+  };
 
   const handleSend = async () => {
     if (selectedIds.length === 0) { setResult("⚠️ Select at least one recipient"); return; }
@@ -77,7 +83,7 @@ const BulkSmsModal = ({ isOpen, onClose, weddingId, guests }) => {
             <textarea
               className="bulk-sms-textarea"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => handleMessageChange(e.target.value)}
               rows={14}
               maxLength={1500}
             />
