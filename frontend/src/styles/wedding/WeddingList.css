@@ -1,6 +1,6 @@
 .wedding-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
   width: 100%;
   padding: 0.5rem 0;
@@ -37,21 +37,17 @@
     gap: 0.75rem;
     padding: 0.5rem;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .wedding-list > * {
-    min-width: 75vw;
-    max-width: 75vw;
-    scroll-snap-align: center;
-    flex-shrink: 0;
+    scrollbar-width: none;
   }
 
   .wedding-list::-webkit-scrollbar {
-    height: 4px;
+    display: none;
   }
 
-  .wedding-list::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 2px;
+  .wedding-list > * {
+    min-width: 80vw;
+    max-width: 80vw;
+    scroll-snap-align: center;
+    flex-shrink: 0;
   }
 }
