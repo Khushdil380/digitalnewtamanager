@@ -11,7 +11,6 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
   const [guestStats, setGuestStats] = useState({ invited: 0, attended: 0 });
   const [bgIndex, setBgIndex] = useState(() => Math.floor(Math.random() * CARD_IMAGES.length));
 
-  // Cycle background image every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % CARD_IMAGES.length);
@@ -30,7 +29,9 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
   }, [wedding._id, wedding.id]);
 
   return (
-    <div className="wedding-card" style={{ backgroundImage: `url(${CARD_IMAGES[bgIndex]})` }}>
+    <div className="wedding-card">
+      <img src={CARD_IMAGES[bgIndex]} alt="" className="wc-bg-img" loading="lazy" />
+
       <div className="wc-header-strip">
         <span className="wc-stat">👥 {guestStats.invited}/{guestStats.attended}</span>
         <button className="wc-edit-btn" onClick={() => onEditClick(wedding)} title="Edit">✏️</button>
