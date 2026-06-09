@@ -8,6 +8,7 @@ import guestRoutes from "./routes/guestRoutes.js";
 import contributionRoutes from "./routes/contributionRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import smsRoutes from "./routes/smsRoutes.js";
+import bulkSmsRoutes from "./routes/bulkSmsRoutes.js";
 
 dotenv.config();
 
@@ -96,6 +97,7 @@ app.use("/api/guests", guestRoutes);
 app.use("/api/contributions", contributionRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/sms", smsRoutes);
+app.use("/api/bulk-sms", bulkSmsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

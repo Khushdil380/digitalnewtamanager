@@ -80,11 +80,27 @@
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+  align-items: center;
   padding: 0.5rem;
   border-top: 1px solid #eee;
   font-size: 0.75rem;
   color: #666;
   flex-shrink: 0;
+}
+
+.bulk-sms-trigger {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  transition: all var(--transition);
+}
+
+.bulk-sms-trigger:hover {
+  border-color: var(--primary);
+  transform: scale(1.1);
 }
 
 .error-message {

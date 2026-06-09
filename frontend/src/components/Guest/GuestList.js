@@ -3,6 +3,7 @@ import GuestCard from "./GuestCard";
 import GuestFilters from "./GuestFilters";
 import GuestAddForm from "./GuestAddForm";
 import GuestExport from "./GuestExport";
+import BulkSmsModal from "../BulkSms/BulkSmsModal";
 import useGuestList from "./useGuestList";
 import "../../styles/guest/GuestList.css";
 
@@ -31,6 +32,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
 
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const [showDeleted, setShowDeleted] = useState(false);
+  const [showBulkSms, setShowBulkSms] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => { setVisibleCount(BATCH_SIZE); }, [searchQuery, sortBy, groupBy]);
@@ -101,6 +103,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
         <div className="guests-stats">
           <span>👥 Invited/Attended: {guests.length}/{guests.filter((g) => g.attended).length}</span>
           <span>📊 Showing: {filteredGuests.length}</span>
+          <button className="bulk-sms-trigger" onClick={() => setShowBulkSms(true)} title="Bulk SMS">📨</button>
         </div>
 
         {deletedGuests.length > 0 && (
@@ -120,6 +123,13 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
           </div>
         )}
       </div>
+
+      <BulkSmsModal
+        isOpen={showBulkSms}
+        onClose={() => setShowBulkSms(false)}
+        weddingId={weddingId}
+        guests={guests}
+      />
     </div>
   );
 };
