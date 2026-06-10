@@ -1,17 +1,15 @@
 import Guest from "../models/Guest.js";
 import Wedding from "../models/Wedding.js";
+import User from "../models/User.js";
 import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
 
 // Background helper: sync guest to sheet silently
 const backgroundSync = (guest, weddingId) => {
   Wedding.findById(weddingId).then((wedding) => {
     if (!wedding) return;
-    const UserModel = import("../models/User.js").then((m) => m.default);
-    UserModel.then((User) => {
-      User.findById(wedding.userId).then((user) => {
-        if (user) syncGuestToSheet(guest, wedding, user.fullName);
-      }).catch(() => {});
-    });
+    User.findById(wedding.userId).then((user) => {
+      if (user) syncGuestToSheet(guest, wedding, user.fullName);
+    }).catch(() => {});
   }).catch(() => {});
 };
 
@@ -137,12 +135,9 @@ export const deleteGuest = async (req, res) => {
     // Background: remove from Google Sheet
     Wedding.findById(guest.weddingId).then((wedding) => {
       if (!wedding) return;
-      const UserModel = import("../models/User.js").then((m) => m.default);
-      UserModel.then((User) => {
-        User.findById(wedding.userId).then((user) => {
-          if (user) removeGuestFromSheet(guest, wedding, user.fullName);
-        }).catch(() => {});
-      });
+      User.findById(wedding.userId).then((user) => {
+        if (user) removeGuestFromSheet(guest, wedding, user.fullName);
+      }).catch(() => {});
     }).catch(() => {});
 
     // Delete associated contribution records so stats stay accurate
@@ -156,7 +151,6 @@ export const deleteGuest = async (req, res) => {
   }
 };
 
-import User from "../models/User.js";
 import { sendOtpEmail } from "../utils/emailService.js";
 import nodemailer from "nodemailer";
 
