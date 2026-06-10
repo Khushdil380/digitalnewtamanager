@@ -79,25 +79,21 @@ let isConnected = false;
 
 const connectDB = async () => {
   if (isConnected && mongoose.connection.readyState === 1) return;
-  try {
-    await mongoose.connect(MONGODB_URI, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 8000,
-      socketTimeoutMS: 45000,
-      bufferCommands: false,
-    });
-    isConnected = true;
-    console.log("Connected to MongoDB");
-  } catch (err) {
-    isConnected = false;
-    console.error("MongoDB connection error:", err.message);
-  }
+  await mongoose.connect(MONGODB_URI, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+  });
+  isConnected = true;
+  console.log("Connected to MongoDB");
 };
 
 if (MONGODB_URI) {
-  connectDB();
+  connectDB().catch((err) => {
+    isConnected = false;
+    console.error("MongoDB initial connection error:", err.message);
+  });
 
-  // Re-connect on disconnect (handles cold start reconnection)
   mongoose.connection.on("disconnected", () => {
     isConnected = false;
     console.log("MongoDB disconnected, will reconnect on next request");
