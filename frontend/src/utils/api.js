@@ -27,9 +27,10 @@ api.interceptors.response.use(
 
     const isNetworkError = !error.response;
     const isServerColdStart = error.response?.status === 503;
+    const isServerError = error.response?.status === 500;
     const isTimeout = error.code === "ECONNABORTED";
 
-    if (isNetworkError || isServerColdStart || isTimeout) {
+    if (isNetworkError || isServerColdStart || isServerError || isTimeout) {
       config._retried = true;
       // Wait 2 seconds for serverless cold start to finish
       await new Promise((resolve) => setTimeout(resolve, 2000));
