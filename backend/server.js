@@ -73,23 +73,50 @@ app.get("/api/debug/config", (req, res) => {
   });
 });
 
-// Connect to MongoDB with optimized settings
-if (MONGODB_URI) {
-  mongoose
-    .connect(MONGODB_URI, {
+// Connect to MongoDB with optimized settings for serverless
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected && mongoose.connection.readyState === 1) return;
+  try {
+    await mongoose.connect(MONGODB_URI, {
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 8000,
       socketTimeoutMS: 45000,
-    })
-    .then(() => {
-      console.log("Connected to MongoDB");
-    })
-    .catch((err) => {
-      console.error("MongoDB connection error:", err.message);
+      bufferCommands: false,
     });
+    isConnected = true;
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    isConnected = false;
+    console.error("MongoDB connection error:", err.message);
+  }
+};
+
+if (MONGODB_URI) {
+  connectDB();
+
+  // Re-connect on disconnect (handles cold start reconnection)
+  mongoose.connection.on("disconnected", () => {
+    isConnected = false;
+    console.log("MongoDB disconnected, will reconnect on next request");
+  });
 } else {
   console.error("ERROR: MONGODB_URI environment variable is not set!");
 }
+
+// Middleware: ensure DB is connected before processing requests
+app.use(async (req, res, next) => {
+  if (req.path === "/api/health") return next();
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      await connectDB();
+    } catch (err) {
+      return res.status(503).json({ message: "Database temporarily unavailable. Please retry." });
+    }
+  }
+  next();
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/weddings", weddingRoutes);
