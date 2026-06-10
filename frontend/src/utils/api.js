@@ -16,11 +16,22 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Auto-retry on network errors or 503 (cold start / DB not ready)
+// Auto-retry on network errors or 503/500 (cold start / DB not ready)
+// Auto-logout on 401 (expired/invalid token)
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
+
+    // If token is expired/invalid, clear it and reload (auto-logout)
+    const isAuthError = error.response?.status === 401;
+    if (isAuthError && !config.url?.includes("/api/auth/login")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("lastActivity");
+      window.location.reload();
+      return Promise.reject(error);
+    }
 
     // Only retry once, and only for recoverable errors
     if (config._retried) return Promise.reject(error);
