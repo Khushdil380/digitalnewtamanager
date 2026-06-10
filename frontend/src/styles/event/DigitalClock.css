@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+
+.digital-clock {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.clock-digits {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  display: inline-block;
+  width: 2.2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock-separator {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  animation: blink 1s step-end infinite;
+  display: inline-block;
+  width: 0.6ch;
+  text-align: center;
+}
+
+.clock-period {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: 4px;
+  align-self: flex-end;
+  margin-bottom: 2px;
+  display: inline-block;
+  width: 2.5ch;
+  text-align: center;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Hide on mobile */
+@media (max-width: 768px) {
+  .digital-clock {
+    display: none;
+  }
+}

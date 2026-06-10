@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DigitalClock from "./DigitalClock";
 import "../../styles/event/WeddingWishesHeader.css";
 
 const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuestListClick, onCalcClick, onNotesClick }) => {
@@ -11,6 +12,8 @@ const WeddingWishesHeader = ({ brideName, groomName, stats, onBackClick, onGuest
       <h1 className="header-couple-names">
         {brideName} <span className="header-amp">&</span> {groomName}
       </h1>
+
+      <DigitalClock />
 
       <div className="header-actions">
         <button className="header-icon-btn" onClick={onGuestListClick} title="Guest list">👥</button>
