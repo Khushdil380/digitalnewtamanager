@@ -161,7 +161,7 @@ export const fullSyncToSheet = async (guests, wedding, userName) => {
     await sheetsRequest(`${SHEETS_BASE}/values/${clearRange}:clear`, "POST");
 
     // Write all rows
-    const activeGuests = guests.filter((g) => !g.isDeleted);
+    const activeGuests = guests.filter((g) => g.isDeleted !== true);
     if (activeGuests.length === 0) return;
 
     const rows = activeGuests.map((g, i) => [
