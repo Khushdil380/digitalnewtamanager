@@ -100,15 +100,16 @@ const generateText = (wedding, guests, stats) => {
 
 // Send the post-wedding summary email
 export const sendPostWeddingSummary = async (userEmail, userName, wedding, guests) => {
+  const activeGuests = guests.filter((g) => g.isDeleted !== true);
+
   const stats = {
-    attended: guests.filter((g) => g.attended).length,
-    totalAmount: guests.reduce((sum, g) => sum + (g.amount || 0), 0),
-    cashCount: guests.filter((g) => g.paymentType === "cash").length,
-    upiCount: guests.filter((g) => g.paymentType === "upi").length,
-    envelopeCount: guests.filter((g) => g.paymentType === "envelope").length,
+    attended: activeGuests.filter((g) => g.attended).length,
+    totalAmount: activeGuests.reduce((sum, g) => sum + (g.amount || 0), 0),
+    cashCount: activeGuests.filter((g) => g.paymentType === "cash").length,
+    upiCount: activeGuests.filter((g) => g.paymentType === "upi").length,
+    envelopeCount: activeGuests.filter((g) => g.paymentType === "envelope").length,
   };
 
-  const activeGuests = guests.filter((g) => !g.isDeleted);
   const pdfBuffer = await generatePDF(wedding, activeGuests, stats);
   const csvContent = generateCSV(activeGuests);
   const textContent = generateText(wedding, activeGuests, stats);

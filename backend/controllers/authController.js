@@ -244,6 +244,10 @@ export const resetPassword = async (req, res) => {
       { new: true },
     ).select("-password");
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     await OTP.deleteOne({ email: normalizedEmail });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {

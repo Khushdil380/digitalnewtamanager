@@ -1,7 +1,10 @@
 import Guest from "../models/Guest.js";
 import Wedding from "../models/Wedding.js";
 import User from "../models/User.js";
+import Contribution from "../models/Contribution.js";
 import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
+import { sendOtpEmail } from "../utils/emailService.js";
+import nodemailer from "nodemailer";
 
 // Background helper: sync guest to sheet silently
 const backgroundSync = (guest, weddingId) => {
@@ -141,7 +144,6 @@ export const deleteGuest = async (req, res) => {
     }).catch(() => {});
 
     // Delete associated contribution records so stats stay accurate
-    const Contribution = (await import("../models/Contribution.js")).default;
     await Contribution.deleteMany({ guestId });
 
     res.status(200).json({ success: true, message: "Guest deleted" });
@@ -151,9 +153,6 @@ export const deleteGuest = async (req, res) => {
   }
 };
 
-import { sendOtpEmail } from "../utils/emailService.js";
-import nodemailer from "nodemailer";
-
 export const sendGuestListEmail = async (req, res) => {
   try {
     const { weddingId, guestListText, totalGuests } = req.body;
@@ -162,8 +161,6 @@ export const sendGuestListEmail = async (req, res) => {
       return res.status(400).json({ success: false, message: "weddingId and guest list are required" });
     }
 
-    // Get user from wedding
-    const Guest = (await import("../models/Guest.js")).default;
     const guest = await Guest.findOne({ weddingId }).select("userId");
     if (!guest) return res.status(404).json({ success: false, message: "No guests found" });
 
