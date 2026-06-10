@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import bcryptjs from "bcryptjs";
 
 export const generateOTP = () => {

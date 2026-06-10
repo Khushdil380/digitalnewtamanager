@@ -3,7 +3,6 @@ import Wedding from "../models/Wedding.js";
 import User from "../models/User.js";
 import Contribution from "../models/Contribution.js";
 import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
-import { sendOtpEmail } from "../utils/emailService.js";
 import nodemailer from "nodemailer";
 
 // Background helper: sync guest to sheet silently

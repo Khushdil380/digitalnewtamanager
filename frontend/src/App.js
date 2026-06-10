@@ -90,13 +90,6 @@ function AppContent() {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-  };
-
   const handleGoToWeddingEvent = (weddingId) => {
     setSelectedWeddingId(weddingId);
     setCurrentView("event");

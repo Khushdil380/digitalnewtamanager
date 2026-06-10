@@ -51,7 +51,7 @@ const BulkSmsModal = ({ isOpen, onClose, weddingId, guests }) => {
       setSelectedIds([]);
       // Refresh logs
       api.get(`/api/bulk-sms/logs/${weddingId}`)
-        .then(({ d }) => setSmsLogs(d.logs || []))
+        .then(({ data }) => setSmsLogs(data.logs || []))
         .catch(() => {});
     } catch (err) {
       setResult(`❌ ${err.response?.data?.message || "Failed to send"}`);

@@ -66,14 +66,6 @@ app.get("/api/keep-alive", async (req, res) => {
   }
 });
 
-app.get("/api/debug/config", (req, res) => {
-  res.json({ 
-    allowedOrigins,
-    mongoConnected: mongoose.connection.readyState === 1,
-    nodeEnv: process.env.NODE_ENV || "not set",
-  });
-});
-
 // Connect to MongoDB with optimized settings for serverless
 let isConnected = false;
 
