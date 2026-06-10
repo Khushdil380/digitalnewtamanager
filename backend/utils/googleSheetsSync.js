@@ -104,6 +104,51 @@ export const syncGuestToSheet = async (guest, wedding, userName) => {
 };
 
 /**
+ * Remove a guest row from the sheet (called on soft delete)
+ */
+export const removeGuestFromSheet = async (guest, wedding, userName) => {
+  try {
+    const tabName = buildTabName(wedding.brideName, wedding.groomName, userName);
+
+    // Get all rows to find the guest
+    const range = encodeURIComponent(`'${tabName}'!B:C`);
+    const res = await sheetsRequest(`${SHEETS_BASE}/values/${range}`);
+    const rows = res?.data?.values || [];
+
+    let rowIndex = -1;
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][0] === guest.name && rows[i][1] === guest.village) {
+        rowIndex = i + 1;
+        break;
+      }
+    }
+
+    if (rowIndex < 0) return;
+
+    // Get sheet ID for the tab
+    const spreadsheet = await sheetsRequest(SHEETS_BASE);
+    const sheet = spreadsheet.data.sheets.find((s) => s.properties.title === tabName);
+    if (!sheet) return;
+
+    // Delete the row
+    await sheetsRequest(`${SHEETS_BASE}:batchUpdate`, "POST", {
+      requests: [{
+        deleteDimension: {
+          range: {
+            sheetId: sheet.properties.sheetId,
+            dimension: "ROWS",
+            startIndex: rowIndex - 1,
+            endIndex: rowIndex,
+          },
+        },
+      }],
+    });
+  } catch (err) {
+    console.error("Google Sheets remove error:", err.message);
+  }
+};
+
+/**
  * Full sync: writes all guests for a wedding to the sheet
  */
 export const fullSyncToSheet = async (guests, wedding, userName) => {

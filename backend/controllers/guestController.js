@@ -1,4 +1,19 @@
 import Guest from "../models/Guest.js";
+import Wedding from "../models/Wedding.js";
+import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
+
+// Background helper: sync guest to sheet silently
+const backgroundSync = (guest, weddingId) => {
+  Wedding.findById(weddingId).then((wedding) => {
+    if (!wedding) return;
+    const UserModel = import("../models/User.js").then((m) => m.default);
+    UserModel.then((User) => {
+      User.findById(wedding.userId).then((user) => {
+        if (user) syncGuestToSheet(guest, wedding, user.fullName);
+      }).catch(() => {});
+    });
+  }).catch(() => {});
+};
 
 export const createGuest = async (req, res) => {
   try {
@@ -19,6 +34,7 @@ export const createGuest = async (req, res) => {
     });
 
     await guest.save();
+    backgroundSync(guest, weddingId);
     res.status(201).json({ success: true, message: "Guest added successfully", guest });
   } catch (error) {
     console.error("Create guest error:", error);
@@ -42,6 +58,7 @@ export const addGuestOnWeddingDay = async (req, res) => {
     });
 
     await guest.save();
+    backgroundSync(guest, weddingId);
     res.status(201).json({ success: true, message: "Guest added on wedding day", guest });
   } catch (error) {
     console.error("Add guest on wedding day error:", error);
@@ -89,6 +106,7 @@ export const updateGuest = async (req, res) => {
     if (priority !== undefined) guest.priority = priority;
 
     await guest.save();
+    backgroundSync(guest, guest.weddingId);
     res.status(200).json({ success: true, message: "Guest updated", guest });
   } catch (error) {
     console.error("Update guest error:", error);
@@ -115,6 +133,17 @@ export const deleteGuest = async (req, res) => {
     guest.paymentType = null;
     guest.attendedBy = null;
     await guest.save();
+
+    // Background: remove from Google Sheet
+    Wedding.findById(guest.weddingId).then((wedding) => {
+      if (!wedding) return;
+      const UserModel = import("../models/User.js").then((m) => m.default);
+      UserModel.then((User) => {
+        User.findById(wedding.userId).then((user) => {
+          if (user) removeGuestFromSheet(guest, wedding, user.fullName);
+        }).catch(() => {});
+      });
+    }).catch(() => {});
 
     // Delete associated contribution records so stats stay accurate
     const Contribution = (await import("../models/Contribution.js")).default;
