@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import { formatDate } from "../../utils/formatDate";
 import Button from "../common/Button";
+import img1 from "../../assets/weddingcard/1.png";
+import img2 from "../../assets/weddingcard/2.png";
+import img3 from "../../assets/weddingcard/3.png";
+import img4 from "../../assets/weddingcard/4.png";
+import img5 from "../../assets/weddingcard/5.png";
+import img6 from "../../assets/weddingcard/6.png";
 import "../../styles/wedding/WeddingCard.css";
 
-const CARD_IMAGES = [
-  `${process.env.PUBLIC_URL}/images/1.svg`,
-  `${process.env.PUBLIC_URL}/images/2.svg`,
-  `${process.env.PUBLIC_URL}/images/3.svg`,
-  `${process.env.PUBLIC_URL}/images/4.svg`,
-  `${process.env.PUBLIC_URL}/images/5.svg`,
-  `${process.env.PUBLIC_URL}/images/6.svg`,
-];
+const CARD_IMAGES = [img1, img2, img3, img4, img5, img6];
 const CELEBRATION_EMOJIS = ["💍", "💐", "❤️", "🌹", "💒", "🎊"];
 
 export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDeleteClick, onGoToWeddingEvent }) {

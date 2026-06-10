@@ -222,3 +222,19 @@ by taking above input and generate QR for this link formate upi://pay?pa=8809059
 each time only input box for amount is entered, upi id and message will be not changes generally
 
 and after 15 second this qr code converted into default QR code, utntill we regenetate for any specific amount
+
+
+
+
+
+// SMS sending
+
+Now i want to implement another feature but i don't know wheather it will successfully or seamlessly works or not. I want to send the custom thank you message feature for the attending the wedding personally, when we hit record contribution for the user whose mobile numbere stored and attend personally and sending thank you toggle on (it will be provided, if i dont want to use for any guest or perid of time then i can avoid or if my limit reached we can also close it simply)
+
+so you have understood completly, but i want before going to implementation i want to tell you, first make it seperately like make seperate button "send message" then bind it with the record contribution after successfully testing. Because i don't want any messup and feature that can affect initail working while implementation.
+
+so my idea is i want to use my daily 100 sms pla to be used, so use any andorid gateway message feature that works simply and free and we just provide you the information that need to be setup like api key, device id. So you have to make the simple instruction page for the user how to setup it step by step and ask for the deatils and provide input box to setup the details. This is because my website can be used by the different user, so they can setup via their number, and first sim limit reached then they can setup for the 2nd sim also if they have..
+
+so the provide to setup instruction on dashboard profile, and ask for the deatils and i will provide you the my details after register to test it.
+and i will test it... 7759898972 (lator you have to use the already guest stored number if have)
+
