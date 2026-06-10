@@ -19,6 +19,10 @@
     {
       "path": "/api/keep-alive",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/post-wedding-summary",
+      "schedule": "30 16 * * *"
     }
   ]
 }

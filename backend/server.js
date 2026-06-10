@@ -9,6 +9,7 @@ import contributionRoutes from "./routes/contributionRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import smsRoutes from "./routes/smsRoutes.js";
 import bulkSmsRoutes from "./routes/bulkSmsRoutes.js";
+import { postWeddingSummaryJob } from "./controllers/cronController.js";
 
 dotenv.config();
 
@@ -117,6 +118,9 @@ app.use(async (req, res, next) => {
   }
   next();
 });
+
+// Cron: Post-wedding summary email (runs daily at 10 PM IST)
+app.get("/api/cron/post-wedding-summary", postWeddingSummaryJob);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/weddings", weddingRoutes);

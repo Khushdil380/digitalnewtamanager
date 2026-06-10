@@ -50,6 +50,10 @@ const weddingSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  summaryEmailSent: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Index for efficient user wedding queries
