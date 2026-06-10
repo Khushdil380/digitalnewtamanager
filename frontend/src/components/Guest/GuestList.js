@@ -77,7 +77,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
           sortBy={sortBy} setSortBy={setSortBy}
           groupBy={groupBy} setGroupBy={setGroupBy}
           onClearFilters={clearFilters}
-          exportSlot={<GuestExport filteredGuests={filteredGuests} weddingId={weddingId} weddingInfo={weddingInfo} />}
+          exportSlot={<GuestExport filteredGuests={filteredGuests} weddingId={weddingId} weddingInfo={weddingInfo} groupBy={groupBy} groupedGuests={groupedGuests} />}
           hideAddForm={hideAddForm} onClose={onClose}
         />
 
