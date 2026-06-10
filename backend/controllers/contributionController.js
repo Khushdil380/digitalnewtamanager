@@ -1,6 +1,9 @@
 import Contribution from "../models/Contribution.js";
 import Guest from "../models/Guest.js";
+import Wedding from "../models/Wedding.js";
+import User from "../models/User.js";
 import mongoose from "mongoose";
+import { syncGuestToSheet } from "../utils/googleSheetsSync.js";
 
 export const recordContribution = async (req, res) => {
   try {
@@ -39,12 +42,23 @@ export const recordContribution = async (req, res) => {
     }
 
     // Update guest record — mark as attended with contribution details
-    await Guest.findByIdAndUpdate(guestId, {
+    const updatedGuest = await Guest.findByIdAndUpdate(guestId, {
       attended: true,
       attendedBy: givenBy || "personally",
       amount: finalAmount,
       paymentType: paymentType || "cash",
-    });
+    }, { new: true });
+
+    // Background: sync to Google Sheets (non-blocking)
+    Wedding.findById(weddingId).then((wedding) => {
+      if (wedding) {
+        User.findById(wedding.userId).then((user) => {
+          if (user && updatedGuest) {
+            syncGuestToSheet(updatedGuest, wedding, user.fullName);
+          }
+        }).catch(() => {});
+      }
+    }).catch(() => {});
 
     res.status(201).json({
       success: true,
