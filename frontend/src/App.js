@@ -20,11 +20,34 @@ function AppContent() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (token) {
+      // Check inactivity on page load
+      const lastActive = parseInt(localStorage.getItem("lastActive") || "0");
+      const twoHours = 2 * 60 * 60 * 1000;
+      if (lastActive && Date.now() - lastActive > twoHours) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("lastActive");
+        setIsLoggedIn(false);
+        setLoading(false);
+        return;
+      }
+      localStorage.setItem("lastActive", Date.now().toString());
+    }
     setIsLoggedIn(!!token);
     setLoading(false);
   }, []);
 
-  // Update last activity on user interactions
+  // Track user activity — reset inactivity timer on any interaction
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const updateActive = () => localStorage.setItem("lastActive", Date.now().toString());
+    const events = ["click", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, updateActive, { passive: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, updateActive));
+  }, [isLoggedIn]);
+
+  // Handle browser back/forward
   useEffect(() => {
     const handlePopState = () => {
       const token = localStorage.getItem("token");
