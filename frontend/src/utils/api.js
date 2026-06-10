@@ -28,7 +28,6 @@ api.interceptors.response.use(
     if (isAuthError && !config.url?.includes("/api/auth/login")) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      localStorage.removeItem("lastActivity");
       window.location.reload();
       return Promise.reject(error);
     }

@@ -3,15 +3,7 @@ import Guest from "../models/Guest.js";
 import Wedding from "../models/Wedding.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
-
-// Safe import — won't crash server if Google Sheets module has issues
-let syncGuestToSheet = async () => {};
-try {
-  const sheetsModule = await import("../utils/googleSheetsSync.js");
-  syncGuestToSheet = sheetsModule.syncGuestToSheet;
-} catch (e) {
-  console.error("Google Sheets module failed to load:", e.message);
-}
+import { syncGuestToSheet } from "../utils/googleSheetsSync.js";
 
 export const recordContribution = async (req, res) => {
   try {

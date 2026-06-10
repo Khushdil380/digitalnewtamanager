@@ -1,17 +1,7 @@
 import Guest from "../models/Guest.js";
 import Wedding from "../models/Wedding.js";
 import User from "../models/User.js";
-
-// Safe import — won't crash server if Google Sheets module has issues
-let syncGuestToSheet = async () => {};
-let removeGuestFromSheet = async () => {};
-try {
-  const sheetsModule = await import("../utils/googleSheetsSync.js");
-  syncGuestToSheet = sheetsModule.syncGuestToSheet;
-  removeGuestFromSheet = sheetsModule.removeGuestFromSheet;
-} catch (e) {
-  console.error("Google Sheets module failed to load:", e.message);
-}
+import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
 
 // Background helper: sync guest to sheet silently
 const backgroundSync = (guest, weddingId) => {
