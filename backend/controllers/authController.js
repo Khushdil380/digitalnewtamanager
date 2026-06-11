@@ -26,13 +26,8 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "Email already registered. Please login instead." });
     }
 
-    const pendingOtp = await OTP.findOne({ email: normalizedEmail });
-    if (pendingOtp) {
-      return res.status(400).json({
-        message: "An OTP is already sent to this email. Please verify it first or wait 10 minutes to request a new one.",
-        email: normalizedEmail,
-      });
-    }
+    // If pending OTP exists, delete it and resend fresh OTP
+    await OTP.deleteOne({ email: normalizedEmail });
 
     const hashedPassword = await hashPassword(password);
     const otp = generateOTP();
