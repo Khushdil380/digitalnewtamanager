@@ -1,4 +1,6 @@
 import Wedding from "../models/Wedding.js";
+import User from "../models/User.js";
+import { createSheetForWedding } from "../utils/googleSheetsSync.js";
 
 export const createWedding = async (req, res) => {
   try {
@@ -17,6 +19,11 @@ export const createWedding = async (req, res) => {
     });
 
     await wedding.save();
+
+    // Background: create Google Sheet tab for this wedding
+    User.findById(userId).then((user) => {
+      if (user) createSheetForWedding(wedding, user.fullName);
+    }).catch(() => {});
 
     res.status(201).json({
       message: "Wedding created successfully",

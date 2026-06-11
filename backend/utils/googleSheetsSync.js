@@ -64,6 +64,18 @@ const buildTabName = (brideName, groomName, userName) => {
 };
 
 /**
+ * Create a new sheet tab for a wedding (called when wedding is created)
+ */
+export const createSheetForWedding = async (wedding, userName) => {
+  try {
+    const tabName = buildTabName(wedding.brideName, wedding.groomName, userName);
+    await getOrCreateTab(tabName);
+  } catch (err) {
+    console.error("Google Sheets create tab error:", err.message);
+  }
+};
+
+/**
  * Sync a single guest row to the sheet (called after contribution is recorded)
  */
 export const syncGuestToSheet = async (guest, wedding, userName) => {
