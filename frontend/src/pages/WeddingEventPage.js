@@ -122,6 +122,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
             onContributionRecorded={handleContributionRecorded}
             brideName={wedding?.brideName}
             groomName={wedding?.groomName}
+            weddingDate={wedding?.date}
           />
         </div>
 

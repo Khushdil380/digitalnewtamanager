@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../utils/api";
 
-const useContributionForm = (weddingId, userId, onContributionRecorded) => {
+const useContributionForm = (weddingId, userId, onContributionRecorded, weddingDate) => {
   const [guests, setGuests] = useState([]);
   const [formData, setFormData] = useState({
     guestName: "", village: "", amount: "", paymentType: "cash", givenBy: "personally",
@@ -85,6 +85,19 @@ const useContributionForm = (weddingId, userId, onContributionRecorded) => {
     e.preventDefault();
     if (alreadyContributed) return; // Block form submission while popup is active
     setError(""); setMessage("");
+
+    // Check if today is on or after the wedding date
+    if (weddingDate) {
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const wedding = new Date(weddingDate); wedding.setHours(0, 0, 0, 0);
+      if (today < wedding) {
+        const dateStr = wedding.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+        setError(`⏳ Contributions can only be recorded from the wedding day (${dateStr})`);
+        setTimeout(() => setError(""), 3000);
+        return;
+      }
+    }
+
     if (!formData.guestName.trim()) { setError("Guest name is required"); return; }
     if (!formData.village.trim()) { setError("Village/City is required"); return; }
     if (formData.paymentType !== "envelope" && (!formData.amount || parseFloat(formData.amount) < 0)) {

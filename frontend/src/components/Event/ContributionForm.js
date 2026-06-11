@@ -4,13 +4,13 @@ import Modal from "../common/Modal";
 import api from "../../utils/api";
 import "../../styles/event/ContributionForm.css";
 
-const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName, groomName }) => {
+const ContributionForm = ({ weddingId, userId, onContributionRecorded, brideName, groomName, weddingDate }) => {
   const {
     formData, setFormData, suggestions, loading, message, error,
     alreadyContributed,
     handleNameChange, handleSelectName, handleVillageChange, handleSelectVillage,
     handlePaymentTypeChange, handleSubmit, handleUpdateAmount, handleCancelDuplicate,
-  } = useContributionForm(weddingId, userId, onContributionRecorded);
+  } = useContributionForm(weddingId, userId, onContributionRecorded, weddingDate);
 
   const [smsOn, setSmsOn] = useState(() => localStorage.getItem("smsThankYou") === "on");
   const [smsCount, setSmsCount] = useState(() => {
