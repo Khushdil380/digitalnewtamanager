@@ -24,15 +24,28 @@ export default function WeddingCard({ wedding, refreshKey, onEditClick, onGuestC
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
+  const fetchStats = () => {
     const weddingId = wedding._id || wedding.id;
     api.get(`/api/guests/wedding/${weddingId}`)
       .then(({ data }) => {
-        const guests = (data.guests || []).filter((g) => !g.isDeleted);
+        const guests = (data.guests || []).filter((g) => g.isDeleted !== true);
         setGuestStats({ invited: guests.length, attended: guests.filter((g) => g.attended).length });
       })
-      .catch(() => setGuestStats({ invited: 0, attended: 0 }));
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wedding._id, wedding.id, refreshKey]);
+
+  // Listen for guest changes from anywhere in the app
+  useEffect(() => {
+    const handleGuestChange = () => fetchStats();
+    window.addEventListener("guestListUpdated", handleGuestChange);
+    return () => window.removeEventListener("guestListUpdated", handleGuestChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="wedding-card">

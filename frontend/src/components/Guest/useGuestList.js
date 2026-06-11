@@ -32,6 +32,8 @@ const useGuestList = (weddingId) => {
       const { data } = await api.get(`/api/guests/wedding/${weddingId}`);
       setAllGuests(data.guests || []);
       setError("");
+      // Notify WeddingCard to refresh stats
+      window.dispatchEvent(new Event("guestListUpdated"));
     } catch (err) {
       setError("Failed to load guests");
     } finally {
