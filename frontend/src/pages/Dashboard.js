@@ -17,7 +17,6 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
   const [weddings, setWeddings] = useState([]);
   const [editingWedding, setEditingWedding] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [guestRefreshKey, setGuestRefreshKey] = useState(0);
 
   useEffect(() => {
     if (user?.id) fetchWeddings();
@@ -90,7 +89,6 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
         ) : (
           <WeddingList
             weddings={weddings}
-            refreshKey={guestRefreshKey}
             onEditClick={(w) => { setEditingWedding(w); setShowWeddingModal(true); }}
             onGuestClick={(w) => { setSelectedWeddingId(w._id || w.id); setEditingWedding(w); setShowGuestList(true); }}
             onDeleteClick={handleDeleteWedding}
@@ -116,7 +114,7 @@ const Dashboard = ({ onGoToWeddingEvent }) => {
       {showGuestList && selectedWeddingId && (
         <GuestList
           weddingId={selectedWeddingId}
-          onClose={() => { setShowGuestList(false); setSelectedWeddingId(null); setGuestRefreshKey((k) => k + 1); }}
+          onClose={() => { setShowGuestList(false); setSelectedWeddingId(null); }}
           weddingInfo={editingWedding ? { brideName: editingWedding.brideName, groomName: editingWedding.groomName, date: editingWedding.date, venue: editingWedding.venue } : null}
         />
       )}

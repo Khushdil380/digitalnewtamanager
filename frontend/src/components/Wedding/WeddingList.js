@@ -4,7 +4,6 @@ import "../../styles/wedding/WeddingList.css";
 
 export default function WeddingList({
   weddings,
-  refreshKey,
   onEditClick,
   onGuestClick,
   onDeleteClick,
@@ -26,7 +25,6 @@ export default function WeddingList({
         <WeddingCard
           key={wedding.id}
           wedding={wedding}
-          refreshKey={refreshKey}
           onEditClick={onEditClick}
           onGuestClick={onGuestClick}
           onDeleteClick={onDeleteClick}
