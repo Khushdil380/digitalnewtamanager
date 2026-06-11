@@ -13,7 +13,7 @@ import "../../styles/wedding/WeddingCard.css";
 const CARD_IMAGES = [img1, img2, img3, img4, img5, img6];
 const CELEBRATION_EMOJIS = ["💍", "💐", "❤️", "🌹", "💒", "🎊"];
 
-export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDeleteClick, onGoToWeddingEvent }) {
+export default function WeddingCard({ wedding, refreshKey, onEditClick, onGuestClick, onDeleteClick, onGoToWeddingEvent }) {
   const [guestStats, setGuestStats] = useState({ invited: 0, attended: 0 });
   const [bgIndex, setBgIndex] = useState(() => Math.floor(Math.random() * CARD_IMAGES.length));
 
@@ -32,7 +32,7 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
         setGuestStats({ invited: guests.length, attended: guests.filter((g) => g.attended).length });
       })
       .catch(() => setGuestStats({ invited: 0, attended: 0 }));
-  }, [wedding._id, wedding.id]);
+  }, [wedding._id, wedding.id, refreshKey]);
 
   return (
     <div className="wedding-card">
