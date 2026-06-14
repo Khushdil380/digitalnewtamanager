@@ -36,7 +36,34 @@ In Indian weddings — especially in rural and middle-class families — a desig
 - **Name suggestions** — shows existing guest names while typing for quick reference
 - **Soft delete** — deleted guests are not permanently removed; shown in a collapsible section for reference. Excluded from stats, suggestions, and counts
 
+### 📬 Card Distribution Tracking
+- Track which guests have received their invitation card
+- Mark/unmark card distribution from Guest List modal or Wedding Card header
+- Instant UI feedback — no waiting for API response
+- Only available before the wedding day (auto-disabled after)
+- Filter guests by: Card Distributed / No Card Yet
+- Shows on desktop guest cards (📬/📭 icon)
+
+### 📰 Google Sheets Live Sync
+- All guest data auto-syncs to a Google Sheet in the background
+- Each wedding gets its own tab (e.g., "Priya & Rohit (Khushdil)")
+- Syncs on: guest add, update, delete, contribution, card distribution
+- New sheet tab auto-created when a new wedding is added
+- Silent, non-blocking — never affects site speed
+
+### 📧 Automatic Post-Wedding Email
+- Day after the wedding (10 PM IST), an automatic email is sent to the user
+- Contains congratulations message + full guest data
+- Attachments: PDF, CSV, and Text file
+- One-time send — never duplicates
+
+### ⏰ Digital Clock
+- 12-hour format digital clock on the wedding event page header
+- Desktop only, uses Orbitron font for authentic digital look
+- Fixed width digits — no jitter on time changes
+
 ### 💰 Contribution Recording (Wedding Day)
+- **Only allowed on or after the wedding date** — shows date message if attempted earlier
 - Autocomplete name and village from guest list
 - Record amount with payment type: **Cash**, **UPI**, or **Envelope**
 - Track whether given **Personally** or **By Someone**
@@ -127,28 +154,31 @@ In Indian weddings — especially in rural and middle-class families — a desig
 ```
 digitalnewtamanager/
 ├── backend/
-│   ├── controllers/          # Auth, Wedding, Guest, Contribution, Note, SMS, BulkSms
+│   ├── controllers/          # Auth, Profile, Wedding, Guest, Contribution, Note, SMS, BulkSms, Cron
+│   ├── middleware/           # Auth middleware (JWT verification)
 │   ├── models/               # User, Wedding, Guest, Contribution, OTP, Note, SmsLog
 │   ├── routes/               # Express route definitions
-│   ├── utils/                # Email service, helpers
+│   ├── utils/                # Email service, helpers, postWeddingEmail, googleSheetsSync
 │   └── server.js
 ├── frontend/
 │   └── src/
 │       ├── components/
 │       │   ├── AuthModal/    # Login, Register, OTP, Forgot, Reset
 │       │   ├── BulkSms/     # BulkSmsModal, RecipientSelector, MessageTemplates
+│       │   ├── Calculator/   # Calculator widget
 │       │   ├── Celebration/  # CelebrationBurst (emoji rain)
 │       │   ├── common/       # Modal, Button, InputField, ThemeSwitcher, AnimatedBackground
 │       │   ├── Dashboard/    # DashboardHeader
-│       │   ├── Event/        # ContributionForm, QRCodeSection, WeddingWishesHeader
-│       │   ├── Guest/        # GuestList, GuestCard, GuestFilters, GuestExport, GuestAddForm
+│       │   ├── Event/        # ContributionForm, QRCodeSection, WeddingWishesHeader, DigitalClock
+│       │   ├── Guest/        # GuestList, GuestCard, GuestFilters, GuestExport, GuestAddForm, CardDistributionModal
+│       │   ├── HowToUse/     # HeroSection, StepsSection, FeaturesSection, TipsSection
 │       │   ├── Notes/        # NotesModal, NoteList, NoteCard
 │       │   ├── Profile/      # ProfileModal, ProfileDropdown, ProfileTabs (Personal, Email, Password, SMS)
 │       │   ├── Progress/     # AttendanceBar
 │       │   └── Wedding/      # WeddingCard, WeddingList, WeddingModal
-│       ├── pages/            # Landing, Dashboard, WeddingEventPage, ThankYouPage
+│       ├── pages/            # Landing, Dashboard, WeddingEventPage, ThankYouPage, HowToUsePage
 │       ├── styles/           # Organized mirrors component structure
-│       └── utils/            # api.js (centralized axios), formatDate.js
+│       └── utils/            # api.js (centralized axios with retry), formatDate.js
 ```
 
 ---
@@ -176,12 +206,18 @@ npm start          # runs on http://localhost:3000
 ```env
 MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/digitalnewtamanager
 JWT_SECRET=your_jwt_secret
+JWT_EXPIRATION=24h
 PORT=5000
 NODE_ENV=development
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_app_password
 EMAIL_SERVICE=gmail
 FRONTEND_URL=http://localhost:3000
+
+# Google Sheets Sync (optional)
+GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+GOOGLE_SERVICE_ACCOUNT_EMAIL=your_service_account@project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n
 ```
 
 ### Frontend `.env`
@@ -200,6 +236,7 @@ REACT_APP_API_URL=http://localhost:5000
 | Mobile | 10-digit number (optional) |
 | Category | Friend / Family / Relative / Neighbour / Other |
 | Priority | 1 High / 2 Mid / 3 Low |
+| Card Distributed | Yes / No (default: No) |
 | Attended | Auto-set when contribution is recorded |
 | Attended By | Personally / By Someone |
 | Amount | Contribution amount |

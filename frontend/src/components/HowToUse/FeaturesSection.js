@@ -3,6 +3,24 @@ import "../../styles/howToUse/FeaturesSection.css";
 
 const features = [
   {
+    icon: "📬",
+    title: "Card Distribution Tracking",
+    desc: "Track करें किस मेहमान को card दिया गया, किसे नहीं। घर में कई लोग card बांट रहे हैं? अब confusion नहीं होगी — real-time status दिखता है।",
+    howTo: "Guest List → नीचे 📬 icon click करें → Pending guests दिखेंगे → ✓ Mark करें। Wedding Card पर भी 📬 icon से access करें। शादी के बाद auto-disabled।",
+  },
+  {
+    icon: "📰",
+    title: "Google Sheets Live Sync",
+    desc: "सारा guest data automatically Google Sheet में sync होता है — background में, बिना speed affect किए। हर wedding का अलग tab बनता है।",
+    howTo: "Automatic — कोई action नहीं लेनी। Guest add/update/delete/contribute सब sheet में reflect होता है।",
+  },
+  {
+    icon: "📧",
+    title: "Automatic Post-Wedding Email",
+    desc: "शादी के अगले दिन रात 10 बजे automatic email आती है — congratulations message + PDF, CSV, Text attachments।",
+    howTo: "Automatic — शादी की date set करें, बाकी system handle करता है। कोई manual trigger नहीं।",
+  },
+  {
     icon: "📲",
     title: "QR Code (UPI Payment)",
     desc: "कुछ मेहमान cash नहीं रखते, वो UPI से pay करना चाहते हैं। QR Code section में अपना UPI ID एक बार set करें, फिर किसी भी amount के लिए QR generate करें।",
@@ -51,22 +69,22 @@ const features = [
     howTo: "Wedding Day page पर automatically दिखता है — कोई setup required नहीं।",
   },
   {
+    icon: "📨",
+    title: "Bulk SMS (Card/Reminder/Custom)",
+    desc: "Guest List से bulk messages भेजें — Card Distribution (एक बार), Reminder (बार-बार), या Custom message। हर guest को track किया जाता है कि किसे क्या भेजा।",
+    howTo: "Guest List → नीचे 📨 icon click → Message type चुनें → Recipients select करें (All/Tag/Individual/Search) → Send।",
+  },
+  {
     icon: "🗑️",
     title: "Soft Delete (No Data Loss)",
-    desc: "Guest delete करने पर data permanently नहीं हटता। Deleted guests एक collapsible section में दिखते हैं — अगर गलती से delete हुआ तो reference बना रहता है।",
+    desc: "Guest delete करने पर data permanently नहीं हटता। Deleted guests एक collapsible section में दिखते हैं — reference बना रहता है।",
     howTo: "Guest List में Delete button → guest 'Deleted' section में चला जाता है। Stats और suggestions में count नहीं होता।",
   },
   {
     icon: "🔒",
-    title: "Auto Logout (2 Hours)",
-    desc: "Security के लिए 2 घंटे inactivity के बाद automatic logout हो जाता है। Active use करते रहें तो session जारी रहता है।",
-    howTo: "Automatic — कोई setting नहीं करनी। 2 घंटे बाद page open करने पर login page दिखेगा।",
-  },
-  {
-    icon: "📨",
-    title: "Bulk SMS (Card/Reminder/Custom)",
-    desc: "Guest List से bulk messages भेजें — Card Distribution (एक बार), Reminder (बार-बार), या Custom message। हर guest को track किया जाता है कि किसे क्या भेजा।",
-    howTo: "Guest List → नीचे 📨 icon click → Message type चुनें → Recipients select करें (All/Tag/Individual/Search) → Send। Card Distribution सिर्फ एक बार, Reminder और Custom कितनी बार भी।",
+    title: "Auto Logout & Security",
+    desc: "2 घंटे inactivity के बाद automatic logout। JWT 24h expiry। Expired token auto-detect → clean logout।",
+    howTo: "Automatic — active रहें तो session जारी। 2 घंटे कुछ न करें तो login page दिखेगा।",
   },
 ];
 

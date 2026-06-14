@@ -27,6 +27,14 @@ const TipsSection = () => {
           <p><strong>शादी से पहले Export करें</strong> — PDF backup print रखें, बिजली/internet गई तो काम आएगी।</p>
         </div>
         <div className="htu-tip-card">
+          <span>📰</span>
+          <p><strong>Google Sheet auto-sync</strong> — सारा data Google Sheet में भी save रहता है। अगर कभी site issue हो, sheet से data मिल जाएगा।</p>
+        </div>
+        <div className="htu-tip-card">
+          <span>📬</span>
+          <p><strong>Card Distribution mark करें</strong> — कार्ड बांटते समय 📬 icon से mark करें। Multiple लोग बांट रहे हैं? Confusion avoid!</p>
+        </div>
+        <div className="htu-tip-card">
           <span>💬</span>
           <p><strong>SMS पहले setup करें</strong> — Profile → SMS tab में httpSMS configure करें ताकि wedding day पर seamless चले।</p>
         </div>

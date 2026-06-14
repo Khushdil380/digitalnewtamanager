@@ -21,6 +21,12 @@ const steps = [
     tip: "💡 यह master list शादी के दिन काम आएगी — नाम type करते ही suggest होगा।",
   },
   {
+    icon: "📬",
+    title: "Card Distribution Track करें",
+    desc: "जैसे-जैसे card बांटें, 📬 icon click करके mark करें कि किसे card दिया। घर में कई लोग बांट रहे हैं? Real-time status से कोई confusion नहीं।",
+    tip: "💡 Wedding Card header पर भी 📬 icon से directly access कर सकते हैं। शादी के बाद feature auto-disabled हो जाता है।",
+  },
+  {
     icon: "🎊",
     title: "शादी के दिन — Contribution Record करें",
     desc: "Wedding card पर 'Go To' click करें। जैसे-जैसे मेहमान आएं: नाम type करें (auto-suggest), गाँव select करें, राशि डालें, Payment type (Cash/UPI/Envelope) चुनें, और Personally या By Someone select करें।",
