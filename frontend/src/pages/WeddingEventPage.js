@@ -44,15 +44,10 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      const [weddingRes, statsRes, guestsRes] = await Promise.all([
-        api.get(`/api/weddings/${weddingId}`),
-        api.get(`/api/contributions/wedding/${weddingId}`),
-        api.get(`/api/guests/wedding/${weddingId}`),
-      ]);
-      
-      setWedding(weddingRes.data.wedding);
-      setStats(statsRes.data.stats || {});
-      setTotalGuests((guestsRes.data.guests || []).filter((g) => !g.isDeleted).length);
+      const { data } = await api.get(`/api/weddings/${weddingId}/event-data`);
+      setWedding(data.wedding);
+      setStats(data.stats || {});
+      setTotalGuests(data.totalGuests || 0);
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch wedding data:", error);
