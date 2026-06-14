@@ -161,13 +161,16 @@ export const deleteGuest = async (req, res) => {
     guest.attendedBy = null;
     await guest.save();
 
-    // Background: remove from Google Sheet
-    Wedding.findById(guest.weddingId).then((wedding) => {
-      if (!wedding) return;
-      User.findById(wedding.userId).then((user) => {
-        if (user) removeGuestFromSheet(guest, wedding, user.fullName);
-      }).catch(() => {});
-    }).catch(() => {});
+    // Remove from Google Sheet (await to ensure it completes before Vercel shuts down)
+    try {
+      const wedding = await Wedding.findById(guest.weddingId);
+      if (wedding) {
+        const user = await User.findById(wedding.userId);
+        if (user) await removeGuestFromSheet(guest, wedding, user.fullName);
+      }
+    } catch (sheetErr) {
+      // Silent — don't block deletion if sheet fails
+    }
 
     // Delete associated contribution records so stats stay accurate
     await Contribution.deleteMany({ guestId });
