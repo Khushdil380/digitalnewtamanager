@@ -125,16 +125,29 @@ export const removeGuestFromSheet = async (guest, wedding, userName) => {
     const tabName = buildTabName(wedding.brideName, wedding.groomName, userName);
     const guestId = (guest._id || guest.id || "").toString();
 
-    // Lookup by _id column (M)
-    const range = encodeURIComponent(`'${tabName}'!M:M`);
-    const res = await sheetsRequest(`${SHEETS_BASE}/values/${range}`);
-    const rows = res?.data?.values || [];
+    // Lookup by _id column (M) first, fallback to name+village (B:C)
+    const idRange = encodeURIComponent(`'${tabName}'!M:M`);
+    const idRes = await sheetsRequest(`${SHEETS_BASE}/values/${idRange}`);
+    const idRows = idRes?.data?.values || [];
 
     let rowIndex = -1;
-    for (let i = 1; i < rows.length; i++) {
-      if (rows[i] && rows[i][0] === guestId) {
+    for (let i = 1; i < idRows.length; i++) {
+      if (idRows[i] && idRows[i][0] === guestId) {
         rowIndex = i + 1;
         break;
+      }
+    }
+
+    // Fallback: match by name + village if _id not found
+    if (rowIndex < 0) {
+      const nameRange = encodeURIComponent(`'${tabName}'!B:C`);
+      const nameRes = await sheetsRequest(`${SHEETS_BASE}/values/${nameRange}`);
+      const nameRows = nameRes?.data?.values || [];
+      for (let i = 1; i < nameRows.length; i++) {
+        if (nameRows[i] && nameRows[i][0] === guest.name && nameRows[i][1] === guest.village) {
+          rowIndex = i + 1;
+          break;
+        }
       }
     }
 
