@@ -58,8 +58,10 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
 
       <div className="wc-header-strip">
         <span className="wc-stat">👥 {guestStats.invited}/{guestStats.attended}</span>
-        <button className="wc-edit-btn" onClick={() => setShowCardDist(true)} title="Card Distribution">📬</button>
-        <button className="wc-edit-btn" onClick={() => onEditClick(wedding)} title="Edit">✏️</button>
+        <div className="wc-header-actions">
+          <button className="wc-edit-btn" onClick={() => setShowCardDist(true)} title="Card Distribution">📬</button>
+          <button className="wc-edit-btn" onClick={() => onEditClick(wedding)} title="Edit">✏️</button>
+        </div>
       </div>
 
       <div className="wc-body">

@@ -61,6 +61,11 @@
   background: rgba(255, 255, 255, 0.35);
 }
 
+.wc-header-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
 /* Body */
 .wc-body {
   flex: 1;
