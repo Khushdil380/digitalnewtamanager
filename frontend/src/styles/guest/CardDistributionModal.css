@@ -70,7 +70,6 @@
 
 .card-dist-search-input {
   flex: 1;
-  max-width: 55%;
   padding: 0.35rem 0.5rem;
   border: 1.5px solid #e0e0e0;
   border-radius: var(--radius);
@@ -192,9 +191,5 @@
   .card-dist-modal {
     width: 95%;
     height: 60vh;
-  }
-
-  .card-dist-search-input {
-    max-width: 50%;
   }
 }

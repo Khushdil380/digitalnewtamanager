@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import api from "../../utils/api";
 import "../../styles/guest/CardDistributionModal.css";
 
@@ -73,7 +74,7 @@ const CardDistributionModal = ({ isOpen, onClose, guests, weddingId, onUpdate, w
   if (!isOpen) return null;
 
   if (isPastWedding) {
-    return (
+    return createPortal(
       <div className="card-dist-overlay" onClick={handleClose}>
         <div className="card-dist-modal" onClick={(e) => e.stopPropagation()}>
           <div className="card-dist-header">
@@ -82,11 +83,12 @@ const CardDistributionModal = ({ isOpen, onClose, guests, weddingId, onUpdate, w
           </div>
           <div className="card-dist-empty">📅 Wedding day has passed. Card distribution is no longer available.</div>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
-  return (
+  return createPortal(
     <div className="card-dist-overlay" onClick={handleClose}>
       <div className="card-dist-modal" onClick={(e) => e.stopPropagation()}>
         <div className="card-dist-header">
@@ -134,7 +136,8 @@ const CardDistributionModal = ({ isOpen, onClose, guests, weddingId, onUpdate, w
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
