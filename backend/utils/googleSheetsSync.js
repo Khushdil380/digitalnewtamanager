@@ -50,11 +50,11 @@ const getOrCreateTab = async (tabName) => {
   });
 
   // Add headers
-  const range = encodeURIComponent(`'${tabName}'!A1:L1`);
+  const range = encodeURIComponent(`'${tabName}'!A1:M1`);
   await sheetsRequest(
     `${SHEETS_BASE}/values/${range}?valueInputOption=RAW`,
     "PUT",
-    { values: [["#", "Name", "Village", "Mobile", "Tag", "Priority", "Card", "Attended", "Amount", "Payment", "Given By", "Added On"]] }
+    { values: [["#", "Name", "Village", "Mobile", "Tag", "Priority", "Card", "Attended", "Amount", "Payment", "Given By", "Added On", "_id"]] }
   );
 };
 
@@ -83,14 +83,16 @@ export const syncGuestToSheet = async (guest, wedding, userName) => {
     const tabName = buildTabName(wedding.brideName, wedding.groomName, userName);
     await getOrCreateTab(tabName);
 
-    // Get existing rows to find if guest exists
-    const range = encodeURIComponent(`'${tabName}'!B:C`);
+    const guestId = (guest._id || guest.id || "").toString();
+
+    // Lookup by _id column (M) for reliable matching even after name/village edits
+    const range = encodeURIComponent(`'${tabName}'!M:M`);
     const res = await sheetsRequest(`${SHEETS_BASE}/values/${range}`);
     const rows = res?.data?.values || [];
 
     let rowIndex = -1;
     for (let i = 1; i < rows.length; i++) {
-      if (rows[i][0] === guest.name && rows[i][1] === guest.village) {
+      if (rows[i] && rows[i][0] === guestId) {
         rowIndex = i + 1;
         break;
       }
@@ -100,14 +102,14 @@ export const syncGuestToSheet = async (guest, wedding, userName) => {
       rowIndex > 0 ? rowIndex - 1 : rows.length,
       guest.name, guest.village, guest.mobileNumber || "", guest.tag || "",
       guest.priority || "", guest.cardDistributed ? "Yes" : "No", guest.attended ? "Yes" : "No", guest.amount || 0,
-      guest.paymentType || "", guest.attendedBy || "", guest.addedOn || "",
+      guest.paymentType || "", guest.attendedBy || "", guest.addedOn || "", guestId,
     ]];
 
     if (rowIndex > 0) {
-      const updateRange = encodeURIComponent(`'${tabName}'!A${rowIndex}:L${rowIndex}`);
+      const updateRange = encodeURIComponent(`'${tabName}'!A${rowIndex}:M${rowIndex}`);
       await sheetsRequest(`${SHEETS_BASE}/values/${updateRange}?valueInputOption=RAW`, "PUT", { values: rowData });
     } else {
-      const appendRange = encodeURIComponent(`'${tabName}'!A:L`);
+      const appendRange = encodeURIComponent(`'${tabName}'!A:M`);
       await sheetsRequest(`${SHEETS_BASE}/values/${appendRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, "POST", { values: rowData });
     }
   } catch (err) {
@@ -121,15 +123,16 @@ export const syncGuestToSheet = async (guest, wedding, userName) => {
 export const removeGuestFromSheet = async (guest, wedding, userName) => {
   try {
     const tabName = buildTabName(wedding.brideName, wedding.groomName, userName);
+    const guestId = (guest._id || guest.id || "").toString();
 
-    // Get all rows to find the guest
-    const range = encodeURIComponent(`'${tabName}'!B:C`);
+    // Lookup by _id column (M)
+    const range = encodeURIComponent(`'${tabName}'!M:M`);
     const res = await sheetsRequest(`${SHEETS_BASE}/values/${range}`);
     const rows = res?.data?.values || [];
 
     let rowIndex = -1;
     for (let i = 1; i < rows.length; i++) {
-      if (rows[i][0] === guest.name && rows[i][1] === guest.village) {
+      if (rows[i] && rows[i][0] === guestId) {
         rowIndex = i + 1;
         break;
       }
@@ -169,7 +172,7 @@ export const fullSyncToSheet = async (guests, wedding, userName) => {
     await getOrCreateTab(tabName);
 
     // Clear existing data (keep header)
-    const clearRange = encodeURIComponent(`'${tabName}'!A2:L`);
+    const clearRange = encodeURIComponent(`'${tabName}'!A2:M`);
     await sheetsRequest(`${SHEETS_BASE}/values/${clearRange}:clear`, "POST");
 
     // Write all rows
@@ -179,10 +182,10 @@ export const fullSyncToSheet = async (guests, wedding, userName) => {
     const rows = activeGuests.map((g, i) => [
       i + 1, g.name, g.village, g.mobileNumber || "", g.tag || "",
       g.priority || "", g.cardDistributed ? "Yes" : "No", g.attended ? "Yes" : "No", g.amount || 0,
-      g.paymentType || "", g.attendedBy || "", g.addedOn || "",
+      g.paymentType || "", g.attendedBy || "", g.addedOn || "", (g._id || g.id || "").toString(),
     ]);
 
-    const updateRange = encodeURIComponent(`'${tabName}'!A2:L${rows.length + 1}`);
+    const updateRange = encodeURIComponent(`'${tabName}'!A2:M${rows.length + 1}`);
     await sheetsRequest(`${SHEETS_BASE}/values/${updateRange}?valueInputOption=RAW`, "PUT", { values: rows });
   } catch (err) {
     console.error("Google Sheets full sync error:", err.message);
