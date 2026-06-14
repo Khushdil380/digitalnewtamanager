@@ -144,6 +144,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
         guests={guests}
         weddingId={weddingId}
         onUpdate={fetchGuests}
+        weddingDate={weddingInfo?.date}
       />
     </div>
   );
