@@ -1,6 +1,6 @@
 .guest-card-row {
   display: grid;
-  grid-template-columns: 140px 90px 95px 80px 50px 28px 75px 65px 75px 60px 55px auto;
+  grid-template-columns: 140px 90px 95px 80px 50px 28px 28px 75px 65px 75px 60px 55px auto;
   align-items: center;
   gap: 0.5rem;
   padding: 0.4rem 0.6rem;
@@ -158,6 +158,7 @@
   .guest-mobile,
   .guest-tag,
   .guest-priority,
+  .guest-card-dist,
   .guest-payment,
   .guest-given-by,
   .guest-added-on,

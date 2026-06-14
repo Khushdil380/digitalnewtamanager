@@ -66,6 +66,8 @@ const useGuestList = (weddingId) => {
       case "upi": result = result.filter((g) => g.paymentType === "upi"); break;
       case "cash": result = result.filter((g) => g.paymentType === "cash"); break;
       case "envelope": result = result.filter((g) => g.paymentType === "envelope"); break;
+      case "cardYes": result = result.filter((g) => g.cardDistributed === true); break;
+      case "cardNo": result = result.filter((g) => g.cardDistributed !== true); break;
       default: result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); break;
     }
 

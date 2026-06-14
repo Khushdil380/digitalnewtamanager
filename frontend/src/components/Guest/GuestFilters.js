@@ -33,6 +33,8 @@ const GuestFilters = ({
             <option value="cash">💵 Cash</option>
             <option value="upi">🔗 UPI</option>
             <option value="envelope">✉️ Envelope</option>
+            <option value="cardYes">📬 Card Distributed</option>
+            <option value="cardNo">📭 No Card Yet</option>
           </select>
         </div>
 

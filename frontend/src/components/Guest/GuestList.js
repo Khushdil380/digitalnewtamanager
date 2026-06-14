@@ -4,6 +4,7 @@ import GuestFilters from "./GuestFilters";
 import GuestAddForm from "./GuestAddForm";
 import GuestExport from "./GuestExport";
 import BulkSmsModal from "../BulkSms/BulkSmsModal";
+import CardDistributionModal from "./CardDistributionModal";
 import useGuestList from "./useGuestList";
 import "../../styles/guest/GuestList.css";
 
@@ -33,6 +34,7 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const [showDeleted, setShowDeleted] = useState(false);
   const [showBulkSms, setShowBulkSms] = useState(false);
+  const [showCardDist, setShowCardDist] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => { setVisibleCount(BATCH_SIZE); }, [searchQuery, sortBy, groupBy]);
@@ -103,6 +105,9 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
         <div className="guests-stats">
           <span>👥 Invited/Attended: {guests.length}/{guests.filter((g) => g.attended).length}</span>
           <span>📊 Showing: {filteredGuests.length}</span>
+          <button className="bulk-sms-trigger" onClick={() => setShowCardDist(true)} title="Card Distribution">
+            📬
+          </button>
           <button className="bulk-sms-trigger" onClick={() => setShowBulkSms(true)} title="Bulk SMS">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
           </button>
@@ -131,6 +136,14 @@ const GuestList = ({ weddingId, onClose, hideAddForm = false, weddingInfo = null
         onClose={() => setShowBulkSms(false)}
         weddingId={weddingId}
         guests={guests}
+      />
+
+      <CardDistributionModal
+        isOpen={showCardDist}
+        onClose={() => setShowCardDist(false)}
+        guests={guests}
+        weddingId={weddingId}
+        onUpdate={fetchGuests}
       />
     </div>
   );

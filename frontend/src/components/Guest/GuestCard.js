@@ -19,6 +19,7 @@ const GuestCard = ({ guest, onEditClick, onDeleteClick, isDeleted = false }) => 
         </span>
       </div>
       <div className="guest-priority">⭐ {["High", "Mid", "Low"][guest.priority - 1]}</div>
+      <div className="guest-card-dist">{guest.cardDistributed ? "📬" : "📭"}</div>
       <div className="guest-attended">{guest.attended ? "✅" : "❌"}</div>
       <div className="guest-amount">₹{(guest.amount || 0).toLocaleString()}</div>
       <div className="guest-payment">

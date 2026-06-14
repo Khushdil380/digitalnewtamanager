@@ -23,7 +23,7 @@ const GuestExport = ({ filteredGuests, weddingId, weddingInfo, groupBy, groupedG
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const headers = ["#", "Name", "Village", "Mobile", "Tag", "Priority", "Attended", "Amount", "Payment", "Added"];
+  const headers = ["#", "Name", "Village", "Mobile", "Tag", "Priority", "Card", "Attended", "Amount", "Payment", "Added"];
 
   const getGroupedData = () => {
     if (groupBy === "none" || !groupedGuests) return null;
@@ -91,7 +91,7 @@ const GuestExport = ({ filteredGuests, weddingId, weddingInfo, groupBy, groupedG
     } else {
       const rows = filteredGuests.map((g, i) => [
         i + 1, g.name, g.village, g.mobileNumber || "—", g.tag, g.priority,
-        g.attended ? "Yes" : "No", g.amount || 0, g.paymentType || "—", g.addedOn,
+        g.cardDistributed ? "Yes" : "No", g.attended ? "Yes" : "No", g.amount || 0, g.paymentType || "—", g.addedOn,
       ]);
       autoTable(doc, { head: [headers], body: rows, startY: 40, styles: { fontSize: 8 } });
     }
@@ -112,7 +112,7 @@ const GuestExport = ({ filteredGuests, weddingId, weddingInfo, groupBy, groupedG
   };
 
   const formatGuestLine = (g, index) => {
-    return `${index}. ${g.name.padEnd(20)} | ${g.village.padEnd(14)} | ${(g.mobileNumber || "N/A").padEnd(12)} | ${(g.tag || "—").padEnd(10)} | P:${g.priority || "—"} | ${g.attended ? "Yes" : "No "} | ₹${String(g.amount || 0).padEnd(6)} | ${(g.paymentType || "—").padEnd(8)} | ${g.addedOn || "—"}`;
+    return `${index}. ${g.name.padEnd(20)} | ${g.village.padEnd(14)} | ${(g.mobileNumber || "N/A").padEnd(12)} | ${(g.tag || "—").padEnd(10)} | P:${g.priority || "—"} | ${g.cardDistributed ? "📬" : "📭"} | ${g.attended ? "Yes" : "No "} | ₹${String(g.amount || 0).padEnd(6)} | ${(g.paymentType || "—").padEnd(8)} | ${g.addedOn || "—"}`;
   };
 
   const downloadText = () => {
@@ -161,7 +161,7 @@ const GuestExport = ({ filteredGuests, weddingId, weddingInfo, groupBy, groupedG
       filteredGuests.forEach((g, i) => {
         csvRows.push([
           i + 1, `"${g.name}"`, `"${g.village}"`, g.mobileNumber || "—", g.tag, g.priority,
-          g.attended ? "Yes" : "No", g.amount || 0, g.paymentType || "—", g.addedOn,
+          g.cardDistributed ? "Yes" : "No", g.attended ? "Yes" : "No", g.amount || 0, g.paymentType || "—", g.addedOn,
         ].join(","));
       });
     }
@@ -185,12 +185,12 @@ const GuestExport = ({ filteredGuests, weddingId, weddingInfo, groupBy, groupedG
         Object.entries(grouped).forEach(([groupName, guests]) => {
           text += `\n══ ${groupName} (${guests.length}) ══\n`;
           guests.forEach((g) => {
-            text += `${serialNo++}. ${g.name} | ${g.village} | ${g.mobileNumber || "N/A"} | ${g.tag || "—"} | P:${g.priority || "—"} | ${g.attended ? "Attended" : "Not Attended"} | ₹${g.amount || 0} | ${g.paymentType || "—"} | ${g.addedOn || "—"}\n`;
+            text += `${serialNo++}. ${g.name} | ${g.village} | ${g.mobileNumber || "N/A"} | ${g.tag || "—"} | P:${g.priority || "—"} | Card:${g.cardDistributed ? "Yes" : "No"} | ${g.attended ? "Attended" : "Not Attended"} | ₹${g.amount || 0} | ${g.paymentType || "—"} | ${g.addedOn || "—"}\n`;
           });
         });
       } else {
         text = filteredGuests
-          .map((g, i) => `${i + 1}. ${g.name} | ${g.village} | ${g.mobileNumber || "N/A"} | ${g.tag || "—"} | P:${g.priority || "—"} | ${g.attended ? "Attended" : "Not Attended"} | ₹${g.amount || 0} | ${g.paymentType || "—"} | ${g.addedOn || "—"}`)
+          .map((g, i) => `${i + 1}. ${g.name} | ${g.village} | ${g.mobileNumber || "N/A"} | ${g.tag || "—"} | P:${g.priority || "—"} | Card:${g.cardDistributed ? "Yes" : "No"} | ${g.attended ? "Attended" : "Not Attended"} | ₹${g.amount || 0} | ${g.paymentType || "—"} | ${g.addedOn || "—"}`)
           .join("\n");
       }
 

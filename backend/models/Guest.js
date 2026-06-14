@@ -79,6 +79,11 @@ const guestSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Card distribution tracking
+    cardDistributed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

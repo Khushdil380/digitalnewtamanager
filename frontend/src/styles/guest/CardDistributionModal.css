@@ -1,0 +1,148 @@
+.card-dist-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.card-dist-modal {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 90%;
+  max-width: 420px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-dist-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--primary);
+  color: white;
+}
+
+.card-dist-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.card-dist-count {
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+.card-dist-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-dist-search {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.card-dist-search input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  background: transparent;
+}
+
+.card-dist-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.card-dist-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+}
+
+.card-dist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.card-dist-item:hover {
+  background: rgba(var(--primary-rgb), 0.04);
+}
+
+.card-dist-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.card-dist-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-dist-village {
+  font-size: 0.68rem;
+  color: #888;
+}
+
+.card-dist-mark-btn {
+  padding: 0.3rem 0.6rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.card-dist-mark-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.card-dist-mark-btn:disabled {
+  opacity: 0.5;
+}
+
+.card-dist-empty {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .card-dist-modal {
+    width: 95%;
+    max-height: 75vh;
+  }
+}

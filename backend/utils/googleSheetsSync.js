@@ -50,11 +50,11 @@ const getOrCreateTab = async (tabName) => {
   });
 
   // Add headers
-  const range = encodeURIComponent(`'${tabName}'!A1:K1`);
+  const range = encodeURIComponent(`'${tabName}'!A1:L1`);
   await sheetsRequest(
     `${SHEETS_BASE}/values/${range}?valueInputOption=RAW`,
     "PUT",
-    { values: [["#", "Name", "Village", "Mobile", "Tag", "Priority", "Attended", "Amount", "Payment", "Given By", "Added On"]] }
+    { values: [["#", "Name", "Village", "Mobile", "Tag", "Priority", "Card", "Attended", "Amount", "Payment", "Given By", "Added On"]] }
   );
 };
 
@@ -99,15 +99,15 @@ export const syncGuestToSheet = async (guest, wedding, userName) => {
     const rowData = [[
       rowIndex > 0 ? rowIndex - 1 : rows.length,
       guest.name, guest.village, guest.mobileNumber || "", guest.tag || "",
-      guest.priority || "", guest.attended ? "Yes" : "No", guest.amount || 0,
+      guest.priority || "", guest.cardDistributed ? "Yes" : "No", guest.attended ? "Yes" : "No", guest.amount || 0,
       guest.paymentType || "", guest.attendedBy || "", guest.addedOn || "",
     ]];
 
     if (rowIndex > 0) {
-      const updateRange = encodeURIComponent(`'${tabName}'!A${rowIndex}:K${rowIndex}`);
+      const updateRange = encodeURIComponent(`'${tabName}'!A${rowIndex}:L${rowIndex}`);
       await sheetsRequest(`${SHEETS_BASE}/values/${updateRange}?valueInputOption=RAW`, "PUT", { values: rowData });
     } else {
-      const appendRange = encodeURIComponent(`'${tabName}'!A:K`);
+      const appendRange = encodeURIComponent(`'${tabName}'!A:L`);
       await sheetsRequest(`${SHEETS_BASE}/values/${appendRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, "POST", { values: rowData });
     }
   } catch (err) {
@@ -169,7 +169,7 @@ export const fullSyncToSheet = async (guests, wedding, userName) => {
     await getOrCreateTab(tabName);
 
     // Clear existing data (keep header)
-    const clearRange = encodeURIComponent(`'${tabName}'!A2:K`);
+    const clearRange = encodeURIComponent(`'${tabName}'!A2:L`);
     await sheetsRequest(`${SHEETS_BASE}/values/${clearRange}:clear`, "POST");
 
     // Write all rows
@@ -178,11 +178,11 @@ export const fullSyncToSheet = async (guests, wedding, userName) => {
 
     const rows = activeGuests.map((g, i) => [
       i + 1, g.name, g.village, g.mobileNumber || "", g.tag || "",
-      g.priority || "", g.attended ? "Yes" : "No", g.amount || 0,
+      g.priority || "", g.cardDistributed ? "Yes" : "No", g.attended ? "Yes" : "No", g.amount || 0,
       g.paymentType || "", g.attendedBy || "", g.addedOn || "",
     ]);
 
-    const updateRange = encodeURIComponent(`'${tabName}'!A2:K${rows.length + 1}`);
+    const updateRange = encodeURIComponent(`'${tabName}'!A2:L${rows.length + 1}`);
     await sheetsRequest(`${SHEETS_BASE}/values/${updateRange}?valueInputOption=RAW`, "PUT", { values: rows });
   } catch (err) {
     console.error("Google Sheets full sync error:", err.message);

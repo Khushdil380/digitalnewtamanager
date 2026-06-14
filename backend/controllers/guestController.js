@@ -74,7 +74,7 @@ export const getGuestsByWeddingId = async (req, res) => {
     }
 
     const guests = await Guest.find({ weddingId })
-      .select("name village mobileNumber tag priority addedOn attended attendedBy amount paymentType isDeleted createdAt")
+      .select("name village mobileNumber tag priority addedOn attended attendedBy amount paymentType cardDistributed isDeleted createdAt")
       .lean()
       .sort({ createdAt: -1 });
 
@@ -111,6 +111,33 @@ export const updateGuest = async (req, res) => {
   } catch (error) {
     console.error("Update guest error:", error);
     res.status(500).json({ success: false, message: "Error updating guest" });
+  }
+};
+
+export const markCardDistributed = async (req, res) => {
+  try {
+    const { guestId } = req.params;
+    const { cardDistributed } = req.body;
+
+    if (!guestId) {
+      return res.status(400).json({ success: false, message: "guestId is required" });
+    }
+
+    const guest = await Guest.findByIdAndUpdate(
+      guestId,
+      { cardDistributed: cardDistributed !== false },
+      { new: true }
+    );
+
+    if (!guest) {
+      return res.status(404).json({ success: false, message: "Guest not found" });
+    }
+
+    backgroundSync(guest, guest.weddingId);
+    res.status(200).json({ success: true, message: "Card distribution updated", guest });
+  } catch (error) {
+    console.error("Mark card distributed error:", error);
+    res.status(500).json({ success: false, message: "Error updating card distribution" });
   }
 };
 
