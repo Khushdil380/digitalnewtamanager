@@ -8,6 +8,7 @@ import Calculator from "../components/Calculator/Calculator";
 import NotesModal from "../components/Notes/NotesModal";
 import AttendanceBar from "../components/Progress/AttendanceBar";
 import CelebrationBurst from "../components/Celebration/CelebrationBurst";
+import CornerBurst from "../components/Celebration/CornerBurst";
 import "../styles/event/WeddingEventPage.css";
 
 const WeddingEventPage = ({ weddingId, onBackClick }) => {
@@ -151,6 +152,7 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
       />
 
       <CelebrationBurst trigger={celebrationTrigger} />
+      <CornerBurst trigger={celebrationTrigger} />
     </div>
   );
 };

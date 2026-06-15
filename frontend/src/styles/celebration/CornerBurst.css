@@ -1,0 +1,37 @@
+.corner-burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.corner-particle {
+  position: absolute;
+  bottom: 0;
+  animation: cornerShoot 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+.corner-left {
+  left: 0;
+}
+
+.corner-right {
+  right: 0;
+}
+
+@keyframes cornerShoot {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+    transform: translate(var(--tx), var(--ty)) scale(1);
+  }
+  100% {
+    transform: translate(var(--tx), calc(var(--ty) + 5vh)) scale(0.6);
+    opacity: 0;
+  }
+}
