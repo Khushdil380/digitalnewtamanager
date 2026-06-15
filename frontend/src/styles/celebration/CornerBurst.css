@@ -9,7 +9,7 @@
 .corner-particle {
   position: absolute;
   bottom: 0;
-  animation: cornerShoot 1.5s ease-out forwards;
+  animation: cornerShoot 2.2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
   opacity: 0;
 }
 
@@ -23,15 +23,19 @@
 
 @keyframes cornerShoot {
   0% {
-    transform: translate(0, 0) scale(0.5);
+    transform: translate(0, 0) scale(0.4) rotate(0deg);
     opacity: 1;
   }
-  60% {
+  35% {
+    transform: translate(var(--tx), var(--ty)) scale(1.1) rotate(60deg);
     opacity: 1;
-    transform: translate(var(--tx), var(--ty)) scale(1);
+  }
+  55% {
+    transform: translate(var(--tx), calc(var(--ty) - 2vh)) scale(1) rotate(120deg);
+    opacity: 0.9;
   }
   100% {
-    transform: translate(var(--tx), calc(var(--ty) + 5vh)) scale(0.6);
+    transform: translate(var(--tx), calc(var(--ty) + 30vh)) scale(0.7) rotate(200deg);
     opacity: 0;
   }
 }

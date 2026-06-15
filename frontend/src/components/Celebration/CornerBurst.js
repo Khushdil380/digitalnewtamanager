@@ -35,7 +35,7 @@ const CornerBurst = ({ trigger }) => {
     }
 
     setParticles(newParticles);
-    const timer = setTimeout(() => setParticles([]), 1800);
+    const timer = setTimeout(() => setParticles([]), 2500);
     return () => clearTimeout(timer);
   }, [trigger]);
 
