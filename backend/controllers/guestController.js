@@ -61,9 +61,10 @@ export const addGuestOnWeddingDay = async (req, res) => {
     });
 
     await guest.save();
-    const syncPromise = backgroundSync(guest, weddingId);
+    // No sheet sync here — the contribution recording that immediately follows
+    // will sync the full guest data (with amount, attendance, payment type).
+    // Syncing here causes a race condition → duplicate rows in the sheet.
     res.status(201).json({ success: true, message: "Guest added on wedding day", guest });
-    await syncPromise;
   } catch (error) {
     console.error("Add guest on wedding day error:", error);
     res.status(500).json({ success: false, message: "Error adding guest" });
