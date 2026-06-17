@@ -42,8 +42,8 @@ api.interceptors.response.use(
 
     if (isNetworkError || isServerColdStart || isServerError || isTimeout) {
       config._retried = true;
-      // Wait 3 seconds for serverless cold start to finish
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Wait 1.5 seconds for serverless cold start to finish
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       return api(config);
     }
 

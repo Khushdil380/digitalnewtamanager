@@ -57,22 +57,19 @@ const WeddingEventPage = ({ weddingId, onBackClick }) => {
   };
 
   const handleContributionRecorded = () => {
-    api.get(`/api/contributions/wedding/${weddingId}`)
+    // Trigger celebration immediately (no need to wait for API)
+    if (localStorage.getItem("celebrationMode") !== "off") {
+      setCelebrationTrigger((prev) => prev + 1);
+    }
+    // Single API call to refresh stats + guest count (replaces 2 separate calls)
+    api.get(`/api/weddings/${weddingId}/event-data`)
       .then((res) => {
         setStats(res.data.stats || {});
+        setTotalGuests(res.data.totalGuests || 0);
       })
       .catch((err) => {
         console.error("Failed to refresh stats:", err);
       });
-    api.get(`/api/guests/wedding/${weddingId}`)
-      .then((res) => {
-        setTotalGuests((res.data.guests || []).filter((g) => !g.isDeleted).length);
-      })
-      .catch(() => {});
-    // Trigger celebration if enabled
-    if (localStorage.getItem("celebrationMode") !== "off") {
-      setCelebrationTrigger((prev) => prev + 1);
-    }
   };
 
   if (loading) {

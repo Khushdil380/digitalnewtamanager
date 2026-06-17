@@ -13,58 +13,58 @@ export const recordContribution = async (req, res) => {
       return res.status(400).json({ success: false, message: "weddingId, guestId, guestName, and village are required" });
     }
 
-    // For envelope, amount defaults to 0 if not provided
     const finalAmount = paymentType === "envelope" ? (amount || 0) : (amount || 0);
 
     if (finalAmount < 0) {
       return res.status(400).json({ success: false, message: "Amount cannot be negative" });
     }
 
-    const contribution = new Contribution({
-      weddingId,
-      guestId,
-      guestName: guestName.trim(),
-      village: village.trim(),
-      amount: finalAmount,
-      paymentType: paymentType || "cash",
-      givenBy: givenBy || "personally",
-    });
+    const pay = paymentType || "cash";
+    const given = givenBy || "personally";
 
-    // Upsert: if contribution already exists for this guest+wedding, update it
-    const existing = await Contribution.findOne({ weddingId, guestId });
-    if (existing) {
-      existing.amount = finalAmount;
-      existing.paymentType = paymentType || "cash";
-      existing.givenBy = givenBy || "personally";
-      await existing.save();
-    } else {
-      await contribution.save();
-    }
+    // Run contribution upsert and guest update in parallel for speed
+    const [contributionResult, updatedGuest] = await Promise.all([
+      // Atomic upsert — single DB call instead of findOne + save
+      Contribution.findOneAndUpdate(
+        { weddingId, guestId },
+        {
+          $set: {
+            guestName: guestName.trim(),
+            village: village.trim(),
+            amount: finalAmount,
+            paymentType: pay,
+            givenBy: given,
+          },
+          $setOnInsert: { weddingId, guestId },
+        },
+        { upsert: true, new: true }
+      ),
+      // Update guest record simultaneously
+      Guest.findByIdAndUpdate(guestId, {
+        attended: true,
+        attendedBy: given,
+        amount: finalAmount,
+        paymentType: pay,
+      }, { new: true }),
+    ]);
 
-    // Update guest record — mark as attended with contribution details
-    const updatedGuest = await Guest.findByIdAndUpdate(guestId, {
-      attended: true,
-      attendedBy: givenBy || "personally",
-      amount: finalAmount,
-      paymentType: paymentType || "cash",
-    }, { new: true });
-
-    // Background: sync to Google Sheets (non-blocking)
-    Wedding.findById(weddingId).then((wedding) => {
-      if (wedding) {
-        User.findById(wedding.userId).then((user) => {
-          if (user && updatedGuest) {
-            syncGuestToSheet(updatedGuest, wedding, user.fullName);
-          }
-        }).catch(() => {});
-      }
-    }).catch(() => {});
-
+    // Respond immediately — everything critical is done
     res.status(201).json({
       success: true,
       message: "Contribution recorded",
-      contribution,
+      contribution: contributionResult,
     });
+
+    // Background: sync to Google Sheets (non-blocking, after response sent)
+    if (updatedGuest) {
+      Wedding.findById(weddingId).then((wedding) => {
+        if (wedding) {
+          User.findById(wedding.userId).then((user) => {
+            if (user) syncGuestToSheet(updatedGuest, wedding, user.fullName);
+          }).catch(() => {});
+        }
+      }).catch(() => {});
+    }
   } catch (error) {
     console.error("Record contribution error:", error);
     res.status(500).json({ success: false, message: "Error recording contribution" });
