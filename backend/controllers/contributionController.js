@@ -22,8 +22,8 @@ export const recordContribution = async (req, res) => {
     const pay = paymentType || "cash";
     const given = givenBy || "personally";
 
-    // Run contribution upsert and guest update in parallel for speed
-    const [contributionResult, updatedGuest] = await Promise.all([
+    // Run contribution upsert, guest update, and wedding/user lookup ALL in parallel
+    const [contributionResult, updatedGuest, wedding] = await Promise.all([
       // Atomic upsert — single DB call instead of findOne + save
       Contribution.findOneAndUpdate(
         { weddingId, guestId },
@@ -46,25 +46,29 @@ export const recordContribution = async (req, res) => {
         amount: finalAmount,
         paymentType: pay,
       }, { new: true }),
+      // Pre-fetch wedding for Sheets sync (done in parallel, no extra time)
+      Wedding.findById(weddingId).lean(),
     ]);
 
-    // Respond immediately — everything critical is done
+    // Fetch user for sheet sync (quick lookup, needed for tab name)
+    let sheetSyncPromise = null;
+    if (updatedGuest && wedding) {
+      const user = await User.findById(wedding.userId).select("fullName").lean();
+      if (user) {
+        // Start sheet sync BEFORE sending response so Vercel doesn't kill it
+        sheetSyncPromise = syncGuestToSheet(updatedGuest, wedding, user.fullName).catch(() => {});
+      }
+    }
+
+    // Respond — don't wait for sheet sync to complete
     res.status(201).json({
       success: true,
       message: "Contribution recorded",
       contribution: contributionResult,
     });
 
-    // Background: sync to Google Sheets (non-blocking, after response sent)
-    if (updatedGuest) {
-      Wedding.findById(weddingId).then((wedding) => {
-        if (wedding) {
-          User.findById(wedding.userId).then((user) => {
-            if (user) syncGuestToSheet(updatedGuest, wedding, user.fullName);
-          }).catch(() => {});
-        }
-      }).catch(() => {});
-    }
+    // Await sheet sync after response (keeps function alive on Vercel)
+    if (sheetSyncPromise) await sheetSyncPromise;
   } catch (error) {
     console.error("Record contribution error:", error);
     res.status(500).json({ success: false, message: "Error recording contribution" });

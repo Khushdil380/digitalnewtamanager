@@ -58,7 +58,7 @@ export const addGuestOnWeddingDay = async (req, res) => {
     });
 
     await guest.save();
-    // Note: no sheet sync here — the contribution recording that follows will sync the full data
+    backgroundSync(guest, weddingId);
     res.status(201).json({ success: true, message: "Guest added on wedding day", guest });
   } catch (error) {
     console.error("Add guest on wedding day error:", error);
