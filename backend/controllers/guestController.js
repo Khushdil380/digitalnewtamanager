@@ -5,14 +5,16 @@ import Contribution from "../models/Contribution.js";
 import { syncGuestToSheet, removeGuestFromSheet } from "../utils/googleSheetsSync.js";
 import nodemailer from "nodemailer";
 
-// Background helper: sync guest to sheet silently
-const backgroundSync = (guest, weddingId) => {
-  Wedding.findById(weddingId).then((wedding) => {
+// Background helper: sync guest to sheet — returns a promise so callers can await if needed
+const backgroundSync = async (guest, weddingId) => {
+  try {
+    const wedding = await Wedding.findById(weddingId).lean();
     if (!wedding) return;
-    User.findById(wedding.userId).then((user) => {
-      if (user) syncGuestToSheet(guest, wedding, user.fullName);
-    }).catch(() => {});
-  }).catch(() => {});
+    const user = await User.findById(wedding.userId).select("fullName").lean();
+    if (user) await syncGuestToSheet(guest, wedding, user.fullName);
+  } catch (err) {
+    // Silent — never block the main operation
+  }
 };
 
 export const createGuest = async (req, res) => {
@@ -34,8 +36,9 @@ export const createGuest = async (req, res) => {
     });
 
     await guest.save();
-    backgroundSync(guest, weddingId);
+    const syncPromise = backgroundSync(guest, weddingId);
     res.status(201).json({ success: true, message: "Guest added successfully", guest });
+    await syncPromise;
   } catch (error) {
     console.error("Create guest error:", error);
     res.status(500).json({ success: false, message: "Error creating guest" });
@@ -58,8 +61,9 @@ export const addGuestOnWeddingDay = async (req, res) => {
     });
 
     await guest.save();
-    backgroundSync(guest, weddingId);
+    const syncPromise = backgroundSync(guest, weddingId);
     res.status(201).json({ success: true, message: "Guest added on wedding day", guest });
+    await syncPromise;
   } catch (error) {
     console.error("Add guest on wedding day error:", error);
     res.status(500).json({ success: false, message: "Error adding guest" });
@@ -106,8 +110,9 @@ export const updateGuest = async (req, res) => {
     if (priority !== undefined) guest.priority = priority;
 
     await guest.save();
-    backgroundSync(guest, guest.weddingId);
+    const syncPromise = backgroundSync(guest, guest.weddingId);
     res.status(200).json({ success: true, message: "Guest updated", guest });
+    await syncPromise;
   } catch (error) {
     console.error("Update guest error:", error);
     res.status(500).json({ success: false, message: "Error updating guest" });
@@ -133,8 +138,9 @@ export const markCardDistributed = async (req, res) => {
       return res.status(404).json({ success: false, message: "Guest not found" });
     }
 
-    backgroundSync(guest, guest.weddingId);
+    const syncPromise = backgroundSync(guest, guest.weddingId);
     res.status(200).json({ success: true, message: "Card distribution updated", guest });
+    await syncPromise;
   } catch (error) {
     console.error("Mark card distributed error:", error);
     res.status(500).json({ success: false, message: "Error updating card distribution" });
