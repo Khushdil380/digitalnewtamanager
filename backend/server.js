@@ -110,6 +110,32 @@ app.use(async (req, res, next) => {
 // Cron: Post-wedding summary email (runs daily at 10 PM IST)
 app.get("/api/cron/post-wedding-summary", postWeddingSummaryJob);
 
+// One-time full resync: rebuild all Google Sheet tabs from current DB data
+app.get("/api/admin/resync-sheets", async (req, res) => {
+  try {
+    const { fullSyncToSheet } = await import("./utils/googleSheetsSync.js");
+    const Wedding = (await import("./models/Wedding.js")).default;
+    const Guest = (await import("./models/Guest.js")).default;
+    const User = (await import("./models/User.js")).default;
+
+    const weddings = await Wedding.find({}).lean();
+    let synced = 0;
+
+    for (const wedding of weddings) {
+      const user = await User.findById(wedding.userId).select("fullName").lean();
+      if (!user) continue;
+      const guests = await Guest.find({ weddingId: wedding._id }).lean();
+      await fullSyncToSheet(guests, wedding, user.fullName);
+      synced++;
+    }
+
+    res.json({ success: true, message: `Resynced ${synced} wedding(s) to Google Sheets` });
+  } catch (error) {
+    console.error("Full resync error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/weddings", weddingRoutes);
 app.use("/api/guests", guestRoutes);
