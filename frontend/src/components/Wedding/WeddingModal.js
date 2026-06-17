@@ -41,6 +41,14 @@ export default function WeddingModal({ isOpen, onClose, onWeddingCreated, editin
       return;
     }
 
+    // Prevent past dates
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(date); selectedDate.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      setError("Wedding date cannot be in the past");
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = { brideName, groomName, date, venue };
@@ -77,7 +85,7 @@ export default function WeddingModal({ isOpen, onClose, onWeddingCreated, editin
             </div>
           </div>
 
-          <InputField label="Wedding Date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+          <InputField label="Wedding Date" type="date" value={date} onChange={(e) => setDate(e.target.value)} min={new Date().toISOString().split("T")[0]} required />
           <InputField label="Venue/Location" placeholder="City or venue" value={venue} onChange={(e) => setVenue(e.target.value)} required />
 
           {error && <div className="auth-error-message">{error}</div>}
