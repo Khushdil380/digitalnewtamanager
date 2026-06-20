@@ -6,18 +6,8 @@
   overflow: hidden;
 }
 
-.sf-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin: 0 0 0.6rem 0;
-  text-align: center;
-  padding-right: 2rem;
-  flex-shrink: 0;
-}
-
-/* Create row */
-.sf-create-row {
+/* Header with create input */
+.sf-header {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -28,7 +18,8 @@
 }
 
 .sf-name-input {
-  flex: 1;
+  flex: 0 1 60%;
+  max-width: 200px;
   padding: 0.4rem 0.6rem;
   border: 1.5px solid #e0e0e0;
   border-radius: var(--radius);
@@ -62,7 +53,7 @@
   cursor: default;
 }
 
-/* Toolbar */
+/* Toolbar - always single row */
 .sf-toolbar {
   display: flex;
   align-items: center;
@@ -126,15 +117,6 @@
 @media (max-width: 768px) {
   .sf-modal {
     height: 85vh;
-  }
-
-  .sf-toolbar {
-    flex-wrap: wrap;
-  }
-
-  .sf-view-btns {
-    width: 100%;
-    justify-content: flex-end;
   }
 
   .sf-container {

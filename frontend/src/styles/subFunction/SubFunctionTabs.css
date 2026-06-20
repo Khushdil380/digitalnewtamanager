@@ -22,15 +22,15 @@
 }
 
 .sf-tab {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0.25rem 0.4rem;
+  padding: 0.25rem 0.5rem;
   background: #f0f0f0;
+  border: none;
   border-radius: var(--radius);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
@@ -39,27 +39,6 @@
   color: white;
 }
 
-.sf-tab-btn {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-}
-
-.sf-tab-del {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 0.8rem;
-  cursor: pointer;
-  opacity: 0.6;
-  padding: 0 0.1rem;
-  line-height: 1;
-}
-
-.sf-tab-del:hover {
-  opacity: 1;
+.sf-tab:hover:not(.active) {
+  background: #e0e0e0;
 }

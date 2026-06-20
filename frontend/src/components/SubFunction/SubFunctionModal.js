@@ -77,20 +77,6 @@ const SubFunctionModal = ({ isOpen, onClose, weddingId, guests, weddingInfo }) =
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this function?")) return;
-    try {
-      await api.delete(`/api/sub-functions/${id}`);
-      setSubFunctions((prev) => prev.filter((sf) => sf._id !== id));
-      if (activeTab === id) {
-        const remaining = subFunctions.filter((sf) => sf._id !== id);
-        setActiveTab(remaining.length > 0 ? remaining[0]._id : null);
-      }
-    } catch (err) {
-      console.error("Delete error:", err);
-    }
-  };
-
   const updateLocal = (sfId, field, guestId, action) => {
     setSubFunctions((prev) => prev.map((sf) => {
       if (sf._id !== sfId) return sf;
@@ -141,10 +127,8 @@ const SubFunctionModal = ({ isOpen, onClose, weddingId, guests, weddingInfo }) =
       <div className="modal-container modal-large sf-container">
         <button className="modal-close" onClick={handleClose}>✕</button>
         <div className="sf-modal">
-          <h2 className="sf-title">🎪 Sub Functions</h2>
-
-          {/* Create new function */}
-          <div className="sf-create-row">
+          {/* Header: Create function input */}
+          <div className="sf-header">
             <input
               type="text"
               className="sf-name-input"
@@ -157,7 +141,7 @@ const SubFunctionModal = ({ isOpen, onClose, weddingId, guests, weddingInfo }) =
             <button className="sf-create-btn" onClick={handleCreate} disabled={!newName.trim()}>Create</button>
           </div>
 
-          {/* Search + View toggles */}
+          {/* Search + View toggles (single row always) */}
           <div className="sf-toolbar">
             <input
               type="text"
@@ -181,7 +165,6 @@ const SubFunctionModal = ({ isOpen, onClose, weddingId, guests, weddingInfo }) =
             subFunctions={subFunctions}
             activeTab={activeTab}
             onTabClick={(id) => { setActiveTab(id); setView("all"); }}
-            onDelete={handleDelete}
             exportNode={currentFunction && (
               <SubFunctionExport
                 guests={activeGuests}
