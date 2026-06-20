@@ -3,6 +3,7 @@ import api from "../../utils/api";
 import { formatDate } from "../../utils/formatDate";
 import Button from "../common/Button";
 import CardDistributionModal from "../Guest/CardDistributionModal";
+import SubFunctionModal from "../SubFunction/SubFunctionModal";
 import img1 from "../../assets/weddingcard/1.png";
 import img2 from "../../assets/weddingcard/2.png";
 import img3 from "../../assets/weddingcard/3.png";
@@ -18,6 +19,7 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
   const [guestStats, setGuestStats] = useState({ invited: 0, attended: 0 });
   const [guests, setGuests] = useState([]);
   const [showCardDist, setShowCardDist] = useState(false);
+  const [showSubFunc, setShowSubFunc] = useState(false);
   const [bgIndex, setBgIndex] = useState(() => Math.floor(Math.random() * CARD_IMAGES.length));
 
   useEffect(() => {
@@ -59,6 +61,7 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
       <div className="wc-header-strip">
         <span className="wc-stat">👥 {guestStats.invited}/{guestStats.attended}</span>
         <div className="wc-header-actions">
+          <button className="wc-edit-btn" onClick={() => setShowSubFunc(true)} title="Sub Functions">🎪</button>
           <button className="wc-edit-btn" onClick={() => setShowCardDist(true)} title="Card Distribution">📬</button>
           <button className="wc-edit-btn" onClick={() => onEditClick(wedding)} title="Edit">✏️</button>
         </div>
@@ -95,6 +98,14 @@ export default function WeddingCard({ wedding, onEditClick, onGuestClick, onDele
         weddingId={wedding._id || wedding.id}
         onUpdate={fetchStats}
         weddingDate={wedding.date}
+      />
+
+      <SubFunctionModal
+        isOpen={showSubFunc}
+        onClose={() => setShowSubFunc(false)}
+        weddingId={wedding._id || wedding.id}
+        guests={guests}
+        weddingInfo={{ brideName: wedding.brideName, groomName: wedding.groomName }}
       />
     </div>
   );

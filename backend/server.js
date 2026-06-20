@@ -9,6 +9,7 @@ import contributionRoutes from "./routes/contributionRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import smsRoutes from "./routes/smsRoutes.js";
 import bulkSmsRoutes from "./routes/bulkSmsRoutes.js";
+import subFunctionRoutes from "./routes/subFunctionRoutes.js";
 import { postWeddingSummaryJob } from "./controllers/cronController.js";
 
 dotenv.config();
@@ -143,6 +144,7 @@ app.use("/api/contributions", contributionRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/sms", smsRoutes);
 app.use("/api/bulk-sms", bulkSmsRoutes);
+app.use("/api/sub-functions", subFunctionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

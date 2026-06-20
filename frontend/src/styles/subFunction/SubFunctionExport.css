@@ -1,0 +1,47 @@
+.sf-export-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sf-export-btn {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.sf-export-btn:hover {
+  border-color: var(--primary);
+}
+
+.sf-export-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.2rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.sf-export-menu button {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  border: none;
+  background: white;
+  font-size: 0.72rem;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sf-export-menu button:hover {
+  background: #f5f5f5;
+}

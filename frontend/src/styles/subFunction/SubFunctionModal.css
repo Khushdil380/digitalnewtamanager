@@ -1,0 +1,143 @@
+.sf-modal {
+  position: relative;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sf-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.6rem 0;
+  text-align: center;
+  padding-right: 2rem;
+  flex-shrink: 0;
+}
+
+/* Create row */
+.sf-create-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.15);
+  flex-shrink: 0;
+}
+
+.sf-name-input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.78rem;
+  background: transparent;
+}
+
+.sf-name-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.sf-create-btn {
+  padding: 0.4rem 0.7rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.sf-create-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.sf-create-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Toolbar */
+.sf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.sf-search-input {
+  flex: 1;
+  padding: 0.35rem 0.5rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  background: transparent;
+  min-width: 0;
+}
+
+.sf-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.sf-view-btns {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.sf-view-btn {
+  padding: 0.28rem 0.45rem;
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  border-radius: var(--radius);
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.sf-view-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.sf-empty {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* Override modal container for sub-function */
+.sf-container {
+  max-width: 750px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .sf-modal {
+    height: 85vh;
+  }
+
+  .sf-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .sf-view-btns {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .sf-container {
+    max-width: 95vw;
+  }
+}

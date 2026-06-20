@@ -1,0 +1,65 @@
+.sf-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.15);
+  flex-shrink: 0;
+}
+
+.sf-tabs-scroll {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sf-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.sf-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.25rem 0.4rem;
+  background: #f0f0f0;
+  border-radius: var(--radius);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.sf-tab.active {
+  background: var(--primary);
+  color: white;
+}
+
+.sf-tab-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sf-tab-del {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0 0.1rem;
+  line-height: 1;
+}
+
+.sf-tab-del:hover {
+  opacity: 1;
+}
